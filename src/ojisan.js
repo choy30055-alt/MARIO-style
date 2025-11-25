@@ -470,7 +470,7 @@ class Ojisan {
             return;
         }
 
-        if(this.y > 2900) { //崖に落ちたらスタートに戻る
+        if(this.y > 2900 || score < -1000) { //崖に落ちたら,マイナス1000点でスタートに戻る
             wahSound.play();
             setTimeout(() => {
                 //his.x = 50; //スタートに飛ばす
