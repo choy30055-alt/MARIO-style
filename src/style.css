@@ -10,7 +10,7 @@
  body,canvas {
     display: block;
     width: 100%;
-    height: 95%;
+    height: 92%;
  }
 
  body {
@@ -287,4 +287,5 @@
 .spf-controller .controller-center {
     z-index: 1;
 } 
+
 
