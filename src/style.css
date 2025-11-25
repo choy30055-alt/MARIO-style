@@ -27,8 +27,8 @@
     position: absolute;
     align-items: center;
     justify-self: center;
-    width: 400px;
-    height: 350px;
+    width: 350px;
+    height: 300px;
     border: none;
     background-image: url(../image/mrost.png);
     background-size: cover;
@@ -288,6 +288,7 @@
 .spf-controller .controller-center {
     z-index: 1;
 } 
+
 
 
 
