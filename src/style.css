@@ -10,11 +10,12 @@
  body,canvas {
     display: block;
     width: 100%;
-    height: 90%;
+    height: 95%;
  }
 
  body {
     margin: 0;
+    padding: 0;
     height: 100dvh; 
     display: flex;
     align-items:center; /*垂直中央*/
@@ -26,8 +27,8 @@
     position: absolute;
     align-items: center;
     justify-self: center;
-    width: 450px;
-    height: 400px;
+    width: 400px;
+    height: 350px;
     border: none;
     background-image: url(../image/mrost.png);
     background-size: cover;
@@ -287,6 +288,7 @@
 .spf-controller .controller-center {
     z-index: 1;
 } 
+
 
 
 
