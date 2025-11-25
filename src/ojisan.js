@@ -479,7 +479,7 @@ class Ojisan {
                 //this.y = 2820;
                 //field.scx = 0; //画面もスタート位置に飛ばす
                 window.location.reload(true);
-            },2500);          
+            },1500);          
         }
 
         //アニメのカウンタ
@@ -520,5 +520,6 @@ class Ojisan {
         vcon.drawImage(chImg, sx, sy, w, h, px, py, w, h);
     }
 }
+
 
 
