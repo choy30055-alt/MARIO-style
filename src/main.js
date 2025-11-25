@@ -120,8 +120,8 @@ function draw() {
     //スコア情報
     con.font = "20px 'Impact";
     con.fillStyle = "white"; 
-    con.fillText("MARIO", 10, 50);
-    con.fillText(score, 10, 70);
+    con.fillText("MARIO", 10, 30);
+    con.fillText(score, 10, 50);
 }
 //setInterval(mainLoop, 1000 / 60);
 

@@ -471,13 +471,15 @@ class Ojisan {
         }
 
         if(this.y > 2900 || score < -1000) { //崖に落ちたら,マイナス1000点でスタートに戻る
+            //wahSound.currentTime = 0; //連続再生
             wahSound.play();
+            gameoverSound.play();
             setTimeout(() => {
                 //his.x = 50; //スタートに飛ばす
                 //this.y = 2820;
                 //field.scx = 0; //画面もスタート位置に飛ばす
                 window.location.reload(true);
-            },1000);          
+            },2500);          
         }
 
         //アニメのカウンタ

@@ -10,7 +10,7 @@ const itemSound = new Audio("./audio/mroitem.mp3");
 const yafuSound = new Audio("./audio/mroyafuu.mp3");
 const pupSound = new Audio("./audio/mropup.mp3");
 const lvdSound = new Audio("./audio/mrolvd.mp3");
-const wahSound = new Audio("./audio/mrowao.mp3");
+const wahSound = new Audio("./audio/mrowaah.mp3");
 const fumuSound = new Audio("./audio/mropeko.mp3");
 const yaSound = new Audio("./audio/mroya.mp3");
 const hahaSound = new Audio("./audio/mrohaha.mp3");
@@ -19,6 +19,7 @@ const miyaSound = new Audio("./audio/mromiya.mp3");
 const fireSound = new Audio("./audio/mrofireball.mp3");
 const firehitSound = new Audio("./audio/mroharetu.mp3");
 const jyugemSound = new Audio("./audio/jyugem.mp3");
+const gameoverSound = new Audio("./audio/mrogameover.mp3");
 
 const GAME_FPS = 1000 / 60;  //FPS
 const SCREEN_SIZE_W = 256;
