@@ -4,7 +4,7 @@
  }
 
 /*画面中央に配置するためのベース*/
- html, body {
+ body {
     height: 100%;
  }
  body,canvas {
