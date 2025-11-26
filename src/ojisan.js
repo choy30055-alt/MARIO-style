@@ -476,7 +476,7 @@ class Ojisan {
             wahSound.play();
             gameoverSound.play();
             //this.x = 0;
-            this.y=2810;
+            this.y= 1000;
             this.vy -= 400;
             score = 0;
             this.snum = 94;
@@ -529,6 +529,7 @@ class Ojisan {
         vcon.drawImage(chImg, sx, sy, w, h, px, py, w, h);
     }
 }
+
 
 
 
