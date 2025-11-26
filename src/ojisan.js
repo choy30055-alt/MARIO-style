@@ -38,6 +38,7 @@ class Ojisan {
         this.shootfireball = 0;
         this.scoreValue = 100;
         this.loseValue = -500;
+        this.kill = false;
     }
 
     //床の判定
@@ -474,6 +475,11 @@ class Ojisan {
             //wahSound.currentTime = 0; //連続再生
             wahSound.play();
             gameoverSound.play();
+            //this.y += 200;
+            //this.snum = 94;
+            //this.h = this.snum == 94?16:32;
+            this.kill =true;
+            cancelAnimationFrame(mainLoop);
             setTimeout(() => {
                 //his.x = 50; //スタートに飛ばす
                 //this.y = 2820;
