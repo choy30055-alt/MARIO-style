@@ -480,12 +480,12 @@ class Ojisan {
             //this.h = this.snum == 94?16:32;
             this.kill =true;
             ///cancelAnimationFrame(mainLoop);
-            //setTimeout(() => {
+            setTimeout(() => {
                 //his.x = 50; //スタートに飛ばす
                 //this.y = 2820;
                 //field.scx = 0; //画面もスタート位置に飛ばす
                 window.location.reload(true);
-           // },2500);          
+            },2500);          
         }
 
         //アニメのカウンタ
@@ -526,4 +526,3 @@ class Ojisan {
         vcon.drawImage(chImg, sx, sy, w, h, px, py, w, h);
     }
 }
-
