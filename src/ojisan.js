@@ -476,9 +476,10 @@ class Ojisan {
             wahSound.play();
             gameoverSound.play();
             this.x = 0;
+            score = 0;
             //this.snum = 94;
             //this.h = this.snum == 94?16:32;
-            this.kill =true;
+            //this.kill =true;
             ///cancelAnimationFrame(mainLoop);
             setTimeout(() => {
                 //his.x = 50; //スタートに飛ばす
