@@ -471,12 +471,12 @@ class Ojisan {
             return;
         }
 
-        if(this.y > 2850 || score < -1000) { //崖に落ちたら,マイナス1000点でスタートに戻る
+        if(this.y > 2900 || score < -1000) { //崖に落ちたら,マイナス1000点でスタートに戻る
             //wahSound.currentTime = 0; //連続再生
             wahSound.play();
             gameoverSound.play();
             //this.x = 0;
-            this.y-= 200;
+            this.y = 0;
             score = 0;
             this.snum = 94;
             this.h = this.snum == 94?16:32;
@@ -528,6 +528,7 @@ class Ojisan {
         vcon.drawImage(chImg, sx, sy, w, h, px, py, w, h);
     }
 }
+
 
 
 
