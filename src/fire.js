@@ -23,6 +23,8 @@ class Fireball {
         if(tp == undefined) tp = ITEM_FIREB;
         this.tp = tp;
         this.scoreValue = 100;
+        this.creationTime = Date.now();
+        this.lifespan = 3000;
     }
 
    //横の壁の判定
@@ -30,11 +32,9 @@ class Fireball {
         let lx = ((this.x + this.vx)>>4);
         let ly = ((this.y + this.vy)>>4);
         //左右側のチェック
-        if(field.isBlock(lx + 15, ly + 3)  ||
-           field.isBlock(lx + 15, ly + 12) ||
-           field.isBlock(lx, ly + 3)       ||
-           field.isBlock(lx, ly + 12)) { 
-            this.vx *= -1;     
+        if(field.isBlock(lx ,ly) ) { 
+            //this.vx *= -1; 
+            this.kill = true ;  
         }
     }
 
@@ -54,8 +54,7 @@ class Fireball {
         let lx = ((this.x + this.vx)>>4);
         let ly = ((this.y + this.vy)>>4);
 
-        if(field.isBlock(lx + 1, ly + 15) ||
-           field.isBlock(lx + 14, ly + 15)) { 
+        if(field.isBlock(lx + 8, ly + 8)) { 
             /*this.vy = 0;
             this.y = ((((ly + 15)>>4)<<4) - 16)<<4;*/
             this.y -= this.h;
@@ -177,20 +176,14 @@ class Fireball {
         this.x += this.vx + ojisan.vx;
         this.y += this.vy;
 
-        //地面との衝突と跳ね返り
-        /*if(this.y > this.groundLevel) {
-            this.y = this.groundLevel;
-            this.vy *= -0.9; //跳ね返り減衰あり
-        }*/
-
         //画面の外に出たら消す
         if(this.x < 0 || this.x > ojisan.x+3000) {
             this.kill = true;
         }
-    
-        for(let i = 0; i < this.length; i++) {
-            this[i].this.kill = true;
-        }
+        
+        /*for(let i = 0; i < this.length; i++) {
+            this[i].kill = true;
+        }*/
 
         this.checkWall();
         this.checkFloor();
@@ -214,4 +207,8 @@ class Fireball {
         else s = 16;
         vcon.drawImage(chImg, sx, sy, 16, s, px, py, 16, 16);
     }
+
+    /*isAlive() {
+        return Date.now() - this.creationTime <= this.lifespan;
+    }*/
 }
