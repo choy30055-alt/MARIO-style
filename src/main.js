@@ -134,9 +134,9 @@ function gameStart() {  //スタートボタンでゲーム開始
     startTime = performance.now();
     ojisan.draw();
 
-    //kuribo.push(new Kuribo(163, 16, 0, 12, 0, ITEM_KURIBO));
-    //kuribo.push(new Kuribo(163, 24, 0, 12, 0, ITEM_KURIBO));
-    //kuribo.push(new Kuribo(163, 40, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 16, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 24, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 40, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 54, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 63, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 78, 0, 12, 0, ITEM_KURIBO));
@@ -145,9 +145,9 @@ function gameStart() {  //スタートボタンでゲーム開始
     kuribo.push(new Kuribo(163, 160, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 162, 0, 12, 0, ITEM_KURIBO));
 
-    //nokonoko.push(new Nokonoko(163, 14, 0, 9, 0, ITEM_NOKONOKO));
-    //nokonoko.push(new Nokonoko(163, 32, 0, 9, 0, ITEM_NOKONOKO));
-    //nokonoko.push(new Nokonoko(163, 48, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 14, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 32, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 48, 0, 9, 0, ITEM_NOKONOKO));
     nokonoko.push(new Nokonoko(163, 60, 0, 9, 0, ITEM_NOKONOKO));
     nokonoko.push(new Nokonoko(163, 78, 0, 9, 0, ITEM_NOKONOKO));
     nokonoko.push(new Nokonoko(163, 96, 0, 9, 0, ITEM_NOKONOKO));
@@ -156,9 +156,9 @@ function gameStart() {  //スタートボタンでゲーム開始
     nokonoko.push(new Nokonoko(163, 160, 0, 9, 0, ITEM_NOKONOKO));
     nokonoko.push(new Nokonoko(163, 162, 0, 9, 0, ITEM_NOKONOKO));
 
-    //jyugem.push(new Jyugem(107, 1, 1, 11, 0, ITEM_JYUGEM));
-    //jyugem.push(new Jyugem(107, 40, 2, 11, 0, ITEM_JYUGEM));
-    //jyugem.push(new Jyugem(107, 80, 3, 11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 1, 1, 11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 40, 2, 11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 80, 3, 11, 0, ITEM_JYUGEM));
     jyugem.push(new Jyugem(107, 100, 4, 11, 0, ITEM_JYUGEM));
     jyugem.push(new Jyugem(107, 100, 1, -11, 0, ITEM_JYUGEM));
     jyugem.push(new Jyugem(107, 130, 2, -11, 0, ITEM_JYUGEM));
