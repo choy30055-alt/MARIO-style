@@ -479,7 +479,7 @@ class Ojisan {
             this.y-= 100;
             score = 0;
             this.snum = 94;
-            //this.h = this.snum == 94?16:32;
+            this.h = this.snum == 94?16:32;
             //this.kill =true;
             ///cancelAnimationFrame(mainLoop);
             setTimeout(() => {
@@ -528,5 +528,6 @@ class Ojisan {
         vcon.drawImage(chImg, sx, sy, w, h, px, py, w, h);
     }
 }
+
 
 
