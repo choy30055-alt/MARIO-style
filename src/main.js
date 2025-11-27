@@ -120,7 +120,8 @@ function draw() {
     con.drawImage(vcan, 0, 0, SCREEN_SIZE_W, SCREEN_SIZE_H,
                   0, 0, SCREEN_SIZE_W * 2, SCREEN_SIZE_H * 2);
     //スコア情報
-    con.font = "20px 'Impact";
+    //con.font = "20px 'Impact";
+    con.font = '20px "Times New Roman", Times, serif';
     con.fillStyle = "white"; 
     con.fillText("MARIO", 10, 30);
     con.fillText(score, 10, 50);
@@ -302,3 +303,4 @@ function drawGameOverImage() {
     const y = can.height / 2;
     con.fillText("GAMEOVER", x, y);*/
 }
+
