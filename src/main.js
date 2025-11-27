@@ -26,9 +26,6 @@ let chImg = new Image();
 chImg.src ="image/spritemario.png";
 //chImg.onload = draw;
 
-let chImgB = new Image();
-chImgB.src = "image/100ten.png";
-
 //キーボード
 let keyb = {};
 
@@ -47,6 +44,10 @@ let nokonoko = [];
 let jyugem = [];
 let score = 0;
 let scorepop = [];
+
+//ゲームステート
+let gameState = 'PLAYING';
+let gameOverImage = null;
 
 
 function updateObj(obj) {
@@ -92,6 +93,8 @@ function drawObj(obj) {
         obj[i].draw();
 }
 
+
+
 //描画処理
 function draw() {
     vcon.fillStyle = "#66AAFF";
@@ -131,6 +134,7 @@ function gameStart() {  //スタートボタンでゲーム開始
     startSound1.addEventListener("ended", function(){startSound2.play();}); 
     startSound2.addEventListener("ended", function(){bgmSound.play();}); 
     bgmSound.addEventListener("ended", function(){bgmSound.play();}); 
+    loadImageAssets();
     startTime = performance.now();
     ojisan.draw();
 
@@ -176,22 +180,26 @@ function gameStart() {  //スタートボタンでゲーム開始
 
 //メインループ
 function mainLoop() {
-    let nowTime = performance.now();
-    let nowFrame = (nowTime - startTime) / GAME_FPS;
+    if(gameState === 'PLAYING') {
+        let nowTime = performance.now();
+        let nowFrame = (nowTime - startTime) / GAME_FPS;
 
-    if(nowFrame > frameCount) {
-        let c = 0;
-        while(nowFrame > frameCount) {
-            frameCount++;
-            //更新処理
-            update();
-            if(++c >= 4)break;
+        if(nowFrame > frameCount) {
+            let c = 0;
+            while(nowFrame > frameCount) {
+                frameCount++;
+                //更新処理
+                update();
+                if(++c >= 4)break;
+            }
+            //描画処理
+            draw();
         }
-        //描画処理
-        draw();
-    }
-    if(ojisan.kill) {
-        cancelAnimationFrame(mainLoop);
+    } else if (gameState === 'GAMEOVER') {
+        drawGameOverImage();
+        setTimeout(() => {
+            window.location.reload(true);
+        },5000);
     }
     requestAnimationFrame(mainLoop);
 }
@@ -259,5 +267,36 @@ abtn.addEventListener('touchend', (e) => {
     keyb.FBBUTTON = false;
 })*/
 
+//画像の事前読み込み
+function loadImageAssets() {
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.onload = () => {
+        gameOverImage = img;
+        gameState = 'PLAYING'
+    }
+    img.src = "image/mrogameover.jpg";
+}
 
+//ゲームオーバーのトリガー
+function triggerGameOver() {
+    gameState = 'GAMEOVER';
+}
 
+//ゲームオーバー画像
+function drawGameOverImage() {
+    gameOverImage.src = "image/mrogameover.jpg"; 
+    gameOverImage.onload = () =>{
+        con.drawImage(gameOverImage, 0, 0, can.width, can.height);
+    };
+    /*con.fillStyle = 'black';
+    con.fillRect(0, 0, can.width, can.height);
+
+    con.fillStyle = 'white';
+    con.font = '48px "Times New Roman", Times, serif';  
+    con.textAlign = 'center';
+    con.textBaseline = 'middle';
+    const x = can.width / 2;
+    const y = can.height / 2;
+    con.fillText("GAMEOVER", x, y);*/
+}

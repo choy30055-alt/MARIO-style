@@ -56,7 +56,7 @@ class Ojisan {
             this.y = ((((ly + 31)>>4)<<4) - 32)<<4;
         }
     }
-    
+
     //天井の判定
     checkCeil() {
          if(this.vy >= 0) return;
@@ -132,6 +132,8 @@ class Ojisan {
             }
         }     
     }
+
+    
 
     //横の壁の判定
     checkWall() {
@@ -270,6 +272,19 @@ class Ojisan {
             if(this.dirc) {
                 this.snum += 48; //左向きは+48を使う
             }
+        }
+    }
+
+    //ゲームオーバー判定
+    checkGameOver() {
+        if(this.y > 2850 || score < -1000) { //崖に落ちたら,マイナス1000点で
+            triggerGameOver();
+            wahSound.play();
+            gameoverSound.play();    
+            this.y = 1000;
+            this.vy -= 300;
+            score = 0;
+            this.kill =true;
         }
     }
 
@@ -471,26 +486,6 @@ class Ojisan {
             return;
         }
 
-        if(this.y > 2830 || score < -1000) { //崖に落ちたら,マイナス1000点でスタートに戻る
-            //wahSound.currentTime = 0; //連続再生
-            wahSound.play();
-            gameoverSound.play();
-            //this.x = 0;
-            this.y= 1000;
-            this.vy -= 400;
-            score = 0;
-            this.snum = 94;
-            this.h = this.snum == 94?16:32;
-            //this.kill =true;
-            ///cancelAnimationFrame(mainLoop);
-            setTimeout(() => {
-                //his.x = 50; //スタートに飛ばす
-                //this.y = 2820;
-                //field.scx = 0; //画面もスタート位置に飛ばす
-                window.location.reload(true);
-            },2500);          
-        }
-
         //アニメのカウンタ
         this.acou++;
         if(Math.abs(this.vx) == MAX_SPEED) this.acou++;
@@ -499,6 +494,7 @@ class Ojisan {
         this.updateJump();
         this.updateWalk();
         this.shootFireball();
+        this.checkGameOver();
         
         //重力
         if(this.vy < 64) this.vy += GRAVITY;
@@ -529,14 +525,5 @@ class Ojisan {
         vcon.drawImage(chImg, sx, sy, w, h, px, py, w, h);
     }
 }
-
-
-
-
-
-
-
-
-
 
 
