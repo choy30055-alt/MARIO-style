@@ -199,7 +199,7 @@ function mainLoop() {
         drawGameOverImage();
         setTimeout(() => {
             window.location.reload(true);
-        },5000);
+        },3000);
     }
     requestAnimationFrame(mainLoop);
 }
@@ -300,3 +300,4 @@ function drawGameOverImage() {
     const y = can.height / 2;
     con.fillText("GAMEOVER", x, y);*/
 }
+
