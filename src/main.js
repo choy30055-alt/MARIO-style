@@ -49,7 +49,6 @@ let scorepop = [];
 let gameState = 'PLAYING';
 let gameOverImage = null;
 
-
 function updateObj(obj) {
     //スプライトのブロックを更新
     for(let i = obj.length - 1; i >= 0; i--) {
@@ -199,7 +198,7 @@ function mainLoop() {
         drawGameOverImage();
         setTimeout(() => {
             window.location.reload(true);
-        },3000);
+        },4000);
     }
     requestAnimationFrame(mainLoop);
 }
@@ -285,13 +284,16 @@ function triggerGameOver() {
 
 //ゲームオーバー画像
 function drawGameOverImage() {
-    gameOverImage.src = "image/mrogameover.jpg"; 
+    con.drawImage(gameOverImage, 0, 0, can.width, can.height);
+
+    /*gameOverImage.src = "image/mrogameover.jpg"; 
     gameOverImage.onload = () =>{
         con.drawImage(gameOverImage, 0, 0, can.width, can.height);
-    };
+    };*/
+
+    //黒画面のテキスト表示
     /*con.fillStyle = 'black';
     con.fillRect(0, 0, can.width, can.height);
-
     con.fillStyle = 'white';
     con.font = '48px "Times New Roman", Times, serif';  
     con.textAlign = 'center';
@@ -300,4 +302,3 @@ function drawGameOverImage() {
     const y = can.height / 2;
     con.fillText("GAMEOVER", x, y);*/
 }
-
