@@ -10,7 +10,7 @@ class Nokonoko {
         this.w = 16;
         this.h = 16;
         this.vx = vx;
-        this.vy = -5;
+        this.vy = vy;
         this.sz = 0;
         this.anim = 0;
         this.snum = 0;
@@ -168,4 +168,5 @@ class Nokonoko {
         vcon.drawImage(chImg, sx, sy, 16, s, px, py, 16, 16);
     }
 }
+
 
