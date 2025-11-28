@@ -70,7 +70,92 @@ class Ojisan {
             let x = (lx + 8)>>4;
             let y = (ly2)>>4;
 
-            if(bl ==374){
+            //ブロック別のアイテム生成(ランダム)
+            if(bl == 371){ //ブロックの場合
+                const randomValueA = Math.floor(Math.random() * 4); //0,1,2,3
+                switch(randomValueA) {
+                    case 0:
+                        block.push(new Block(bl, x, y)); //ブロックを揺らす
+                        item.push(new Item(234, x, y, 0, 0, ITEM_KINO));
+                        break;
+                    case 1:
+                        block.push(new Block(bl, x, y)); //ブロックを揺らす
+                        item.push(new Item(384, x, y, 0, 0, ITEM_COIN));
+                        score += this.scoreValue;
+                        break;
+                    case 2:
+                        block.push(new Block(bl, x, y)); //ブロックを揺らす
+                        break;
+                    case 3:
+                        blbSound.currentTime = 0; //連続再生
+                        blbSound.play();
+                        block.push(new Block(bl, x, y, 1, 20, -60));
+                        block.push(new Block(bl, x, y, 1, -20, -60));
+                        block.push(new Block(bl, x, y, 1, 20, -20));
+                        block.push(new Block(bl, x, y, 1, -20, -20));
+                        break;
+                }
+            }
+
+            if(bl == 368){ //？ブロックAの場合
+                const randomValueB = Math.floor(Math.random() * 4); //0,1,2,3
+                switch(randomValueB) {
+                    case 0:
+                        //block.push(new Block(bl, x, y)); //ブロックを揺らす
+                        item.push(new Item(234, x, y, 0, 0, ITEM_KINO));
+                        block.push(new Block(374, x, y));
+                        break;
+                    case 1:
+                        block.push(new Block(bl, x, y)); //ブロックを揺らす
+                        item.push(new Item(384, x, y, 0, 0, ITEM_COIN)); 
+                        break;
+                    case 2:
+                        block.push(new Block(bl, x, y)); //ブロックを揺らす
+                        if(this.type == TYPE_BIG) {
+                        item.push(new Item(254, x, y, 0, 0, ITEM_FIRE));
+                        }
+                        break;
+                    case 3:
+                        blbSound.currentTime = 0; //連続再生
+                        blbSound.play();
+                        block.push(new Block(bl, x, y, 1, 20, -60));
+                        block.push(new Block(bl, x, y, 1, -20, -60));
+                        block.push(new Block(bl, x, y, 1, 20, -20));
+                        block.push(new Block(bl, x, y, 1, -20, -20));
+                        break;
+                }
+            }
+
+            if(bl == 496){ //？ブロックBの場合
+                const randomValueC = Math.floor(Math.random() * 4); //0,1,2,3
+                switch(randomValueC) {
+                    case 0:
+                        block.push(new Block(bl, x, y)); //ブロックを揺らす
+                        item.push(new Item(234, x, y, 0, 0, ITEM_KINO));
+
+                        break;
+                    case 1:
+                        block.push(new Block(bl, x, y)); //ブロックを揺らす
+                        item.push(new Item(384, x, y, 0, 0, ITEM_COIN));
+                        break;
+                    case 2:
+                        block.push(new Block(bl, x, y)); //ブロックを揺らす
+                        if(this.type == TYPE_BIG) {
+                        item.push(new Item(254, x, y, 0, 0, ITEM_FIRE));
+                        }
+                        break;
+                    case 3:
+                        blbSound.currentTime = 0; //連続再生
+                        blbSound.play();
+                        block.push(new Block(bl, x, y, 1, 20, -60));
+                        block.push(new Block(bl, x, y, 1, -20, -60));
+                        block.push(new Block(bl, x, y, 1, 20, -20));
+                        block.push(new Block(bl, x, y, 1, -20, -20)); 
+                        break;
+                }
+            }
+
+            /*if(bl ==374){
                 return;
             }
             if(bl == 496) {
@@ -129,11 +214,9 @@ class Ojisan {
                         //togezo.push(new Togezo(106, x - 4, 0, 0, 0, ITEM_TOGEZO));
                         break;
                 }
-            }
+            }*/
         }     
     }
-
-    
 
     //横の壁の判定
     checkWall() {
