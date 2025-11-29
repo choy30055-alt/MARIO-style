@@ -27,6 +27,7 @@ chImg.src ="image/spritemario.png";
 
 //コイン画像用の変数を宣言⭐︎
 let coinImage = null;
+let faceImage = null;
 
 //キーボード
 let keyb = {};
@@ -45,9 +46,11 @@ let coin =[];
 let fireball = [];
 let nokonoko = [];
 let jyugem = [];
+//スコア等表示オブジェクト
 let score = 0;
 let coinc = 0;
 let scorepop = [];
+let lifePoint = 3;
 
 //ゲームステート
 let gameState = 'PLAYING';
@@ -87,8 +90,7 @@ function update() {
 //スプライトの描画
 function drawSprite(snum, x, y) {
     let sx = (snum&15)<<4;
-    let sy = (snum>>4)<<4;
-    
+    let sy = (snum>>4)<<4; 
     vcon.drawImage(chImg, sx, sy, 16, 32, x, y, 16, 32);
 }
 
@@ -153,7 +155,11 @@ function draw() {
         con.drawImage(coinImage, 144, 33, 20, 20);
     }
     con.fillText("x " + coinc, 171, 50);
-    
+   
+    if (faceImage) { // 画像が読み込まれていれば描画する
+        con.drawImage(faceImage, 143, 13, 21, 21);
+    }
+    con.fillText("x " + lifePoint, 171, 30);
 }
 
 function gameStart() {  //スタートボタンでゲーム開始
@@ -167,6 +173,14 @@ function gameStart() {  //スタートボタンでゲーム開始
         coinImage = imgCoin; // 読み込み完了後に変数にセット
     }
     imgCoin.src = "image/mrocoin.png";
+
+    const imgFace = new Image();
+    imgFace.onload = () => {
+        faceImage = imgFace; // 読み込み完了後に変数にセット
+    }
+    imgFace.src = "image/marioface.png";
+
+
     loadImageAssets();
     startTime = performance.now();
     ojisan.draw();
