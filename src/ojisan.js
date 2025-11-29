@@ -372,7 +372,7 @@ class Ojisan {
             gameoverSound.play();    
             this.y = 1000;
             this.vy -= 300;
-            score = 0;
+            if(score < 0) { score = 0;}
             this.kill =true;
         }
     }

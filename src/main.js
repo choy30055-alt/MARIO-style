@@ -365,11 +365,13 @@ function drawGameOverImage() {
 
     const formattedScore = fomatScore(score);
     // 画像の下にスコアを表示
-    con.fillText("SCORE: " + formattedScore, can.width / 2, (can.height / 2) + 170); 
+    //con.fillText("SCORE: " + formattedScore, (can.width / 2) - 100, (can.height / 2) + 190); 
+
+    con.fillText("SCORE:" + formattedScore, can.width / 2, (can.height / 2) + 170); 
 
     // さらに下にタイムを表示
-    //const formattedTime = String(timeLeft).padStart(3, '0');
-    con.fillText("COIN : " + coinc, can.width / 2, (can.height / 2) + 200); 
+    const coinct = String(coinc).padStart(6, '0');
+    con.fillText("COIN : " + coinct, can.width / 2, (can.height / 2) + 200); 
     
     con.textAlign = 'left'; // textAlignをデフォルト（左揃え）に戻す
 
