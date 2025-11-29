@@ -43,6 +43,7 @@ let fireball = [];
 let nokonoko = [];
 let jyugem = [];
 let score = 0;
+let coinc = 0;
 let scorepop = [];
 
 //ゲームステート
@@ -92,6 +93,20 @@ function drawObj(obj) {
         obj[i].draw();
 }
 
+//スコアを6桁表示
+function fomatScore(score) {
+    const isNegative = score < 0;
+    const absoluteScore = Math.abs(score);
+    const paddedNumber = String(absoluteScore). padStart(6, '0');
+    let formatted;
+    if(isNegative) {
+        formatted = `-${paddedNumber}`;
+    } else {
+        formatted = ` ${paddedNumber}`;
+    }
+    return formatted;
+}
+
 
 
 //描画処理
@@ -120,10 +135,19 @@ function draw() {
     con.drawImage(vcan, 0, 0, SCREEN_SIZE_W, SCREEN_SIZE_H,
                   0, 0, SCREEN_SIZE_W * 2, SCREEN_SIZE_H * 2);
     //スコア情報
-    con.font = '20px "Times New Roman", Times, serif';
+    const fomattedScore = fomatScore(score);
+    con.font = '20px "Press Start 2P", monospace';
+    //con.textAlign = 'left';
     con.fillStyle = "white"; 
-    con.fillText("MARIO", 10, 30);
-    con.fillText(score, 10, 50);
+    con.fillText("MARIO", 30, 30);
+    con.fillText(fomattedScore, 20, 50);
+    con.fillText("● x "+coinc, 150, 50);
+    con.fillText("WORLD", 310, 30);
+    con.fillText("1-1", 320, 50);
+    con.fillText("TIME", 430, 30);
+
+
+    //con.textAlign = 'right';
 }
 //setInterval(mainLoop, 1000 / 60);
 

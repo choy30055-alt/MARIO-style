@@ -37,6 +37,7 @@ class Ojisan {
         this.key = document.keyb;
         this.shootfireball = 0;
         this.scoreValue = 100;
+        this.coinValue = 1;
         this.loseValue = -500;
         this.kill = false;
     }
@@ -82,6 +83,7 @@ class Ojisan {
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
                         item.push(new Item(384, x, y, 0, 0, ITEM_COIN));
                         score += this.scoreValue;
+                        coinc += this.scoreValue / 100;
                         break;
                     case 2:
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
@@ -108,6 +110,8 @@ class Ojisan {
                     case 1:
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
                         item.push(new Item(384, x, y, 0, 0, ITEM_COIN)); 
+                        score += this.scoreValue;
+                        coinc += this.scoreValue / 100;
                         break;
                     case 2:
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
@@ -137,6 +141,8 @@ class Ojisan {
                     case 1:
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
                         item.push(new Item(384, x, y, 0, 0, ITEM_COIN));
+                        score += this.scoreValue;
+                        coinc += this.scoreValue / 100;
                         break;
                     case 2:
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
@@ -403,6 +409,7 @@ class Ojisan {
                 //pupSound.currentTime = 0; //連続再生
                 coinSound.play();
                 score += this.scoreValue;
+                coinc += this.scoreValue/100;
                 this.scoreValue = 0;
                 //this.snum = anim[this.kinoko>>2];
                 //this.h = this.snum == 32?16:32;
