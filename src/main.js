@@ -152,12 +152,12 @@ function draw() {
     con.fillText(formattedTime, 440, 50); 
     
     if (coinImage) { // 画像が読み込まれていれば描画する
-        con.drawImage(coinImage, 144, 33, 20, 20);
+        con.drawImage(coinImage, 147, 34, 16, 18);
     }
     con.fillText("x " + coinc, 171, 50);
    
     if (faceImage) { // 画像が読み込まれていれば描画する
-        con.drawImage(faceImage, 143, 13, 21, 21);
+        con.drawImage(faceImage, 143, 11, 24, 24);
     }
     con.fillText("x " + lifePoint, 171, 30);
 }
