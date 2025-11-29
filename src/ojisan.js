@@ -136,7 +136,6 @@ class Ojisan {
                     case 0:
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
                         item.push(new Item(234, x, y, 0, 0, ITEM_KINO));
-
                         break;
                     case 1:
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
@@ -151,12 +150,8 @@ class Ojisan {
                         }
                         break;
                     case 3:
-                        blbSound.currentTime = 0; //連続再生
-                        blbSound.play();
-                        block.push(new Block(bl, x, y, 1, 20, -60));
-                        block.push(new Block(bl, x, y, 1, -20, -60));
-                        block.push(new Block(bl, x, y, 1, 20, -20));
-                        block.push(new Block(bl, x, y, 1, -20, -20)); 
+                        item.push(new Item(486, x, y, 0, 0, ITEM_KUSA));
+                        block.push(new Block(373, x, y));
                         break;
                 }
             }
@@ -439,12 +434,10 @@ class Ojisan {
                this.kuriboHit = 0; 
                miyaSound.play();
                this.snum = 32; 
-               //this.x = 0; //スタートに飛ばす
-               //field.scx = 0; //画面もスタート位置に飛ばす
                this.h = this.snum == 32?16:32;
                this.type = TYPE_MINI;
                this.ay = 16;
-               this.loseValue = -500;
+               this.loseValue = -300;
             }
             return;
         } 
@@ -485,12 +478,10 @@ class Ojisan {
                this.togezoHit = 0; 
                miyaSound.play();
                this.snum = 32; 
-               //this.x = 0; //スタートに飛ばす
-               //field.scx = 0; //画面もスタート位置に飛ばす
                this.h = this.snum == 32?16:32;
                this.type = TYPE_MINI;
                this.ay = 16;
-               this.loseValue = -500;
+               this.loseValue = -300;
             }
             return;
         } 
@@ -529,12 +520,10 @@ class Ojisan {
                this.nokonokoHit = 0; 
                miyaSound.play();
                this.snum = 32; 
-               //this.x = 0; //スタートに飛ばす
-               //field.scx = 0; //画面もスタート位置に飛ばす
                this.h = this.snum == 32?16:32;
                this.type = TYPE_MINI;
                this.ay = 16;
-               this.loseValue = -500;   
+               this.loseValue = -300;   
             }
             return;
         } 
