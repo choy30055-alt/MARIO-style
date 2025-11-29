@@ -38,7 +38,7 @@ class Ojisan {
         this.shootfireball = 0;
         this.scoreValue = 100;
         this.coinValue = 1;
-        this.loseValue = -500;
+        this.loseValue = -300;
         this.kill = false;
     }
 

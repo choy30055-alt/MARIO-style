@@ -24,13 +24,16 @@ let startTime;
 
 let chImg = new Image();
 chImg.src ="image/spritemario.png";
-//chImg.onload = draw;
+
+//コイン画像用の変数を宣言⭐︎
+let coinImage = null;
 
 //キーボード
 let keyb = {};
 
 //おじさんを作る
 let ojisan = new Ojisan;
+
 //フィールドを作る
 let field = new Field();
 //ブロックのオブジェクト
@@ -140,35 +143,17 @@ function draw() {
     con.fillStyle = "white"; 
     con.fillText("MARIO", 30, 30);
     con.fillText(fomattedScore, 20, 50);
-    
     con.fillText("WORLD", 310, 30);
     con.fillText("1-1", 320, 50);
     con.fillText("TIME", 430, 30);
     const formattedTime = String(timeLeft).padStart(3, '0');
     con.fillText(formattedTime, 440, 50); 
-
-    const img = new Image();
-    img.src = "image/mrocoin.png";
-    const coinImage = img;
-    con.drawImage(coinImage, 144, 33, 20, 20);
+    
+    if (coinImage) { // 画像が読み込まれていれば描画する
+        con.drawImage(coinImage, 144, 33, 20, 20);
+    }
     con.fillText("x " + coinc, 171, 50);
-
-    //con.fillText("● x "+coinc, 150, 50);
-    // 1. コイン画像を描画する
-    /*const coinSourceX = 0;   // スプライトシート上のコインのX座標
-    const coinSourceY = 16;  // スプライトシート上のコインのY座標
-    const coinSourceW = 16;  // スプライトシート上のコインの幅
-    const coinSourceH = 16;  // スプライトシート上のコインの高さ
-    const coinDestX = 150;   // 実画面Canvas上の描画開始X座標
-    const coinDestY = 35;    // 実画面Canvas上の描画開始Y座標 (テキストの高さに合わせて調整)
-    const coinDrawW = 16;    // 実画面での描画幅 (拡大・縮小なし)
-    const coinDrawH = 16;    // 実画面での描画高さ
-    // con.drawImage(画像要素, ソースX, ソースY, ソース幅, ソース高さ, 描画X, 描画Y, 描画幅, 描画高さ)
-    con.drawImage(chImg, coinSourceX, coinSourceY, coinSourceW, coinSourceH,
-                  coinDestX, coinDestY, coinDrawW, coinDrawH); 
-    // 2. コインの枚数テキストを描画する (画像の位置の右隣に配置)
-    // 描画X座標を画像の右側 (150 + 16(画像の幅) + 5(スペース)) に設定
-    con.fillText("x " + coinc, 171, 50); */
+    
 }
 
 function gameStart() {  //スタートボタンでゲーム開始
@@ -176,7 +161,12 @@ function gameStart() {  //スタートボタンでゲーム開始
     startSound1.play();
     startSound1.addEventListener("ended", function(){startSound2.play();}); 
     startSound2.addEventListener("ended", function(){bgmSound.play();}); 
-    bgmSound.addEventListener("ended", function(){bgmSound.play();}); 
+    bgmSound.addEventListener("ended", function(){bgmSound.play();});
+    const imgCoin = new Image();
+    imgCoin.onload = () => {
+        coinImage = imgCoin; // 読み込み完了後に変数にセット
+    }
+    imgCoin.src = "image/mrocoin.png";
     loadImageAssets();
     startTime = performance.now();
     ojisan.draw();
@@ -238,9 +228,9 @@ function mainLoop() {
             //描画処理
             draw();
         }
-        if (!startTime) {
+        /*if (!startTime) {
             startTime = nowTime; 
-        }
+        }*/
         const elapsed = nowTime - startTime; //タイマーカウント
         const newTime = 300 - Math.floor(elapsed / 1000); 
         if (newTime >= 0) {
