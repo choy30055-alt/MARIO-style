@@ -51,9 +51,6 @@ let gameState = 'PLAYING';
 let gameOverImage = null;
 //タイマー
 let timeLeft = 300;
-let startTime2 = null;
-
-
 
 function updateObj(obj) {
     //スプライトのブロックを更新
@@ -143,13 +140,20 @@ function draw() {
     con.fillStyle = "white"; 
     con.fillText("MARIO", 30, 30);
     con.fillText(fomattedScore, 20, 50);
-    con.fillText("● x "+coinc, 150, 50);
+    
     con.fillText("WORLD", 310, 30);
     con.fillText("1-1", 320, 50);
     con.fillText("TIME", 430, 30);
     const formattedTime = String(timeLeft).padStart(3, '0');
     con.fillText(formattedTime, 440, 50); 
 
+    const img = new Image();
+    img.src = "image/mrocoin.png";
+    const coinImage = img;
+    con.drawImage(coinImage, 144, 33, 20, 20);
+    con.fillText("x " + coinc, 171, 50);
+
+    //con.fillText("● x "+coinc, 150, 50);
     // 1. コイン画像を描画する
     /*const coinSourceX = 0;   // スプライトシート上のコインのX座標
     const coinSourceY = 16;  // スプライトシート上のコインのY座標
@@ -159,16 +163,13 @@ function draw() {
     const coinDestY = 35;    // 実画面Canvas上の描画開始Y座標 (テキストの高さに合わせて調整)
     const coinDrawW = 16;    // 実画面での描画幅 (拡大・縮小なし)
     const coinDrawH = 16;    // 実画面での描画高さ
-
     // con.drawImage(画像要素, ソースX, ソースY, ソース幅, ソース高さ, 描画X, 描画Y, 描画幅, 描画高さ)
     con.drawImage(chImg, coinSourceX, coinSourceY, coinSourceW, coinSourceH,
-                  coinDestX, coinDestY, coinDrawW, coinDrawH);
-    
+                  coinDestX, coinDestY, coinDrawW, coinDrawH); 
     // 2. コインの枚数テキストを描画する (画像の位置の右隣に配置)
     // 描画X座標を画像の右側 (150 + 16(画像の幅) + 5(スペース)) に設定
     con.fillText("x " + coinc, 171, 50); */
 }
-//setInterval(mainLoop, 1000 / 60);
 
 function gameStart() {  //スタートボタンでゲーム開始
     document.getElementById("mstart").style.visibility = "hidden";   //スタートボタン非表示
@@ -178,7 +179,6 @@ function gameStart() {  //スタートボタンでゲーム開始
     bgmSound.addEventListener("ended", function(){bgmSound.play();}); 
     loadImageAssets();
     startTime = performance.now();
-    //startTime2 = performance.now(); 
     ojisan.draw();
 
     kuribo.push(new Kuribo(163, 16, 0, 12, 0, ITEM_KURIBO));
@@ -241,9 +241,8 @@ function mainLoop() {
         if (!startTime) {
             startTime = nowTime; 
         }
-        const elapsed = nowTime - startTime; 
+        const elapsed = nowTime - startTime; //タイマーカウント
         const newTime = 300 - Math.floor(elapsed / 1000); 
-
         if (newTime >= 0) {
             timeLeft = newTime;
         } else { //タイムオーバーでゲームオーバー
@@ -253,9 +252,6 @@ function mainLoop() {
 
     } else if (gameState === 'GAMEOVER') {
         drawGameOverImage();
-        /*setTimeout(() => {
-            window.location.reload(true);
-        },4000);*/
     }
     requestAnimationFrame(mainLoop);
 }
@@ -365,14 +361,10 @@ function drawGameOverImage() {
 
     const formattedScore = fomatScore(score);
     // 画像の下にスコアを表示
-    //con.fillText("SCORE: " + formattedScore, (can.width / 2) - 100, (can.height / 2) + 190); 
-
     con.fillText("SCORE:" + formattedScore, can.width / 2, (can.height / 2) + 170); 
-
     // さらに下にタイムを表示
     const coinct = String(coinc).padStart(6, '0');
     con.fillText("COIN : " + coinct, can.width / 2, (can.height / 2) + 200); 
-    
     con.textAlign = 'left'; // textAlignをデフォルト（左揃え）に戻す
 
     /*con.drawImage(gameOverImage, 0, 0, can.width, can.height);
@@ -392,18 +384,3 @@ function drawGameOverImage() {
     const y = can.height / 2;
     con.fillText("GAMEOVER", x, y);*/
 }
-
-/*function gameLoop(timestamp) {
-    if(!startTime2) startTime2 = timestamp;
-    const elapsed = timestamp - startTime2;
-    const newTime = 300 - Math.floor(elapsed / 1000);
-    if(newTime >= 0) {
-        timeLeft = newTime;
-    } else {
-        timeLeft = 0;
-    }
-}
-function drawTime(time) {
-    const formattedTime = String(timeLeft).padStart(3, '0');
-    con.fillText(time, 430, 50);
-} */
