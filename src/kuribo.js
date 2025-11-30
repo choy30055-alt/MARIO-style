@@ -114,14 +114,14 @@ class Kuribo {
                 return true;
             } 
         }
-        /*if(++this.count <= 32) {
+        if(++this.count <= 32) {
             itemSound.currentTime = 0; //連続再生
             itemSound.play();
             this.sz = (1 + this.count)>>1;
             this.y -= 1<<3;
-            if(this.count == 32) this.vx = 22;
+            if(this.count == 32) this.vx = 12;
             return true;
-        }*/
+        }
         return false;
     } 
 
