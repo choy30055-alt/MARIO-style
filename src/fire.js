@@ -97,7 +97,7 @@ class Fireball {
                     setTimeout(() => {
                         this.kill = true;
                         this.scoreValue = 100;
-                    }, 2000);
+                    }, 500);
                     item.push(new Item(384, this.x>>8, this.y>>8, 0, 0, ITEM_COIN));
                     break;
                 }
@@ -121,7 +121,7 @@ class Fireball {
                     setTimeout(() => {
                         this.kill = true;
                         this.scoreValue = 100;
-                    }, 800);
+                    }, 500);
                     item.push(new Item(384, this.x>>8, this.y>>8, 0, 0, ITEM_COIN));
                     break;
                 }
@@ -146,7 +146,7 @@ class Fireball {
                         this.kill = true;
                         item.push(new Item(384, this.x>>8, this.y>>8, 0, 0, ITEM_COIN));
                         this.scoreValue = 100;
-                    }, 800);
+                    }, 500);
                     break;
                 }
             }
