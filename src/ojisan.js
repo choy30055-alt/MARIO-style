@@ -60,7 +60,7 @@ class Ojisan {
 
     //天井の判定
     checkCeil() {
-         if(this.vy >= 0) return;
+        if(this.vy >= 0) return;
         let lx = ((this.x + this.vx)>>4);
         let ly = ((this.y + this.vy)>>4);
         let ly2 = ly + (this.type == TYPE_MINI?21:5);
@@ -72,7 +72,7 @@ class Ojisan {
             let y = (ly2)>>4;
 
             //ブロック別のアイテム生成(ランダム)
-            if(bl == 371){ //ブロックAの場合
+            if(bl == 371) { //ブロックAの場合
                 const randomValueA = Math.floor(Math.random() * 4); //0,1,2,3
                 switch(randomValueA) {
                     case 0:
@@ -99,13 +99,12 @@ class Ojisan {
                 }
             }
 
-            if(bl == 368){ //？ブロックAの場合
+            if(bl == 368) { //？ブロックAの場合
                 const randomValueB = Math.floor(Math.random() * 4); //0,1,2,3
                 switch(randomValueB) {
                     case 0:
-                        //block.push(new Block(bl, x, y)); //ブロックを揺らす
+                        block.push(new Block(bl, x, y)); //ブロックを揺らす
                         item.push(new Item(234, x, y, 0, 0, ITEM_KINO));
-                        block.push(new Block(374, x, y));
                         break;
                     case 1:
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
@@ -120,17 +119,17 @@ class Ojisan {
                         }
                         break;
                     case 3:
-                        /*blbSound.currentTime = 0; //連続再生
-                        blbSound.play();
-                        block.push(new Block(bl, x, y, 1, 20, -60));
-                        block.push(new Block(bl, x, y, 1, -20, -60));
-                        block.push(new Block(bl, x, y, 1, 20, -20));
-                        block.push(new Block(bl, x, y, 1, -20, -20));*/
+                        item.push(new Item(384, x, y, 0, 0, ITEM_COIN)); 
+                        item.push(new Item(384, x + 1, y, 0, 0, ITEM_COIN));
+                        item.push(new Item(384, x + 2, y, 0, 0, ITEM_COIN));
+                        item.push(new Item(384, x + 3, y, 0, 0, ITEM_COIN));
+                        kuribo.push(new Kuribo(97, x + 4, 0, 0, 0, ITEM_KURIBO));
+                        block.push(new Block(374, x, y));
                         break;
                 }
             }
 
-            if(bl == 496){ //？ブロックBの場合
+            if(bl == 496) { //？ブロックBの場合
                 const randomValueC = Math.floor(Math.random() * 4); //0,1,2,3
                 switch(randomValueC) {
                     case 0:
@@ -150,14 +149,12 @@ class Ojisan {
                         }
                         break;
                     case 3:
-                        block.push(new Block(bl, x, y)); //ブロックを揺らす
-                        //item.push(new Item(486, x, y, 0, 0, ITEM_KUSA));
                         block.push(new Block(373, x, y));
                         break;
                 }
             }
 
-            if(bl == 373){ //ブロックBの場合
+            if(bl == 373) { //ブロックBの場合
                 const randomValueC = Math.floor(Math.random() * 4); //0,1,2,3
                 switch(randomValueC) {
                     case 0:
@@ -183,10 +180,15 @@ class Ojisan {
                 }
             }
 
-            /*if(bl ==374){
+            if(bl == 374) { //ブロックCの場合
                 return;
             }
-            if(bl == 496) {
+
+            if(bl == 499) { //ブロックD(隠)の場合
+                return;
+            }
+
+            /*if(bl == 496) {
                 if(this.type == TYPE_MINI) {
                     block.push(new Block(bl, x, y));
                 } else {
@@ -385,20 +387,15 @@ class Ojisan {
             if(this.type == TYPE_MINI) {
                 this.coin = 0;
             } else {
-                //pupSound.currentTime = 0; //連続再生
+                //coinSound.currentTime = 0; //連続再生
                 coinSound.play();
                 score += this.scoreValue;
                 coinc += this.scoreValue/100;
                 this.scoreValue = 0;
-                //this.snum = anim[this.kinoko>>2];
-                //this.h = this.snum == 32?16:32;
-                //if(this.dirc) this.snum += 48; //左向きは+48を使う
-                if(++this.coin == 20)/*anim.length<<4*/ {
+                if(++this.coin == 15) {
                     hahaSound.play();
-                    //this.type = TYPE_BIG;
-                    //this.ay = 0;
                     this.coin = 0; 
-                    this.scoreValue =100;
+                    this.scoreValue = 100;
                }
             }
             return;
@@ -407,7 +404,7 @@ class Ojisan {
         //クリボとの戦いの時のエフェクト
         //LOSE_ぶつかった時
         if(this.kuriboHit) {
-            //pupSound.currentTime = 0; //連続再生
+            //ludSound.currentTime = 0; //連続再生
             lvdSound.play();
             this.y -= 8;
             this.snum = 94;
@@ -451,7 +448,7 @@ class Ojisan {
         //トゲゾーとの戦いの時のエフェクト
         //LOSE_ぶつかった時
         if(this.togezoHit) {
-            //pupSound.currentTime = 0; //連続再生
+            //lvdSound.currentTime = 0; //連続再生
             lvdSound.play();
             this.y -= 8;
             this.snum = 94;
@@ -493,7 +490,7 @@ class Ojisan {
         //ノコノコとの戦いの時のエフェクト
         //LOSE_ぶつかった時
         if(this.nokonokoHit) {
-            //pupSound.currentTime = 0; //連続再生
+            //lvdSound.currentTime = 0; //連続再生
             lvdSound.play();
             this.y -= 8;
             this.snum = 94;
