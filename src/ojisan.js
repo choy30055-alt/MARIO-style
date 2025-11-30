@@ -72,7 +72,7 @@ class Ojisan {
             let y = (ly2)>>4;
 
             //ブロック別のアイテム生成(ランダム)
-            if(bl == 371){ //ブロックの場合
+            if(bl == 371){ //ブロックAの場合
                 const randomValueA = Math.floor(Math.random() * 4); //0,1,2,3
                 switch(randomValueA) {
                     case 0:
@@ -86,7 +86,7 @@ class Ojisan {
                         coinc += this.scoreValue / 100;
                         break;
                     case 2:
-                        block.push(new Block(bl, x, y)); //ブロックを揺らす
+                        block.push(new Block(368, x, y));
                         break;
                     case 3:
                         blbSound.currentTime = 0; //連続再生
@@ -120,12 +120,12 @@ class Ojisan {
                         }
                         break;
                     case 3:
-                        blbSound.currentTime = 0; //連続再生
+                        /*blbSound.currentTime = 0; //連続再生
                         blbSound.play();
                         block.push(new Block(bl, x, y, 1, 20, -60));
                         block.push(new Block(bl, x, y, 1, -20, -60));
                         block.push(new Block(bl, x, y, 1, 20, -20));
-                        block.push(new Block(bl, x, y, 1, -20, -20));
+                        block.push(new Block(bl, x, y, 1, -20, -20));*/
                         break;
                 }
             }
@@ -150,8 +150,35 @@ class Ojisan {
                         }
                         break;
                     case 3:
-                        item.push(new Item(486, x, y, 0, 0, ITEM_KUSA));
+                        block.push(new Block(bl, x, y)); //ブロックを揺らす
+                        //item.push(new Item(486, x, y, 0, 0, ITEM_KUSA));
                         block.push(new Block(373, x, y));
+                        break;
+                }
+            }
+
+            if(bl == 373){ //ブロックBの場合
+                const randomValueC = Math.floor(Math.random() * 4); //0,1,2,3
+                switch(randomValueC) {
+                    case 0:
+                        block.push(new Block(bl, x, y)); //ブロックを揺らす
+                        item.push(new Item(234, x, y, 0, 0, ITEM_KINO));
+                        break;
+                    case 1:
+                        block.push(new Block(bl, x, y)); //ブロックを揺らす
+                        item.push(new Item(384, x, y, 0, 0, ITEM_COIN));
+                        score += this.scoreValue;
+                        coinc += this.scoreValue / 100;
+                        break;
+                    case 2:
+                        block.push(new Block(bl, x, y)); //ブロックを揺らす
+                        if(this.type == TYPE_BIG) {
+                        item.push(new Item(254, x, y, 0, 0, ITEM_FIRE));
+                        }
+                        break;
+                    case 3:
+                        item.push(new Item(486, x, y, 0, 0, ITEM_KUSA));
+                        block.push(new Block(374, x, y));
                         break;
                 }
             }
@@ -172,49 +199,6 @@ class Ojisan {
                         return;
                     }
                 }      
-            }
-            else if(bl!=371) {
-            const itemsA =['ITEM_KINO', 'ITEM_KURIBO'];
-            const randomItem = Math.floor(Math.random() * itemsA.length);
-            //const randomItem =  this.getRandomItem(randomitem)
-                switch(randomItem) {
-                    case 0:
-                        item.push(new Item(234, x, y, 0, 0, ITEM_KINO));
-                        //kuribo.push(new Kuribo(97, x + 1, 0, 0, 0, ITEM_KURIBO));
-                        break;
-                    case 1:
-                        item.push(new Item(218, x, y, 0, 0, ITEM_KINO));
-                        //kuribo.push(new Kuribo(97, x -1, 0, 0, 0, ITEM_KURIBO));
-                        break;      
-                }
-                block.push(new Block(496, x, y));
-                //item.push(new Item(486, x, y, 0, 0, ITEM_KUSA));
-            }
-            else if(this.type == TYPE_MINI) {
-                block.push(new Block(bl, x, y));
-            }  
-            else {
-                const itemsB =['ITEM_FIRE', 'ITEM_BLOCK','ITEM_TOGEZO'];
-                const randomItemB = Math.floor(Math.random() * itemsB.length);
-                switch(randomItemB) {
-                    case 0:
-                        item.push(new Item(254, x, y, 0, 0, ITEM_FIRE));
-                        //togezo.push(new Togezo(106, x + 4, 0, 0, 0, ITEM_TOGEZO));
-                        break;
-                    case 1:
-                        blbSound.currentTime = 0; //連続再生
-                        blbSound.play();
-                        block.push(new Block(bl, x, y, 1, 20, -60));
-                        block.push(new Block(bl, x, y, 1, -20, -60));
-                        block.push(new Block(bl, x, y, 1, 20, -20));
-                        block.push(new Block(bl, x, y, 1, -20, -20));
-                        break;
-                    case 2:
-                        item.push(new Item(384, x, y, 0, 0, ITEM_COIN));
-                        //item.push(new Item(254, x, y, 0, 0, ITEM_FIRE));
-                        //togezo.push(new Togezo(106, x - 4, 0, 0, 0, ITEM_TOGEZO));
-                        break;
-                }
             }*/
         }     
     }
