@@ -185,14 +185,14 @@ function gameStart() {  //スタートボタンでゲーム開始
     startTime = performance.now();
     ojisan.draw();
 
-    kuribo.push(new Kuribo(163, 16, 0, 12, 0, ITEM_KURIBO));
+    /*kuribo.push(new Kuribo(163, 16, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 24, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 40, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 54, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 63, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 78, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 102, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 120, 0, 12, 0, ITEM_KURIBO));
+    
     kuribo.push(new Kuribo(163, 160, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 162, 0, 12, 0, ITEM_KURIBO));
 
@@ -214,7 +214,7 @@ function gameStart() {  //スタートボタンでゲーム開始
     jyugem.push(new Jyugem(107, 100, 1, -11, 0, ITEM_JYUGEM));
     jyugem.push(new Jyugem(107, 130, 2, -11, 0, ITEM_JYUGEM));
     jyugem.push(new Jyugem(107, 160, 3, -11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 188, 4, -11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 188, 4, -11, 0, ITEM_JYUGEM)); */
 
     mainLoop();
 }

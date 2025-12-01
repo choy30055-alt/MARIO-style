@@ -168,5 +168,3 @@ class Nokonoko {
         vcon.drawImage(chImg, sx, sy, 16, s, px, py, 16, 16);
     }
 }
-
-

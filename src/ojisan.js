@@ -420,7 +420,7 @@ class Ojisan {
             if(++this.kuriboHit == 40) {
                this.kuriboHit = 0; 
                miyaSound.play();
-               this.snum = 32; 
+               this.snum = 32;
                this.h = this.snum == 32?16:32;
                this.type = TYPE_MINI;
                this.ay = 16;

@@ -104,12 +104,13 @@ class Kuribo {
                 setTimeout(() => {
                     this.kill = true;
                     item.push(new Item(384, this.x>>8, this.y>>8, 0, 0, ITEM_COIN));
+                    coinSound.play();
                     this.scoreValue = 100;
                 }, 1000);
                 return true;
             }
             if(collisionType === "hit") {
-                ojisan.kuriboHit = 1;
+                ojisan.kuriboHit = true;
                 this.kill = false;
                 return true;
             } 

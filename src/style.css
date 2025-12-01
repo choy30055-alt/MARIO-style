@@ -16,7 +16,7 @@
  body {
     margin: 0;
     padding: 0;
-    height: 100dvh; 
+    height: 100dvh;
     display: flex;
     align-items:center; /*垂直中央*/
     justify-content: center; /*水平中央(layoutが幅100%なので中央線が維持される)*/
@@ -71,7 +71,7 @@
 }
 
 /*レスポンシブ、画面が狭いときは縦積みへ*/
-@media (max-waidth:300px) {
+@media (max-waidth:700px) {
     .spf-controller {
         grid-template-columns: 1fr; /*1列*/
         gap: 12px;
@@ -288,15 +288,4 @@
 .spf-controller .controller-center {
     z-index: 1;
 } 
-
-
-
-
-
-
-
-
-
-
-
 
