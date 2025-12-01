@@ -5,12 +5,16 @@ const ANIME_STAND = 1;
 const ANIME_WALK = 2;
 const ANIME_BRAKE = 4;
 const ANIME_JUMP = 8;
-const ANIME_FIRE = 4;
-const GRAVITY = 4;
-const MAX_SPEED = 32;
+const ANIME_FIRE = 16;
 const TYPE_MINI = 1;
 const TYPE_BIG = 2;
-const TYPE_FIRE = 4;
+const TYPE_FIRE = 3;
+const GRAVITY = 4;
+const MAX_SPEED = 32;
+const SCORE_COIN = 100;
+const SCORE_KURIBO = 100;
+const SCORE_NOKONOKO = 100;
+const SCORE_TOGEZO = 100;
 
 class Ojisan {
     constructor(x, y) {
@@ -24,22 +28,28 @@ class Ojisan {
         this.anim = 0;
         this.snum = 0;
         this.acou = 0;
-        this.coincount = 0;
+        this.dirc = 0;
+        this.coinCount = 0;
+        this.coinGet = false;
         this.MAX_COUNT = 5;
         this.jump = 0;
         this.kinoko = 0;
         this.coin = 0;
-        this.kuriboHit = 0;
-        this.kuriboAttack = 0;
         this.type = TYPE_MINI;
         this.reload = 0;
         this.button = document.getElementById("Bbtn");
-        this.key = document.keyb;
         this.shootfireball = 0;
         this.scoreValue = 100;
         this.coinValue = 1;
         this.loseValue = -100;
         this.kill = false;
+        this.kuriboHit = 0;
+        this.kuriboAttack = 0;
+        this.togezoHit = 0;
+        this.togezoAttack = 0;
+        this.nokonokoHit = 0;
+        this.nokonokoAttack = 0;
+        this.fire = 0;
     }
 
     //床の判定
@@ -82,8 +92,8 @@ class Ojisan {
                     case 1:
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
                         item.push(new Item(384, x, y, 0, 0, ITEM_COIN));
-                        score += this.scoreValue;
-                        coinc += this.scoreValue / 100;
+                        score += SCORE_COIN;
+                        coinSound.play();
                         break;
                     case 2:
                         block.push(new Block(368, x, y));
@@ -108,9 +118,9 @@ class Ojisan {
                         break;
                     case 1:
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
-                        item.push(new Item(384, x, y, 0, 0, ITEM_COIN)); 
-                        score += this.scoreValue;
-                        coinc += this.scoreValue / 100;
+                        item.push(new Item(384, x, y, 0, 0, ITEM_COIN));
+                        score += SCORE_COIN;
+                        coinSound.play();
                         break;
                     case 2:
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
@@ -119,7 +129,9 @@ class Ojisan {
                         }
                         break;
                     case 3:
-                        item.push(new Item(384, x, y, 0, 0, ITEM_COIN)); 
+                        item.push(new Item(384, x, y, 0, 0, ITEM_COIN));
+                        score += SCORE_COIN;
+                        coinSound.play();
                         item.push(new Item(384, x + 1, y, 0, 0, ITEM_COIN));
                         item.push(new Item(384, x + 2, y, 0, 0, ITEM_COIN));
                         item.push(new Item(384, x + 3, y, 0, 0, ITEM_COIN));
@@ -139,8 +151,8 @@ class Ojisan {
                     case 1:
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
                         item.push(new Item(384, x, y, 0, 0, ITEM_COIN));
-                        score += this.scoreValue;
-                        coinc += this.scoreValue / 100;
+                        score += SCORE_COIN;
+                        coinSound.play();
                         break;
                     case 2:
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
@@ -163,9 +175,9 @@ class Ojisan {
                         break;
                     case 1:
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
-                        item.push(new Item(384, x, y, 0, 0, ITEM_COIN));
-                        score += this.scoreValue;
-                        coinc += this.scoreValue / 100;
+                        item.push(new Item(384, x, y, 0, 0, ITEM_COIN));   
+                        score += SCORE_COIN;
+                        coinSound.play();
                         break;
                     case 2:
                         block.push(new Block(bl, x, y)); //ブロックを揺らす
@@ -288,7 +300,7 @@ class Ojisan {
         if(keyb.FBBUTTON && this.type == TYPE_FIRE && this.reload ==0) {
             this.snum =263;
             if(this.dirc) this.snum += 48; //左向きは+48を使う
-            this.reload =10;
+            this.reload =20;
             fireSound.currentTime = 0; //連続再生
             fireSound.play();
             let direc = this.dirc;
@@ -296,7 +308,7 @@ class Ojisan {
             fireball.push(new Fireball(112, this.x>>4, this.y>>4, direc, ITEM_FIREB));
                 setTimeout(() => {
                     keyb.FBBUTTON = false;
-                    if(this.reload > 0) this.reload = 0; 
+                    //if(this.reload > 0) this.reload = 0; 
                 }, 300);
         }
             //if(this.reload > 0) this.reload--;    
@@ -333,12 +345,12 @@ class Ojisan {
                 this.snum += 48; //左向きは+48を使う
             }
         }
-        //ファイアおじさんの時は+256
+         //ファイアおじさんの時は+256
         if(this.type == TYPE_FIRE) {
             if(keyb.FBBUTTON){
                 this.snum += 263;
             } else {
-            this.snum += 256;}
+                this.snum += 256;}
             if(this.dirc) {
                 this.snum += 48; //左向きは+48を使う
             }
@@ -383,23 +395,17 @@ class Ojisan {
         }
         
         //コインを取った時のエフェクト
-        if(this.coin) {
-            if(this.type == TYPE_MINI) {
-                this.coin = 0;
-            } else {
-                //coinSound.currentTime = 0; //連続再生
-                coinSound.play();
-                score += this.scoreValue;
-                coinc += this.scoreValue/100;
-                this.scoreValue = 0;
-                if(++this.coin == 15) {
-                    hahaSound.play();
-                    this.coin = 0; 
-                    this.scoreValue = 100;
-               }
-            }
-            return;
-        }
+        if(this.coinGet) {
+            this.coinGet = false;
+            score += SCORE_COIN;
+            coinc++;
+            const coinSound = new Audio("./audio/mrocoin.mp3");
+            coinSound.play();
+            if(++this.coinCount >= 15) {
+                hahaSound.play();
+                this.coinCount = 0;
+            } 
+        } 
         
         //クリボとの戦いの時のエフェクト
         //LOSE_ぶつかった時
@@ -436,8 +442,6 @@ class Ojisan {
             this.y -= 12;
             if(this.dirc) {this.x -= 20;
             } else {this.x += 20;} 
-            //this.vy = -64;
-            //this.h = this.snum == 32?16:32;
             if(++this.kuriboAttack == 20) {
                this.kuriboAttack = 0; 
                yaSound.play();
@@ -478,8 +482,6 @@ class Ojisan {
             }  
             if(this.dirc) this.snum += 48; //左向きは+48を使う
             this.y -= 8;
-            //this.vy = -64;
-            //this.h = this.snum == 32?16:32;
             if(++this.togezoAttack == 40) {
                this.togezoAttack = 0; 
                yaSound.play();
@@ -554,6 +556,7 @@ class Ojisan {
         this.updateJump();
         this.updateWalk();
         this.shootFireball();
+        if(this.reload > 0) this.reload--;    
         this.checkGameOver();
         
         //重力

@@ -36,9 +36,9 @@ class Item extends Sprite {
 
     //崖の判定
     checkCliff() {
-        if(this.y<=2820) return;
-        let nextStepX = this.x>>4 + this.vx>>4;
-        let checkY = this.y>>4 + this.h>>4 +10
+        if(this.y <= 2820) return;
+        let nextStepX = (this.x>>4) + (this.vx>>4);
+        let checkY = (this.y>>4) + (this.h>>4)+10;
         if(!field.isBlock(nextStepX, checkY)) {
             this.vx *= -1;
         }
@@ -69,10 +69,11 @@ class Item extends Sprite {
             if(this.count < 16) this.sz = this.count;
             else this.sz = 16;
             this.y -= 1<<4;
+            lvdSound.play();
        }
     }
     
-     //ファイアフラワーの処理
+    //ファイアフラワーの処理
     proc_fire() {
         if(this.checkHit(ojisan)) {
             if(ojisan.type == TYPE_MINI){
@@ -89,9 +90,7 @@ class Item extends Sprite {
             itemSound.play();
             this.sz = (1 + this.count)>>1;
             this.y -= 1<<4;
-            this.count++
             this.sp = 253 + ((this.count / 10) % 3);
-            //if(this.count == 32) this.vx = 24;
             return true;
         }
         this.sp = 253 + ((this.count / 10) % 3)
@@ -102,22 +101,16 @@ class Item extends Sprite {
     proc_coin() {
         if(this.checkHit(ojisan)) {
             if(ojisan.type == TYPE_MINI){
-                ojisan.coin = 0;
+                ojisan.coinGet = false;
                 this.kill = false;
                 return true;
             }
-            ojisan.coin = 1;
+            ojisan.coinGet =true;
             this.kill = true;
             return true;
         }
         if(++this.count <= 32) {
-            //coinSound.currentTime = 0; //連続再生
-            coinSound.play();
-            //this.sz = (1 + this.count)>>1;
             this.y -= 2<<4;
-            //this.kill = true;
-            //if(this.count == 32) this.vx = 24;
-            this.count++
             this.sp = 384 + ((this.count / 10) % 3);
             return true;
         }
@@ -133,8 +126,6 @@ class Item extends Sprite {
                 this.sp = 253 + ((this.acou / 10) % 4); //3で割ると0,1,2
             }
         } 
-        
-
 
     //更新処理
     update() {
