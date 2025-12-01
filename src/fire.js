@@ -99,6 +99,7 @@ class Fireball {
                         this.scoreValue = 100;
                     }, 500);
                     item.push(new Item(384, this.x>>8, this.y>>8, 0, 0, ITEM_COIN));
+                    coinSound.play();
                     break;
                 }
             }
