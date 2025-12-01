@@ -110,7 +110,7 @@ class Item extends Sprite {
             return true;
         }
         if(++this.count <= 32) {
-            this.y -= 2<<4;
+            this.y -= 8;
             this.sp = 384 + ((this.count / 10) % 3);
             return true;
         }
