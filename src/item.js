@@ -89,7 +89,7 @@ class Item extends Sprite {
             itemSound.currentTime = 0; //連続再生
             itemSound.play();
             this.sz = (1 + this.count)>>1;
-            this.y -= 1<<4;
+            this.y -= 8;
             this.sp = 253 + ((this.count / 10) % 3);
             return true;
         }
@@ -110,7 +110,7 @@ class Item extends Sprite {
             return true;
         }
         if(++this.count <= 32) {
-            this.y -= 8;
+            this.y -= 10;
             this.sp = 384 + ((this.count / 10) % 3);
             return true;
         }
