@@ -100,11 +100,11 @@ class Item extends Sprite {
     //コインの処理
     proc_coin() {
         if(this.checkHit(ojisan)) {
-            if(ojisan.type == TYPE_MINI){
+            /*if(ojisan.type == TYPE_MINI){
                 ojisan.coinGet = false;
                 this.kill = false;
                 return true;
-            }
+            }*/
             ojisan.coinGet =true;
             this.kill = true;
             return true;
