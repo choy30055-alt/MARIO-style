@@ -229,6 +229,39 @@
     z-index: 2;
 }
 
+/* 📱 縦持ち専用レイアウト */
+@media screen and (orientation: portrait) {
+
+  .spf-controller {
+    grid-template-columns: 1fr;      /* 1列 */
+    grid-template-rows: auto 1fr auto; /* 上・中央・下 */
+    height: 100dvh;
+  }
+
+  .controller-left {
+    grid-column: 1;
+    grid-row: 1;        /* 上 */
+    justify-self: center;
+    margin-bottom: 10px;
+  }
+
+  #stage {
+    grid-column: 1;
+    grid-row: 2;        /* 中 */
+    width: 100%;
+    height: auto;
+  }
+
+  .controller-right {
+    grid-column: 1;
+    grid-row: 3;        /* 下 */
+    justify-self: center;
+    margin-top: 10px;
+  }
+
+}
+
+
 
 
 
