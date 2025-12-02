@@ -71,7 +71,7 @@
 }
 
 /*レスポンシブ、画面が狭いときは縦積みへ*/
-@media (max-waidth:700px) {
+@media (max-width:700px) {
     .spf-controller {
         grid-template-columns: 1fr; /*1列*/
         gap: 12px;
