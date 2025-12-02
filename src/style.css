@@ -1,33 +1,29 @@
 *
+/* ---------- style.css（縦はキャンバス上、コントローラー左右下） ---------- */
+
 body{
-    touch-action:none;
+  touch-action: none;
 }
 
 /* ベース */
-html,body {
+html, body {
   height: 100%;
-}
-
-canvas {
-  display: block;
-  width: 100%;
-}
-
-body {
   margin: 0;
-  padding: 0;
-  height: 100svh; /* ← スマホアドレスバー対策 */
+}
+body {
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: rgb(213, 238, 175);
+  font-family: sans-serif;
 }
 
-/* スタートボタン */
+/* スタートボタン（中央） */
 .start {
   position: absolute;
-  align-items: center;
-  justify-self: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 350px;
   height: 330px;
   border: none;
@@ -35,148 +31,179 @@ body {
   background-size: cover;
   background-color: transparent;
   cursor: pointer;
-  z-index: 1;
+  z-index: 10;
 }
 
-/* コントローラーレイアウト（横画面） */
+/* コントローラー全体（横持ちデフォルト） */
 .spf-controller {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr auto 1fr; /* 左 | canvas | 右 */
   align-items: center;
   gap: 16px;
   width: 100%;
   max-width: 1200px;
   padding: 10px;
   box-sizing: border-box;
-  height: 100svh; /* ← ここもsvhで統一 */
+  position: relative; /* startボタンの基準 */
 }
 
+/* 左コントローラー */
 .controller-left {
-  justify-self: end;
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
 }
 
+/* 右コントローラー */
 .controller-right {
-  justify-self: start;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
 }
 
-/* canvas */
-#stage {
+/* 中央キャンバス */
+#stage, canvas {
   display: block;
+  width: 100%;
+  height: auto;            /* 縦方向の暴走を抑える */
+  max-height: 75svh;      /* アドレスバー対策（横でも安全） */
+  margin: 0 auto;
+  /*background: black;*/
+  /*box-shadow: 0 2px 6px rgba(0,0,0,0.15);*/
 }
 
-/* ボタン共通 */
+/* 共通ボタン基本 */
 .btn {
-  border-style: none;
+  border: none;
+  background: transparent;
   cursor: pointer;
 }
 
-/* 十字キー */
+/* 十字レイアウト */
 .cross-layout {
   display: grid;
   grid-template-columns: 38px 38px 38px;
   grid-template-rows: 38px 38px 38px;
+  gap: 0;
 }
+.cross-layout .position-top    { grid-row: 1; grid-column: 2; }
+.cross-layout .position-left   { grid-row: 2; grid-column: 1; }
+.cross-layout .position-center { grid-row: 2; grid-column: 2; }
+.cross-layout .position-right  { grid-row: 2; grid-column: 3; }
+.cross-layout .position-bottom { grid-row: 3; grid-column: 2; }
 
-.position-top    { grid-row: 1; grid-column: 2; }
-.position-left   { grid-row: 2; grid-column: 1; }
-.position-center { grid-row: 2; grid-column: 2; }
-.position-right  { grid-row: 2; grid-column: 3; }
-.position-bottom { grid-row: 3; grid-column: 2; }
-
+/* 十字ボタン画像/サイズ */
 .cross-key-btn-left,
 .cross-key-btn-right,
 .cross-key-btn-up,
 .cross-key-btn-down {
   width: 38px;
   height: 38px;
-  aspect-ratio: 1 / 1;
   background-size: cover;
   background-color: transparent;
   cursor: pointer;
 }
-
 .cross-key-btn-left  { background-image: url(../image/arrowleft.png); }
 .cross-key-btn-right { background-image: url(../image/arrowright.png); }
 .cross-key-btn-up    { background-image: url(../image/arrowup.png); }
 .cross-key-btn-down  { background-image: url(../image/arrowdown.png); }
 
-.left-mark { transform: rotate(-90deg); }
-.right-mark { transform: rotate(90deg); }
-.bottom-mark { transform: rotate(180deg); }
-
 /* ABXY ボタン */
 .abxy-btn {
   width: 38px;
   height: 38px;
-  aspect-ratio: 1 / 1;
   border-radius: 50%;
   background-size: cover;
-  background-color: transparent;
 }
-
 .btn-x { background-image: url(../image/xbtn.png); }
 .btn-y { background-image: url(../image/ybtn.png); }
 .btn-a { background-image: url(../image/abtn.png); }
 .btn-b { background-image: url(../image/bbtn.png); }
 
-/* 外枠の円（右コントローラー） */
+/* 外枠（円） */
 .btn-set {
-  display: grid;
-  place-items: center;
-  padding: 12px;
-  background-color: rgba(66, 86, 123, 0.5);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: rgba(66,86,123,0.5);
   border-radius: 50%;
-  aspect-ratio: 1 / 1;
+  min-width: 56px;
+  min-height: 56px;
 }
 
-/* コントローラーが潰れないように */
-.controller-left,
-.controller-right {
-  width: max-content;
-  min-width: fit-content;
-  flex-shrink: 0;
-}
+/* 回転マーク（必要なら） */
+.left-mark { transform: rotate(-90deg); display: block; }
+.right-mark { transform: rotate(90deg); display: block; }
+.bottom-mark { transform: rotate(180deg); display: block; }
 
-/* 画面が狭い場合 */
-@media (max-width:700px) {
+/* ------------------------------
+   レスポンシブ（幅が狭い時の保険）
+   ------------------------------ */
+@media (max-width: 700px) {
   .spf-controller {
-    grid-template-columns: 1fr;
+    max-width: 100%;
+    padding: 8px;
     gap: 12px;
   }
-
   .controller-left,
-  #stage,
   .controller-right {
     justify-self: center;
   }
 }
 
-/* 📱 縦持ち：下にコントローラー配置 */
+/* ==============================
+   縦持ち（portrait）
+   -> 要望どおり：キャンバス上、コントローラーを下に左右に並べる
+   ============================== */
 @media screen and (orientation: portrait) {
 
   .spf-controller {
+    /* 2行・2列のグリッドにして、canvasは上段で両列を占有 */
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr auto;
-    height: 100svh;
+    grid-template-rows: auto auto; /* 1: canvas, 2: controllers */
+    gap: 10px;
+    align-items: start;
   }
 
-  #stage {
+  /* canvas は上段で左右いっぱいに広がる */
+  #stage, canvas {
     grid-column: 1 / span 2;
     grid-row: 1;
     width: 100%;
+    max-height: 70svh; /* 縦持ちでは少し控えめに */
     height: auto;
-    max-height: 100%;
+    margin: 0;
   }
 
+  /* 左コントローラー：左下 */
   .controller-left {
     grid-column: 1;
     grid-row: 2;
     justify-self: center;
+    align-self: center;
   }
 
+  /* 右コントローラー：右下 */
   .controller-right {
     grid-column: 2;
     grid-row: 2;
     justify-self: center;
+    align-self: center;
   }
+
+  /* コントローラーが潰れない保険 */
+  .controller-left, .controller-right {
+    width: max-content;
+    min-width: 56px;
+    min-height: 56px;
+  }
+
+  /* 円の外枠が大きすぎるときは縮める（任意） */
+  .btn-set { min-width: 48px; min-height: 48px; padding: 8px; }
 }
+
