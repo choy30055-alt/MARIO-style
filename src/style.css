@@ -1,102 +1,99 @@
 *
 /* ---------- style.css（縦はキャンバス上、コントローラー左右下） ---------- */
-
-body{
+/* ===== タッチ無効化 ===== */
+body {
   touch-action: none;
 }
 
-/* ベース */
+/* ===== 基本 ===== */
 html, body {
   height: 100%;
   margin: 0;
 }
+
 body {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   background-color: rgb(213, 238, 175);
-  font-family: sans-serif;
 }
 
-/* スタートボタン（中央） */
+/* ===== ゲーム全体 ===== */
+.spf-controller {
+  position: relative; /* startボタン基準 */
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  height: 100svh;
+  box-sizing: border-box;
+  padding: 8px;
+}
+
+/* ===== キャンバス ===== */
+#stage, canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 90svh;
+  margin: 0 auto;
+}
+
+/* ===== コントローラー共通 ===== */
+.controller-left,
+.controller-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+/* 横：端寄せ */
+.controller-left {
+  justify-self: start;
+}
+
+.controller-right {
+  justify-self: end;
+}
+
+/* ===== スタート ===== */
 .start {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 350px;
-  height: 330px;
+  width: 320px;
+  height: 300px;
   border: none;
   background-image: url(../image/mrost.png);
   background-size: cover;
   background-color: transparent;
-  cursor: pointer;
   z-index: 10;
 }
 
-/* コントローラー全体（横持ちデフォルト） */
-.spf-controller {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr; /* 左 | canvas | 右 */
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-  max-width: 1200px;
-  padding: 10px;
-  box-sizing: border-box;
-  position: relative; /* startボタンの基準 */
-}
-
-/* 左コントローラー */
-.controller-left {
-  display: inline-flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 8px;
-  z-index: 2;
-}
-
-/* 右コントローラー */
-.controller-right {
-  display: inline-flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 8px;
-  z-index: 2;
-}
-
-/* 中央キャンバス */
-#stage, canvas {
-  display: block;
-  width: 100%;
-  height: auto;            /* 縦方向の暴走を抑える */
-  max-height: 75svh;      /* アドレスバー対策（横でも安全） */
-  margin: 0 auto;
-  /*background: black;*/
-  /*box-shadow: 0 2px 6px rgba(0,0,0,0.15);*/
-}
-
-/* 共通ボタン基本 */
+/* ===== 共通ボタン ===== */
 .btn {
   border: none;
   background: transparent;
   cursor: pointer;
 }
 
-/* 十字レイアウト */
+/* ===== 十字配置 ===== */
 .cross-layout {
   display: grid;
   grid-template-columns: 38px 38px 38px;
   grid-template-rows: 38px 38px 38px;
-  gap: 0;
 }
-.cross-layout .position-top    { grid-row: 1; grid-column: 2; }
-.cross-layout .position-left   { grid-row: 2; grid-column: 1; }
-.cross-layout .position-center { grid-row: 2; grid-column: 2; }
-.cross-layout .position-right  { grid-row: 2; grid-column: 3; }
-.cross-layout .position-bottom { grid-row: 3; grid-column: 2; }
 
-/* 十字ボタン画像/サイズ */
+.position-top    { grid-column: 2; grid-row: 1; }
+.position-left   { grid-column: 1; grid-row: 2; }
+.position-center { grid-column: 2; grid-row: 2; }
+.position-right  { grid-column: 3; grid-row: 2; }
+.position-bottom { grid-column: 2; grid-row: 3; }
+
+/* ===== 方向キー ===== */
 .cross-key-btn-left,
 .cross-key-btn-right,
 .cross-key-btn-up,
@@ -104,106 +101,93 @@ body {
   width: 38px;
   height: 38px;
   background-size: cover;
-  background-color: transparent;
-  cursor: pointer;
 }
+
 .cross-key-btn-left  { background-image: url(../image/arrowleft.png); }
 .cross-key-btn-right { background-image: url(../image/arrowright.png); }
 .cross-key-btn-up    { background-image: url(../image/arrowup.png); }
 .cross-key-btn-down  { background-image: url(../image/arrowdown.png); }
 
-/* ABXY ボタン */
+/* ===== ABXY ===== */
 .abxy-btn {
   width: 38px;
   height: 38px;
   border-radius: 50%;
   background-size: cover;
 }
+
 .btn-x { background-image: url(../image/xbtn.png); }
 .btn-y { background-image: url(../image/ybtn.png); }
 .btn-a { background-image: url(../image/abtn.png); }
 .btn-b { background-image: url(../image/bbtn.png); }
 
-/* 外枠（円） */
+/* ===== 円枠 ===== */
 .btn-set {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   padding: 10px;
-  background-color: rgba(66,86,123,0.5);
+  background-color: rgba(66, 86, 123, 0.5);
   border-radius: 50%;
-  min-width: 56px;
-  min-height: 56px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* 回転マーク（必要なら） */
-.left-mark { transform: rotate(-90deg); display: block; }
-.right-mark { transform: rotate(90deg); display: block; }
-.bottom-mark { transform: rotate(180deg); display: block; }
+/* ===== 向き補正 ===== */
+.left-mark   { transform: rotate(-90deg); }
+.right-mark  { transform: rotate(90deg); }
+.bottom-mark { transform: rotate(180deg); }
 
-/* ------------------------------
-   レスポンシブ（幅が狭い時の保険）
-   ------------------------------ */
-@media (max-width: 700px) {
-  .spf-controller {
-    max-width: 100%;
-    padding: 8px;
-    gap: 12px;
-  }
-  .controller-left,
-  .controller-right {
-    justify-self: center;
-  }
-}
-
-/* ==============================
-   縦持ち（portrait）
-   -> 要望どおり：キャンバス上、コントローラーを下に左右に並べる
-   ============================== */
+/* ===========================
+   📱 縦画面レイアウト
+   canvas 上 / コントローラー 下（左右）
+=========================== */
 @media screen and (orientation: portrait) {
 
   .spf-controller {
-    /* 2行・2列のグリッドにして、canvasは上段で両列を占有 */
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto; /* 1: canvas, 2: controllers */
-    gap: 10px;
-    align-items: start;
+    grid-template-rows: auto auto;
+    padding-bottom: 16px;
   }
 
-  /* canvas は上段で左右いっぱいに広がる */
   #stage, canvas {
     grid-column: 1 / span 2;
     grid-row: 1;
-    width: 100%;
-    max-height: 70svh; /* 縦持ちでは少し控えめに */
-    height: auto;
-    margin: 0;
+    max-height: 65svh;
   }
 
-  /* 左コントローラー：左下 */
   .controller-left {
     grid-column: 1;
     grid-row: 2;
     justify-self: center;
-    align-self: center;
+    margin-top: 24px;
   }
 
-  /* 右コントローラー：右下 */
   .controller-right {
     grid-column: 2;
     grid-row: 2;
     justify-self: center;
-    align-self: center;
+    margin-top: 24px;
   }
 
-  /* コントローラーが潰れない保険 */
-  .controller-left, .controller-right {
-    width: max-content;
-    min-width: 56px;
-    min-height: 56px;
+  /* スタートを上へ */
+  .start {
+    top: 28%;
   }
-
-  /* 円の外枠が大きすぎるときは縮める（任意） */
-  .btn-set { min-width: 48px; min-height: 48px; padding: 8px; }
 }
 
+/* ===========================
+   📱 横画面微調整
+=========================== */
+@media screen and (orientation: landscape) {
+
+  #stage, canvas {
+    max-height: 95svh;
+  }
+
+  .controller-left {
+    margin-left: 4px;
+  }
+
+  .controller-right {
+    margin-right: 4px;
+  }
+}
