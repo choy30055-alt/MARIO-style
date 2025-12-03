@@ -155,7 +155,6 @@ class Item extends Sprite {
         this.acou++;  //アニメ用のカウンタ
         if(Math.abs(this.vx) == MAX_SPEED) this.acou++; 
         this.updateAnim();
-        //if(this.tp == ITEM_COIN) this.sp = 384 + ((this.acou / 10) % 3);
     }
 
     draw() {

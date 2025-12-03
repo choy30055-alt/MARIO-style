@@ -145,7 +145,7 @@ class Nokonoko {
         this.checkFloor();
         this.checkCliff();
        
-        if(this.vy < 64) this.vy += GRAVITY;
+        if(this.vy < AIR_RESIST) this.vy += GRAVITY; //重力・空気抵抗
         this.x += this.vx;
         this.y += this.vy;
         if((this.y>>4) > FIELD_SIZE_H * 16) this.kill = true;

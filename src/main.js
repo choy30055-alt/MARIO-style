@@ -387,5 +387,4 @@ function drawGameOverImage() {
     const x = can.width / 2;
     const y = can.height / 2;
     con.fillText("GAMEOVER", x, y);*/
-
 }

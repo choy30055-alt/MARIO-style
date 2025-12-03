@@ -1,6 +1,7 @@
 //
 //定数の定義
 //
+//音関係
 const bgmSound = new Audio("./audio/mrobgm.mp3");
 const startSound1 = new Audio("./audio/mroitsmario.mp3");
 const startSound2 = new Audio("./audio/mroherego.mp3");
@@ -33,19 +34,44 @@ const MAP_SIZE_H = SCREEN_SIZE_H / 16;
 const FIELD_SIZE_W = 256;
 const FIELD_SIZE_H = 14;
 
+//おじさん関係
+const ANIME_STAND = 1;
+const ANIME_WALK = 2;
+const ANIME_BRAKE = 4;
+const ANIME_JUMP = 8;
+const ANIME_FIRE = 16;
+const ANIME_FLAG = 18;
+
+const TYPE_MINI = 1;
+const TYPE_BIG = 2;
+const TYPE_FIRE = 3;
+
+//重力・移動
+const GRAVITY = 4;
+const AIR_RESIST = 64;
+const MAX_SPEED = 32;
+
+//スコア関係
+const SCORE_COIN = 100;
+const SCORE_KURIBO = 100;
+const SCORE_NOKONOKO = 100;
+const SCORE_TOGEZO = 100;
+
+//アイテム関係
 const ITEM_KINO = 1;
 const ITEM_KUSA = 2;
-const ITEM_STAR = 4;
-const ITEM_FIRE = 8;
 const ITEM_KURIBO = 3;
+const ITEM_STAR = 4;
 const ITEM_TOGEZO =5;
 const ITEM_COIN = 6;
 const ITEM_FIREB = 7;
+const ITEM_FIRE = 8;
 const ITEM_STOMPKURI = 9;
 const ITEM_EXPL = 10;
 const ITEM_NOKONOKO = 11;
 const ITEM_URNOKONOKO = 12;
 const ITEM_JYUGEM = 13;
+const ITEM_FLAG = 14;
 
 //スプライトの基本クラス
 class Sprite {
@@ -85,7 +111,7 @@ class Sprite {
 
     //更新処理
     update() {
-        if(this.vy < 64) this.vy += GRAVITY;
+        if(this.vy < AIR_RESIST) this.vy += GRAVITY; //重力空気抵抗
         this.x += this.vx;
         this.y += this.vy;
         if((this.y>>4) > FIELD_SIZE_H * 16) this.kill = true;
