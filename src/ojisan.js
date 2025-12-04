@@ -1,21 +1,6 @@
 //
 //おじさんクラス
 //
-const ANIME_STAND = 1;
-const ANIME_WALK = 2;
-const ANIME_BRAKE = 4;
-const ANIME_JUMP = 8;
-const ANIME_FIRE = 16;
-const TYPE_MINI = 1;
-const TYPE_BIG = 2;
-const TYPE_FIRE = 3;
-const GRAVITY = 4;
-const MAX_SPEED = 32;
-const SCORE_COIN = 100;
-const SCORE_KURIBO = 100;
-const SCORE_NOKONOKO = 100;
-const SCORE_TOGEZO = 100;
-
 class Ojisan {
     constructor(x, y) {
         this.x = x<<4;
@@ -37,10 +22,10 @@ class Ojisan {
         this.coin = 0;
         this.type = TYPE_MINI;
         this.reload = 0;
-        this.button = document.getElementById("Bbtn");
-        this.shootfireball = 0;
+        //this.button = document.getElementById("Bbtn");
+        //this.shootfireball = 0;
         this.scoreValue = 100;
-        this.coinValue = 1;
+        //this.coinValue = 1;
         this.loseValue = -100;
         this.kill = false;
         this.kuriboHit = 0;
@@ -50,6 +35,7 @@ class Ojisan {
         this.nokonokoHit = 0;
         this.nokonokoAttack = 0;
         this.fire = 0;
+        this.isGoal = false;
     }
 
     //床の判定
@@ -97,6 +83,7 @@ class Ojisan {
                         break;
                     case 2:
                         block.push(new Block(368, x, y));
+                        item.push(new Item(254, x, y, 0, 0, ITEM_FIRE));
                         break;
                     case 3:
                         blbSound.currentTime = 0; //連続再生
@@ -162,6 +149,7 @@ class Ojisan {
                         break;
                     case 3:
                         block.push(new Block(373, x, y));
+                        item.push(new Item(234, x, y, 0, 0, ITEM_KINO));
                         break;
                 }
             }
@@ -200,6 +188,24 @@ class Ojisan {
                 return;
             }
 
+            /*if(bl == 493) {
+                //block.push(new Block(493, x, y, 0, 0));
+                block.push(new Block(499, x, y, 0, 0, 0));
+                item.push(new Item(499, x, y, 0, 0, ITEM_FLAG));
+                item.push(new Item(493, x, y, 0, 0, ITEM_FLAG));
+                this.isGoal = true;
+                this.anim = ANIME_FLAG;
+                this.y -= 200;
+                this.x += 50;
+                this.vy = 0;
+                setTimeout(() => {
+                    //this.anim = ANIME_WALK;
+                    this.vx = 2;
+                    this.x += this.vx;
+                },1000);
+
+            }*/
+50
             /*if(bl == 496) {
                 if(this.type == TYPE_MINI) {
                     block.push(new Block(bl, x, y));
@@ -330,6 +336,9 @@ class Ojisan {
             case ANIME_BRAKE:
                 this.snum = 5;
                 break;
+            case ANIME_FLAG:
+                this.snum = 8;
+                break;
         }
         //ちっちゃいおじさんの時は+32
         if(this.type == TYPE_MINI) {
@@ -401,10 +410,10 @@ class Ojisan {
             coinc++;
             const coinSound = new Audio("./audio/mrocoin.mp3");
             coinSound.play();
-            if(++this.coinCount >= 15) {
+            /*if(++this.coinCount >= 15) {
                 hahaSound.play();
                 this.coinCount = 0;
-            } 
+            } */
         } 
         
         //クリボとの戦いの時のエフェクト
@@ -559,8 +568,12 @@ class Ojisan {
         if(this.reload > 0) this.reload--;    
         this.checkGameOver();
         
-        //重力
-        if(this.vy < 64) this.vy += GRAVITY;
+        //重力・空気抵抗
+        if(this.isGoal) {
+            this.vy += GOAL_GRAVITY;
+        } else {
+            if(this.vy < AIR_RESIST) this.vy += GRAVITY; //重力空気抵抗
+        }
          
         //横の壁のチェック
         this.checkWall();

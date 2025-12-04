@@ -16,7 +16,7 @@ class Item extends Sprite {
         if(field.isBlock(lx + 15, ly + 3)  ||
            field.isBlock(lx + 15, ly + 12)||
            field.isBlock(lx, ly + 3)  ||
-           field.isBlock(lx, ly + 12)) { 
+           field.isBlock(lx, ly + 12)) {
             this.vx *= -1;
         }
     }
@@ -26,11 +26,19 @@ class Item extends Sprite {
         if(this.vy <= 0) return;
         let lx = ((this.x + this.vx)>>4);
         let ly = ((this.y + this.vy)>>4);
-
-        if(field.isBlock(lx + 1, ly + 15) ||
-          field.isBlock(lx + 14, ly + 15)) { 
-            this.vy = 0;
-            this.y = ((((ly + 15)>>4)<<4) - 16)<<4;
+        
+        if(this.tp == ITEM_FLAG) {
+            if(field.isBlock(lx + 1, ly + 31) ||
+               field.isBlock(lx + 14, ly + 31)) {
+                this.vy = 0;
+                this.y = ((((ly + 15)>>4)<<4) - 16)<<4;
+            } 
+        } else {
+            if(field.isBlock(lx + 1, ly + 15) ||
+               field.isBlock(lx + 14, ly + 15)) {
+                this.vy = 0;
+                this.y = ((((ly + 15)>>4)<<4) - 16)<<4;
+            }
         }
     }
 
@@ -100,11 +108,6 @@ class Item extends Sprite {
     //コインの処理
     proc_coin() {
         if(this.checkHit(ojisan)) {
-            /*if(ojisan.type == TYPE_MINI){
-                ojisan.coinGet = false;
-                this.kill = false;
-                return true;
-            }*/
             ojisan.coinGet =true;
             this.kill = true;
             return true;
@@ -125,7 +128,7 @@ class Item extends Sprite {
             } else if(this.tp == ITEM_FIRE) {
                 this.sp = 253 + ((this.acou / 10) % 4); //3で割ると0,1,2
             }
-        } 
+    } 
 
     //更新処理
     update() {

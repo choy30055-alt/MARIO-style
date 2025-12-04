@@ -11,7 +11,6 @@ class Fireball {
         this.vx = (500>>4) * direc; //direc左右確認
         this.vy = -5;
         this.gravity = 1; //ファイアボール用重力
-        //this.groundLevel = SCREEN_SIZE_H * 13 - this.h;
         this.sp = sp;
         this.sz = 16;
         this.anim = 0;
@@ -19,7 +18,6 @@ class Fireball {
         this.kill = false;
         this.count = 0;
         this.acou = 0;
-        //this.lifeTime = 3000; 
         if(tp == undefined) tp = ITEM_FIREB;
         this.tp = tp;
         this.scoreValue = 100;
@@ -173,13 +171,8 @@ class Fireball {
             this.kill = true;
         }
         
-        /*for(let i = 0; i < this.length; i++) {
-            this[i].kill = true;
-        }*/
-
         this.checkWall();
         this.checkFloor();
-        //this.checkCliff();
 
         this.acou++;  //アニメ用のカウンタ
         if(Math.abs(this.speedX) == MAX_SPEED) this.acou++; 
@@ -199,8 +192,4 @@ class Fireball {
         else s = 16;
         vcon.drawImage(chImg, sx, sy, 16, s, px, py, 16, 16);
     }
-
-    /*isAlive() {
-        return Date.now() - this.creationTime <= this.lifespan;
-    }*/
 }

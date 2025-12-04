@@ -30,7 +30,7 @@ class Jyugem {
     proc_jyugem() {
         if(this.checkDrop()) {
             if(!this.hasDorpped) {
-                if(Math.random() < 0.15) {
+                if(Math.random() < 0.1) {
                     jyugemSound.play();
                     togezo.push(new Togezo(106, this.x>>8, this.y>>8, 12, 0, ITEM_TOGEZO));
                     this.hasDorpped = true;
@@ -44,9 +44,9 @@ class Jyugem {
     updateAnim() {
         //アニメスプライトの決定
         if(this.tp == ITEM_JYUGEM) {
-            this.sp = 137; // + ((this.acou / 10) % 2); //3で割ると0,1,2
-            if(this.vx < 0 ) {
-                this.sp = 169; // + ((this.acou / 10) % 2); //左向きは+16を使う
+            this.sp = 137;
+            if(this.vx < 0) {
+                this.sp = 169;
             }  
         }      
     }

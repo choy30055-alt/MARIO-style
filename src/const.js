@@ -1,7 +1,7 @@
 //
 //定数の定義
 //
-//音関係
+//効果音関係
 const bgmSound = new Audio("./audio/mrobgm.mp3");
 const startSound1 = new Audio("./audio/mroitsmario.mp3");
 const startSound2 = new Audio("./audio/mroherego.mp3");
@@ -21,6 +21,7 @@ const fireSound = new Audio("./audio/mrofireball.mp3");
 const firehitSound = new Audio("./audio/mroharetu.mp3");
 const jyugemSound = new Audio("./audio/jyugem.mp3");
 const gameoverSound = new Audio("./audio/mrogameover.mp3");
+const goalSound = new Audio("./audio/fanfare.mp3");
 
 const GAME_FPS = 1000 / 60;  //FPS
 const SCREEN_SIZE_W = 256;
@@ -46,8 +47,13 @@ const TYPE_MINI = 1;
 const TYPE_BIG = 2;
 const TYPE_FIRE = 3;
 
+const GAME_PLAYING = 0;
+const GAME_OVER = 1;
+const GAME_CLEAR = 2;
+
 //重力・移動
 const GRAVITY = 4;
+const GOAL_GRAVITY = 1; //ゴール時
 const AIR_RESIST = 64;
 const MAX_SPEED = 32;
 
@@ -111,7 +117,11 @@ class Sprite {
 
     //更新処理
     update() {
-        if(this.vy < AIR_RESIST) this.vy += GRAVITY; //重力空気抵抗
+        if(ojisan.isGoal) {
+            this.vy += GOAL_GRAVITY;
+        } else {
+            if(this.vy < AIR_RESIST) this.vy += GRAVITY; //重力空気抵抗
+        }
         this.x += this.vx;
         this.y += this.vy;
         if((this.y>>4) > FIELD_SIZE_H * 16) this.kill = true;

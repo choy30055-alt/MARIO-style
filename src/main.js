@@ -37,24 +37,28 @@ let ojisan = new Ojisan;
 
 //フィールドを作る
 let field = new Field();
+
 //ブロックのオブジェクト
 let block = [];
 let item = [];
 let kuribo = [];
-let togezo =[];
-let coin =[];
+let togezo = [];
+let coin = [];
 let fireball = [];
 let nokonoko = [];
 let jyugem = [];
+
 //スコア等表示オブジェクト
 let score = 0;
 let coinc = 0;
 let scorepop = [];
-let lifePoint = 3;
+let lifePoint = 4;
 
 //ゲームステート
-let gameState = 'PLAYING';
+let gameState = GAME_PLAYING;
 let gameOverImage = null;
+let isGoalNear = false;
+
 //タイマー
 let timeLeft = 300;
 
@@ -165,9 +169,14 @@ function draw() {
 function gameStart() {  //スタートボタンでゲーム開始
     document.getElementById("mstart").style.visibility = "hidden";   //スタートボタン非表示
     startSound1.play();
-    startSound1.addEventListener("ended", function(){startSound2.play();}); 
-    startSound2.addEventListener("ended", function(){bgmSound.play();}); 
-    bgmSound.addEventListener("ended", function(){bgmSound.play();});
+    startSound1.addEventListener("ended", function(){
+        startSound2.play();
+    });
+    startSound2.addEventListener("ended", function(){
+        bgmSound.loop = true;
+        bgmSound.play();
+    }); 
+
     const imgCoin = new Image();
     imgCoin.onload = () => {
         coinImage = imgCoin; // 読み込み完了後に変数にセット
@@ -179,42 +188,11 @@ function gameStart() {  //スタートボタンでゲーム開始
         faceImage = imgFace; // 読み込み完了後に変数にセット
     }
     imgFace.src = "image/marioface.png";
-
-
     loadImageAssets();
+
     startTime = performance.now();
     ojisan.draw();
-
-    kuribo.push(new Kuribo(163, 16, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 24, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 40, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 54, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 63, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 78, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 102, 0, 12, 0, ITEM_KURIBO));
-    
-    kuribo.push(new Kuribo(163, 160, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 162, 0, 12, 0, ITEM_KURIBO));
-
-    nokonoko.push(new Nokonoko(163, 14, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 32, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 48, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 60, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 78, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 96, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 112, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 128, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 160, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 162, 0, 9, 0, ITEM_NOKONOKO));
-
-    jyugem.push(new Jyugem(107, 1, 1, 11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 40, 2, 11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 80, 3, 11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 100, 4, 11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 100, 1, -11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 130, 2, -11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 160, 3, -11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 188, 4, -11, 0, ITEM_JYUGEM));
+    enemyDraw();
 
     mainLoop();
 }
@@ -227,7 +205,7 @@ function gameStart() {  //スタートボタンでゲーム開始
 
 //メインループ
 function mainLoop() {
-    if(gameState === 'PLAYING') {
+    if(gameState === GAME_PLAYING) {
         let nowTime = performance.now();
         let nowFrame = (nowTime - startTime) / GAME_FPS;
 
@@ -242,21 +220,26 @@ function mainLoop() {
             //描画処理
             draw();
         }
-        /*if (!startTime) {
-            startTime = nowTime; 
-        }*/
+
         const elapsed = nowTime - startTime; //タイマーカウント
         const newTime = 300 - Math.floor(elapsed / 1000); 
         if (newTime >= 0) {
             timeLeft = newTime;
         } else { //タイムオーバーでゲームオーバー
             timeLeft = 0;
-            gameState = 'GAMEOVER';
+            gameState = GAME_OVER;
         }
 
-    } else if (gameState === 'GAMEOVER') {
+    } else if (gameState === GAME_OVER) {
         drawGameOverImage();
     }
+
+    //ゴールサウンドへの切替
+    /*const STAGE_WIDTH = (FIELD_SIZE_W * 16) << 4; 
+    if (ojisan.x > STAGE_WIDTH * 0.5 && !isGoalNear) {
+        startGoalMusicFade();
+        isGoalNear = true;
+    } */
     requestAnimationFrame(mainLoop);
 }
 
@@ -329,15 +312,15 @@ function loadImageAssets() {
     img.crossOrigin = "Anonymous";
     img.onload = () => {
         gameOverImage = img;
-        gameState = 'PLAYING'
+        gameState = GAME_PLAYING;
     }
     img.src = "image/mrogameover.jpg";
 }
 
 //ゲームオーバーのトリガー
 function triggerGameOver() {
-    if(gameState === 'GAMEOVER');
-    gameState = 'GAMEOVER';
+    if(gameState === GAME_OVER) return;
+    gameState = GAME_OVER;
     setTimeout(() => {
         window.location.reload(true); // 強制的に再読み込みしてスタートに戻る
     },5000); // 4000ミリ秒 = 4秒
@@ -370,21 +353,76 @@ function drawGameOverImage() {
     const coinct = String(coinc).padStart(6, '0');
     con.fillText("COIN : " + coinct, can.width / 2, (can.height / 2) + 200); 
     con.textAlign = 'left'; // textAlignをデフォルト（左揃え）に戻す
+}
 
-    /*con.drawImage(gameOverImage, 0, 0, can.width, can.height);
-    gameOverImage.src = "image/mrogameover.jpg"; 
-    gameOverImage.onload = () =>{
-        con.drawImage(gameOverImage, 0, 0, can.width, can.height);
-    };*/
+//ゴール直前サウンド切り替え
+function startGoalMusicFade() {
+    fadeOutBgm(bgmSound, 60); //60フレームでフェード
+    fadeInBgm(goalSound, 60);
+}
 
-    //黒画面のテキスト表示
-    /*con.fillStyle = 'black';
-    con.fillRect(0, 0, can.width, can.height);
-    con.fillStyle = 'white';
-    con.font = '48px "Times New Roman", Times, serif';  
-    con.textAlign = 'center';
-    con.textBaseline = 'middle';
-    const x = can.width / 2;
-    const y = can.height / 2;
-    con.fillText("GAMEOVER", x, y);*/
+function fadeOutBgm(audio, frames) {
+    let volume = audio.volume;
+    const step = volume / frames;
+    const fade = setInterval(() => {
+        volume -= step;
+        if(volume <= 0) {
+            audio.pause();
+            audio.currentTime = 0;
+            audio.volume = 1;
+            clearInterval(fade);
+        } else {
+            audio.volume = volume;
+        }
+    }, 1000 / 60);
+} 
+
+function fadeInBgm(audio, frames) {
+    let volume = 0;
+    audio.volume = 0;
+    audio.currentTime = 0;
+    audio.play();
+    const step = 1 / frames;
+    const fade = setInterval(() => {
+        volume += step;
+        if(volume >= 1) {
+            audio.volume = 1;
+            clearInterval(fade);
+        } else {
+            audio.volume = volume;
+        }
+    }, 1000 / 60);
+} 
+
+//敵の配置
+function enemyDraw() {
+    kuribo.push(new Kuribo(163, 16, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 24, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 40, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 54, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 63, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 78, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 102, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 160, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 162, 0, 12, 0, ITEM_KURIBO));
+
+    nokonoko.push(new Nokonoko(163, 14, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 32, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 48, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 60, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 78, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 96, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 112, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 128, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 160, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 162, 0, 9, 0, ITEM_NOKONOKO));
+
+    jyugem.push(new Jyugem(107, 1, 1, 11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 40, 2, 11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 80, 3, 11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 100, 4, 11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 100, 1, -11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 130, 2, -11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 160, 3, -11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 188, 4, -11, 0, ITEM_JYUGEM));
 }
