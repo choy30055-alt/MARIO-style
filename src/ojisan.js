@@ -369,7 +369,7 @@ class Ojisan {
     //ゲームオーバー判定
     checkGameOver() {
         if(this.y > 2850 || lifePoint < 0.5) { //崖に落ちたら,マイナス1000点で
-            triggerGameOver();
+            //triggerGameOver();
             wahSound.play();
             gameoverSound.play();    
             this.y = 1000;
@@ -600,4 +600,5 @@ class Ojisan {
         py += (32 - h); 
         vcon.drawImage(chImg, sx, sy, w, h, px, py, w, h);
     }
+
 }
