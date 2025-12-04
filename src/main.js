@@ -235,11 +235,11 @@ function mainLoop() {
     }
 
     //ゴールサウンドへの切替
-    /*const STAGE_WIDTH = (FIELD_SIZE_W * 16) << 4; 
+    const STAGE_WIDTH = (FIELD_SIZE_W * 16) << 4; 
     if (ojisan.x > STAGE_WIDTH * 0.5 && !isGoalNear) {
         startGoalMusicFade();
         isGoalNear = true;
-    } */
+    }
     requestAnimationFrame(mainLoop);
 }
 

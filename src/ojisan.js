@@ -188,7 +188,7 @@ class Ojisan {
                 return;
             }
 
-            /*if(bl == 493) {
+            if(bl == 493) {
                 //block.push(new Block(493, x, y, 0, 0));
                 block.push(new Block(499, x, y, 0, 0, 0));
                 item.push(new Item(499, x, y, 0, 0, ITEM_FLAG));
@@ -204,7 +204,7 @@ class Ojisan {
                     this.x += this.vx;
                 },1000);
 
-            }*/
+            }
 50
             /*if(bl == 496) {
                 if(this.type == TYPE_MINI) {
