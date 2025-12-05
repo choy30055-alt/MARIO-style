@@ -36,6 +36,8 @@ class Ojisan {
         this.nokonokoAttack = 0;
         this.fire = 0;
         this.isGoal = false;
+        this.lifePoint = 4;
+        this.isDead = false;
     }
 
     //床の判定
@@ -368,14 +370,12 @@ class Ojisan {
 
     //ゲームオーバー判定
     checkGameOver() {
-        if(this.y > 2850 || lifePoint < 0.5) { //崖に落ちたら,マイナス1000点で
-            //triggerGameOver();
-            wahSound.play();
-            gameoverSound.play();    
+        if(this.y > 2850 || this.lifePoint < 0.5) { //崖に落ちたら、ライフ0でisDead
+            wahSound.play();    
             this.y = 1000;
             this.vy -= 300;
-            if(lifePoint < 0) { lifePoint = 0;}
-            this.kill =true;
+            if(this.lifePoint < 0) { this.lifePoint = 0;}
+            this.isDead = false;
         }
     }
 
@@ -424,7 +424,7 @@ class Ojisan {
             this.y -= 8;
             this.snum = 94;
             this.h = this.snum == 94?16:32;
-            lifePoint += this.loseValue / 100;
+            this.lifePoint += this.loseValue / 100;
             this.loseValue = 0;
             if(++this.kuriboHit == 40) {
                this.kuriboHit = 0; 
@@ -466,7 +466,7 @@ class Ojisan {
             this.y -= 8;
             this.snum = 94;
             this.h = this.snum == 94?16:32;
-            lifePoint += this.loseValue / 100;
+            this.lifePoint += this.loseValue / 100;
             this.loseValue = 0;
             if(++this.togezoHit == 40) {
                this.togezoHit = 0; 
@@ -506,7 +506,7 @@ class Ojisan {
             this.y -= 8;
             this.snum = 94;
             this.h = this.snum == 94?16:32;
-            lifePoint += this.loseValue / 100;
+            this.lifePoint += this.loseValue / 100;
             this.loseValue = 0;
             if(++this.nokonokoHit == 40) {
                this.nokonokoHit = 0; 
@@ -600,5 +600,4 @@ class Ojisan {
         py += (32 - h); 
         vcon.drawImage(chImg, sx, sy, w, h, px, py, w, h);
     }
-
 }

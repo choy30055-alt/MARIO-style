@@ -52,7 +52,7 @@ let jyugem = [];
 let score = 0;
 let coinc = 0;
 let scorepop = [];
-let lifePoint = 4;
+//let lifePoint = 4;
 
 //ゲームステート
 let gameState = GAME_PLAYING;
@@ -163,7 +163,7 @@ function draw() {
     if (faceImage) { // 画像が読み込まれていれば描画する
         con.drawImage(faceImage, 143, 11, 24, 24);
     }
-    con.fillText("x " + lifePoint, 171, 30);
+    con.fillText("x " + ojisan.lifePoint, 171, 30);
 }
 
 function gameStart() {  //スタートボタンでゲーム開始
@@ -192,7 +192,7 @@ function gameStart() {  //スタートボタンでゲーム開始
 
     startTime = performance.now();
     ojisan.draw();
-    enemyDraw();
+    //enemyDraw();
 
     mainLoop();
 }
@@ -227,7 +227,10 @@ function mainLoop() {
             timeLeft = newTime;
         } else { //タイムオーバーでゲームオーバー
             timeLeft = 0;
-            gameState = GAME_OVER;
+            triggerGameOver();
+        }
+        if(ojisan.lifePoint <= 0 || ojisan.isDead) {
+            triggerGameOver();
         }
 
     } else if (gameState === GAME_OVER) {
@@ -319,11 +322,21 @@ function loadImageAssets() {
 
 //ゲームオーバーのトリガー
 function triggerGameOver() {
-    if(gameState === GAME_OVER) return;
+    if(gameState === GAME_OVER) 
+        return;
     gameState = GAME_OVER;
+    if(bgmSound) {
+        bgmSound.pause();
+        bgmSound.currentTime = 0;   
+    }
+    if(goalSound) {
+        goalSound.pause();
+        goalSound.currentTime = 0;   
+    }
+    gameoverSound.play();
     setTimeout(() => {
         window.location.reload(true); // 強制的に再読み込みしてスタートに戻る
-    },5000); // 4000ミリ秒 = 4秒
+    },5000); // 5000ミリ秒 = 5秒
 }
 
 //ゲームオーバー画像
@@ -426,3 +439,5 @@ function enemyDraw() {
     jyugem.push(new Jyugem(107, 160, 3, -11, 0, ITEM_JYUGEM));
     jyugem.push(new Jyugem(107, 188, 4, -11, 0, ITEM_JYUGEM));
 }
+
+//triggerGameOver();
