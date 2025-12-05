@@ -192,7 +192,7 @@ function gameStart() {  //スタートボタンでゲーム開始
 
     startTime = performance.now();
     ojisan.draw();
-    //enemyDraw();
+    enemyDraw();
 
     mainLoop();
 }
@@ -439,5 +439,6 @@ function enemyDraw() {
     jyugem.push(new Jyugem(107, 160, 3, -11, 0, ITEM_JYUGEM));
     jyugem.push(new Jyugem(107, 188, 4, -11, 0, ITEM_JYUGEM));
 }
+
 
 //triggerGameOver();
