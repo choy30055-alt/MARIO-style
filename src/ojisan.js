@@ -70,7 +70,7 @@ class Ojisan {
             let y = (ly2)>>4;
 
             //ブロック別のアイテム生成(ランダム)
-            if(bl == 371) { //ブロックAの場合
+            if(bl == BL_NORMAL_A) { //ブロックAの場合
                 const randomValueA = Math.floor(Math.random() * 4); //0,1,2,3
                 switch(randomValueA) {
                     case 0:
@@ -98,7 +98,7 @@ class Ojisan {
                 }
             }
 
-            if(bl == 368) { //？ブロックAの場合
+            if(bl == BL_HATENA_A) { //？ブロックAの場合
                 const randomValueB = Math.floor(Math.random() * 4); //0,1,2,3
                 switch(randomValueB) {
                     case 0:
@@ -130,7 +130,7 @@ class Ojisan {
                 }
             }
 
-            if(bl == 496) { //？ブロックBの場合
+            if(bl == BL_HATENA_B) { //？ブロックBの場合
                 const randomValueC = Math.floor(Math.random() * 4); //0,1,2,3
                 switch(randomValueC) {
                     case 0:
@@ -156,7 +156,7 @@ class Ojisan {
                 }
             }
 
-            if(bl == 373) { //ブロックBの場合
+            if(bl == BL_NORMAL_B) { //ブロックBの場合
                 const randomValueC = Math.floor(Math.random() * 4); //0,1,2,3
                 switch(randomValueC) {
                     case 0:
@@ -182,15 +182,15 @@ class Ojisan {
                 }
             }
 
-            if(bl == 374) { //ブロックCの場合
+            if(bl == BL_NORMAL_C) { //ブロックCの場合
                 return;
             }
 
-            if(bl == 499) { //ブロックD(隠)の場合
+            if(bl == BL_TRANSP_A) { //ブロックD(隠)の場合
                 return;
             }
 
-            if(bl == 493) {
+            if(bl == BL_FLAG_A)  {
                 //block.push(new Block(493, x, y, 0, 0));
                 block.push(new Block(499, x, y, 0, 0, 0));
                 item.push(new Item(499, x, y, 0, 0, ITEM_FLAG));
@@ -207,7 +207,7 @@ class Ojisan {
                 },1000);
 
             }
-50
+            
             /*if(bl == 496) {
                 if(this.type == TYPE_MINI) {
                     block.push(new Block(bl, x, y));
@@ -321,6 +321,17 @@ class Ojisan {
         }
             //if(this.reload > 0) this.reload--;    
     }
+
+    //ゲームオーバー判定
+    checkGameOver() {
+        if(this.y > 2850 || this.lifePoint < 0.5) { //崖に落ちたら、ライフ0でisDead
+            this.isDead = true;
+            wahSound.play();    
+            this.y = 1000;
+            this.vy -= 300;
+            if(this.lifePoint < 0) this.lifePoint = 0;
+        }
+    }
    
     //スプライトを変える処理
     updateAnim() {
@@ -365,18 +376,6 @@ class Ojisan {
             if(this.dirc) {
                 this.snum += 48; //左向きは+48を使う
             }
-        }
-    }
-
-    //ゲームオーバー判定
-    checkGameOver() {
-        if(this.y > 2850 || this.lifePoint < 0.5) { //崖に落ちたら、ライフ0でisDead
-            this.isDead = true;
-            wahSound.play();    
-            this.y = 1000;
-            this.vy -= 300;
-            if(this.lifePoint < 0) { this.lifePoint = 0;}
-            
         }
     }
 
@@ -601,6 +600,4 @@ class Ojisan {
         py += (32 - h); 
         vcon.drawImage(chImg, sx, sy, w, h, px, py, w, h);
     }
-
 }
-
