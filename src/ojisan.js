@@ -375,7 +375,7 @@ class Ojisan {
             this.y = 1000;
             this.vy -= 300;
             if(this.lifePoint < 0) { this.lifePoint = 0;}
-            this.isDead = false;
+            this.isDead = true;
         }
     }
 
@@ -600,4 +600,5 @@ class Ojisan {
         py += (32 - h); 
         vcon.drawImage(chImg, sx, sy, w, h, px, py, w, h);
     }
+
 }
