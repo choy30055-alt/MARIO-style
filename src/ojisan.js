@@ -371,11 +371,12 @@ class Ojisan {
     //ゲームオーバー判定
     checkGameOver() {
         if(this.y > 2850 || this.lifePoint < 0.5) { //崖に落ちたら、ライフ0でisDead
+            this.isDead = true;
             wahSound.play();    
             this.y = 1000;
             this.vy -= 300;
             if(this.lifePoint < 0) { this.lifePoint = 0;}
-            this.isDead = true;
+            
         }
     }
 
@@ -602,3 +603,4 @@ class Ojisan {
     }
 
 }
+
