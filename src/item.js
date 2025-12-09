@@ -27,18 +27,18 @@ class Item extends Sprite {
         let lx = ((this.x + this.vx)>>4);
         let ly = ((this.y + this.vy)>>4);
         
-        if(this.tp == ITEM_FLAG) {
+        /*if(this.tp == ITEM_FLAG) {
             if(field.isBlock(lx + 1, ly + 31) ||
                field.isBlock(lx + 14, ly + 31)) {
                 this.vy = 0;
                 this.y = ((((ly + 15)>>4)<<4) - 16)<<4;
             } 
-        } else {
+        } else {*/
             if(field.isBlock(lx + 1, ly + 15) ||
                field.isBlock(lx + 14, ly + 15)) {
                 this.vy = 0;
                 this.y = ((((ly + 15)>>4)<<4) - 16)<<4;
-            }
+            
         }
     }
 
@@ -132,6 +132,7 @@ class Item extends Sprite {
 
     //更新処理
     update() {
+        //if (ojisan.isGoal) return; // ゴール演出中は停止
         if(this.kill) return;
         if(ojisan.kinoko) return;
 

@@ -38,7 +38,7 @@ let ojisan = new Ojisan;
 //フィールドを作る
 let field = new Field();
 
-//ブロックのオブジェクト
+//オブジェクトの配列
 let block = [];
 let item = [];
 let kuribo = [];
@@ -47,6 +47,7 @@ let coin = [];
 let fireball = [];
 let nokonoko = [];
 let jyugem = [];
+let flags = [];
 
 //スコア等表示オブジェクト
 let score = 0;
@@ -86,9 +87,11 @@ function update() {
     updateObj(nokonoko);
     updateObj(jyugem);
     updateObj(scorepop);
+    updateObj(flags);
 
     //おじさんの更新
-    ojisan.update(); 
+    ojisan.update();
+    //ojisan.update(); 
 }
 
 //スプライトの描画
@@ -97,6 +100,13 @@ function drawSprite(snum, x, y) {
     let sy = (snum>>4)<<4; 
     vcon.drawImage(chImg, sx, sy, 16, 32, x, y, 16, 32);
 }
+
+function drawSprite(snum, x, y) {
+    let sx = (snum & 15) << 4;
+    let sy = (snum >> 4) << 4;
+    vcon.drawImage(chImg, sx, sy, 16, 16, x, y, 16, 16);
+}
+
 
 function drawObj(obj) {
     //スプライトのブロックを表示
@@ -136,6 +146,7 @@ function draw() {
     drawObj(nokonoko);
     drawObj(jyugem);
     drawObj(scorepop);
+    drawObj(flags);
 
     //おじさんを表示
     ojisan.draw();
@@ -192,8 +203,8 @@ function gameStart() {  //スタートボタンでゲーム開始
 
     startTime = performance.now();
     ojisan.draw();
-    enemyDraw();
-
+    //enemyDraw();
+    createFlag();
     mainLoop();
 }
 
@@ -438,5 +449,40 @@ function enemyDraw() {
     jyugem.push(new Jyugem(107, 130, 2, -11, 0, ITEM_JYUGEM));
     jyugem.push(new Jyugem(107, 160, 3, -11, 0, ITEM_JYUGEM));
     jyugem.push(new Jyugem(107, 188, 4, -11, 0, ITEM_JYUGEM));
-
 }
+
+function isBlock(tx, ty) {
+    if (tx < 0 || ty < 0 || tx >= FIELD_SIZE_W || ty >= FIELD_SIZE_H) return true;
+    const t = fieldData[ty * FIELD_SIZE_W + tx];
+    return (
+        (t >= 1 && t <= 99) ||     // 地面系
+        (t >= 140 && t <= 149) ||  // 土管
+        (t >= 160 && t <= 169)     // 固いブロック
+    );
+}
+
+function findPole() {
+    let best = null;
+    for (let i = 0; i < fieldData.length; i++) {
+        if (fieldData[i] === 500) {
+            let x = i % FIELD_SIZE_W;
+            let y = Math.floor(i / FIELD_SIZE_W);
+            if (!best || x < best.x) {   // 一番左（x が最小）の500 を採用
+                best = { x, y };
+            }
+        }
+    }
+    return best;
+}
+
+function createFlag() {
+    flags.length = 0;
+    const pole = findPole();
+    if (!pole) return;
+    const fx = pole.x - 1;   // ← タイル座標で左
+    const fy = pole.y;
+    flags.push(new Flag(fx, fy));
+} 
+
+
+

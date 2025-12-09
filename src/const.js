@@ -79,6 +79,27 @@ const ITEM_URNOKONOKO = 12;
 const ITEM_JYUGEM = 13;
 const ITEM_FLAG = 14;
 
+//ブロック関係
+const BL_NORMAL_A = 371;
+const BL_NORMAL_B = 373;
+const BL_NORMAL_C = 374;
+const BL_HATENA_A = 368;
+const BL_HATENA_B = 496;
+const BL_TRANSP_A = 499;
+//const BL_FLAG_A = 493;
+const BL_POLE = 500;
+const BL_CASTLE = 475;
+const BL_CASTLE_GATE = 491;
+
+const GOAL_NONE  = 0;
+const GOAL_FLAG  = 1;
+const GOAL_WALK  = 2;
+const GOAL_ENTER = 3;
+const GOAL_CLEAR = 4;
+
+const FLAG_SPRITE = 493;
+
+
 //スプライトの基本クラス
 class Sprite {
     constructor(sp, x, y, vx, vy) {
@@ -117,11 +138,7 @@ class Sprite {
 
     //更新処理
     update() {
-        if(ojisan.isGoal) {
-            this.vy += GOAL_GRAVITY;
-        } else {
-            if(this.vy < AIR_RESIST) this.vy += GRAVITY; //重力空気抵抗
-        }
+        if(this.vy < AIR_RESIST) this.vy += GRAVITY; //重力空気抵抗
         this.x += this.vx;
         this.y += this.vy;
         if((this.y>>4) > FIELD_SIZE_H * 16) this.kill = true;
