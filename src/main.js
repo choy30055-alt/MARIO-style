@@ -203,7 +203,7 @@ function gameStart() {  //スタートボタンでゲーム開始
 
     startTime = performance.now();
     ojisan.draw();
-    //enemyDraw();
+    enemyDraw();
     createFlag();
     mainLoop();
 }
@@ -483,6 +483,7 @@ function createFlag() {
     const fy = pole.y;
     flags.push(new Flag(fx, fy));
 } 
+
 
 
 
