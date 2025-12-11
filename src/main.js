@@ -486,11 +486,12 @@ function triggerGameOver() {
 }
 
 //ゲームリロード処理
-can.addEventListener("click", checkFaceClick);   // 画面タップ／クリックで顔アイコンを押したかチェック
+
+/*can.addEventListener("click", checkFaceClick);   // 画面タップ／クリックで顔アイコンを押したかチェック
 can.addEventListener("touchstart", checkFaceClick);
 const FACE_OFFSET_X = -10;  // 左右にズラす（マイナスで左、プラスで右）
 const FACE_OFFSET_Y = 2;   // 上下にズラす（プラスで下、マイナスで上）
-/*function checkFaceClick(e) {
+function checkFaceClick(e) {
     const rect = can.getBoundingClientRect();
     const x = (e.clientX || e.touches[0].clientX) - rect.left;
     const y = (e.clientY || e.touches[0].clientY) - rect.top;
@@ -505,6 +506,10 @@ const FACE_OFFSET_Y = 2;   // 上下にズラす（プラスで下、マイナ�
     }
 }*/
 
+can.addEventListener("pointerdown", checkFaceClick);
+
+const FACE_OFFSET_X = -10;  // 左右にズラす（マイナスで左、プラスで右）
+const FACE_OFFSET_Y = 2;   // 上下にズラす（プラスで下、マイナスで上）
 function checkFaceClick(e) {
     const rect = can.getBoundingClientRect();
 
