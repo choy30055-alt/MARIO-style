@@ -48,6 +48,7 @@ let fireball = [];
 let nokonoko = [];
 let jyugem = [];
 let flags = [];
+let hanabi = [];
 
 //スコア等表示オブジェクト
 let score = 0;
@@ -62,157 +63,6 @@ let isGoalNear = false;
 
 //タイマー
 let timeLeft = 300;
-
-function updateObj(obj) {
-    //スプライトのブロックを更新
-    for(let i = obj.length - 1; i >= 0; i--) {
-        obj[i].update();
-        if(obj[i].kill) obj.splice(i, 1);
-    }
-}
-
-//更新処理
-function update() {
-
-    //マップの更新
-    field.update();
-
-    //アイテムの更新
-    updateObj(block);
-    updateObj(item);
-    updateObj(kuribo);
-    updateObj(togezo);
-    updateObj(coin);
-    updateObj(fireball);
-    updateObj(nokonoko);
-    updateObj(jyugem);
-    updateObj(scorepop);
-    updateObj(flags);
-
-    //おじさんの更新
-    ojisan.update();
-    //ojisan.update(); 
-}
-
-//スプライトの描画
-function drawSprite(snum, x, y) {
-    let sx = (snum&15)<<4;
-    let sy = (snum>>4)<<4; 
-    vcon.drawImage(chImg, sx, sy, 16, 32, x, y, 16, 32);
-}
-
-function drawSprite(snum, x, y) {
-    let sx = (snum & 15) << 4;
-    let sy = (snum >> 4) << 4;
-    vcon.drawImage(chImg, sx, sy, 16, 16, x, y, 16, 16);
-}
-
-
-function drawObj(obj) {
-    //スプライトのブロックを表示
-    for(let i = 0; i < obj.length; i++)
-        obj[i].draw();
-}
-
-//スコアを6桁表示
-function fomatScore(score) {
-    const isNegative = score < 0;
-    const absoluteScore = Math.abs(score);
-    const paddedNumber = String(absoluteScore). padStart(6, '0');
-    let formatted;
-    if(isNegative) {
-        formatted = `-${paddedNumber}`;
-    } else {
-        formatted = ` ${paddedNumber}`;
-    }
-    return formatted;
-}
-
-//描画処理
-function draw() {
-    vcon.fillStyle = "#66AAFF";
-    vcon.fillRect(0, 0, SCREEN_SIZE_W, SCREEN_SIZE_H);
-    
-    //マップを表示
-    field.draw();
-
-    //アイテムを表示
-    drawObj(block);
-    drawObj(item);
-    drawObj(kuribo);
-    drawObj(togezo);
-    drawObj(coin);
-    drawObj(fireball);
-    drawObj(nokonoko);
-    drawObj(jyugem);
-    drawObj(scorepop);
-    drawObj(flags);
-
-    //おじさんを表示
-    ojisan.draw();
-
-    //仮想画面から実画面へ拡大転送
-    con.drawImage(vcan, 0, 0, SCREEN_SIZE_W, SCREEN_SIZE_H,
-                  0, 0, SCREEN_SIZE_W * 2, SCREEN_SIZE_H * 2);
-    //スコア情報
-    const fomattedScore = fomatScore(score);
-    con.font = '20px "Press Start 2P", monospace';
-    con.fillStyle = "white"; 
-    con.fillText("MARIO", 30, 30);
-    con.fillText(fomattedScore, 20, 50);
-    con.fillText("WORLD", 310, 30);
-    con.fillText("1-1", 320, 50);
-    con.fillText("TIME", 430, 30);
-    const formattedTime = String(timeLeft).padStart(3, '0');
-    con.fillText(formattedTime, 440, 50); 
-    
-    if (coinImage) { // 画像が読み込まれていれば描画する
-        con.drawImage(coinImage, 147, 34, 16, 18);
-    }
-    con.fillText("x " + coinc, 171, 50);
-   
-    if (faceImage) { // 画像が読み込まれていれば描画する
-        con.drawImage(faceImage, 143, 11, 24, 24);
-    }
-    con.fillText("x " + ojisan.lifePoint, 171, 30);
-}
-
-function gameStart() {  //スタートボタンでゲーム開始
-    document.getElementById("mstart").style.visibility = "hidden";   //スタートボタン非表示
-    startSound1.play();
-    startSound1.addEventListener("ended", function(){
-        startSound2.play();
-    });
-    startSound2.addEventListener("ended", function(){
-        bgmSound.loop = true;
-        bgmSound.play();
-    }); 
-
-    const imgCoin = new Image();
-    imgCoin.onload = () => {
-        coinImage = imgCoin; // 読み込み完了後に変数にセット
-    }
-    imgCoin.src = "image/mrocoin.png";
-
-    const imgFace = new Image();
-    imgFace.onload = () => {
-        faceImage = imgFace; // 読み込み完了後に変数にセット
-    }
-    imgFace.src = "image/marioface.png";
-    loadImageAssets();
-
-    startTime = performance.now();
-    ojisan.draw();
-    enemyDraw();
-    createFlag();
-    mainLoop();
-}
-
-//ループ開始
-/*window.onload = function() {
-    startTime = performance.now();
-    mainLoop();
-} */
 
 //メインループ
 function mainLoop() {
@@ -255,6 +105,153 @@ function mainLoop() {
         isGoalNear = true;
     }
     requestAnimationFrame(mainLoop);
+}
+
+//更新処理
+function update() {
+
+    //マップの更新
+    field.update();
+
+    //アイテムの更新
+    updateObj(block);
+    updateObj(item);
+    updateObj(kuribo);
+    updateObj(togezo);
+    updateObj(coin);
+    updateObj(fireball);
+    updateObj(nokonoko);
+    updateObj(jyugem);
+    updateObj(scorepop);
+    updateObj(flags);
+    updateObj(hanabi);
+
+    //おじさんの更新
+    ojisan.update();
+}
+
+//描画処理
+function draw() {
+    vcon.fillStyle = "#66AAFF";
+    vcon.fillRect(0, 0, SCREEN_SIZE_W, SCREEN_SIZE_H);
+    
+    //マップを表示
+    field.draw();
+
+    //アイテムを表示
+    drawObj(block);
+    drawObj(item);
+    drawObj(kuribo);
+    drawObj(togezo);
+    drawObj(coin);
+    drawObj(fireball);
+    drawObj(nokonoko);
+    drawObj(jyugem);
+    drawObj(scorepop);
+    drawObj(flags);
+    drawObj(hanabi);
+
+    //おじさんを表示
+    ojisan.draw();
+
+    //仮想画面から実画面へ拡大転送
+    con.drawImage(vcan, 0, 0, SCREEN_SIZE_W, SCREEN_SIZE_H,
+                  0, 0, SCREEN_SIZE_W * 2, SCREEN_SIZE_H * 2);
+    //スコア情報
+    const fomattedScore = fomatScore(score);
+    con.font = '20px "Press Start 2P", monospace';
+    con.fillStyle = "white"; 
+    con.fillText("MARIO", 30, 30);
+    con.fillText(fomattedScore, 20, 50);
+    con.fillText("WORLD", 310, 30);
+    con.fillText("1-1", 320, 50);
+    con.fillText("TIME", 430, 30);
+    const formattedTime = String(timeLeft).padStart(3, '0');
+    con.fillText(formattedTime, 440, 50); 
+    
+    if (coinImage) { // 画像が読み込まれていれば描画する
+        con.drawImage(coinImage, 147, 34, 16, 18);
+    }
+    con.fillText("x " + coinc, 171, 50);
+   
+    if (faceImage) { // 画像が読み込まれていれば描画する
+        con.drawImage(faceImage, 143, 11, 24, 24);
+    }
+    con.fillText("x " + ojisan.lifePoint, 171, 30);
+}
+
+//スプライトの描画
+/*function drawSprite(snum, x, y) {
+    let sx = (snum&15)<<4;
+    let sy = (snum>>4)<<4; 
+    vcon.drawImage(chImg, sx, sy, 16, 32, x, y, 16, 32);
+} */
+
+function drawSprite(snum, x, y) {
+    let sx = (snum & 15) << 4;
+    let sy = (snum >> 4) << 4;
+    vcon.drawImage(chImg, sx, sy, 16, 16, x, y, 16, 16);
+}
+
+function drawObj(obj) {
+    //スプライトのブロックを表示
+    for(let i = 0; i < obj.length; i++)
+        obj[i].draw();
+}
+
+function updateObj(obj) {
+    //スプライトのブロックを更新
+    for(let i = obj.length - 1; i >= 0; i--) {
+        obj[i].update();
+        if(obj[i].kill) obj.splice(i, 1);
+    }
+}
+
+//スコアを6桁表示
+function fomatScore(score) {
+    const isNegative = score < 0;
+    const absoluteScore = Math.abs(score);
+    const paddedNumber = String(absoluteScore). padStart(6, '0');
+    let formatted;
+    if(isNegative) {
+        formatted = `-${paddedNumber}`;
+    } else {
+        formatted = ` ${paddedNumber}`;
+    }
+    return formatted;
+}
+
+function isBlock(tx, ty) {
+    if (tx < 0 || ty < 0 || tx >= FIELD_SIZE_W || ty >= FIELD_SIZE_H) return true;
+    const t = fieldData[ty * FIELD_SIZE_W + tx];
+    return (
+        (t >= 1 && t <= 99) ||     // 地面系
+        (t >= 140 && t <= 149) ||  // 土管
+        (t >= 160 && t <= 169)     // 固いブロック
+    );
+}
+
+function findPole() {
+    let best = null;
+    for (let i = 0; i < fieldData.length; i++) {
+        if (fieldData[i] === 500) {
+            let x = i % FIELD_SIZE_W;
+            let y = Math.floor(i / FIELD_SIZE_W);
+            if (!best || x < best.x) {   // 一番左（x が最小）の500 を採用
+                best = { x, y };
+            }
+        }
+    }
+    return best;
+}
+
+function createFlag() {
+    flags.length = 0;
+    const pole = findPole();
+    if (!pole) return;
+    const fx = pole.x - 1;   // ← タイル座標で左
+    const fy = pole.y;
+    flags.push(new Flag(fx, fy));
 }
 
 //キーボードが押されたときに呼ばれる
@@ -320,63 +317,37 @@ abtn.addEventListener('touchend', (e) => {
     keyb.FBBUTTON = false;
 })*/
 
-//画像の事前読み込み
-function loadImageAssets() {
-    const img = new Image();
-    img.crossOrigin = "Anonymous";
-    img.onload = () => {
-        gameOverImage = img;
-        gameState = GAME_PLAYING;
-    }
-    img.src = "image/mrogameover.jpg";
-}
+//敵の配置
+function enemyDraw() {
+    kuribo.push(new Kuribo(163, 16, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 24, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 40, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 54, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 63, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 78, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 102, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 160, 0, 12, 0, ITEM_KURIBO));
+    kuribo.push(new Kuribo(163, 162, 0, 12, 0, ITEM_KURIBO));
 
-//ゲームオーバーのトリガー
-function triggerGameOver() {
-    if(gameState === GAME_OVER) 
-        return;
-    gameState = GAME_OVER;
-    if(bgmSound) {
-        bgmSound.pause();
-        bgmSound.currentTime = 0;   
-    }
-    if(goalSound) {
-        goalSound.pause();
-        goalSound.currentTime = 0;   
-    }
-    gameoverSound.play();
-    setTimeout(() => {
-        window.location.reload(true); // 強制的に再読み込みしてスタートに戻る
-    },5000); // 5000ミリ秒 = 5秒
-}
+    nokonoko.push(new Nokonoko(163, 14, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 32, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 48, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 60, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 78, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 96, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 112, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 128, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 160, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 162, 0, 9, 0, ITEM_NOKONOKO));
 
-//ゲームオーバー画像
-function drawGameOverImage() {
-    // 画面を一度クリアするか、黒いオーバーレイをかける
-    con.fillStyle = "#000000";
-    con.fillRect(0, 0, can.width, can.height);
-
-    // ゲームオーバー画像を描画
-    if (gameOverImage) {
-        const imgW = gameOverImage.width;
-        const imgH = gameOverImage.height;
-        const drawX = (can.width / 2) - (imgW / 2);
-        const drawY = (can.height / 2) - (imgH / 2);
-        con.drawImage(gameOverImage, drawX, drawY, imgW, imgH);
-    }
-    
-    // スコアとタイムの描画
-    con.font = '30px "Press Start 2P", monospace';
-    con.fillStyle = "white";
-    con.textAlign = 'center'; // 中央揃えに設定
-
-    const formattedScore = fomatScore(score);
-    // 画像の下にスコアを表示
-    con.fillText("SCORE:" + formattedScore, can.width / 2, (can.height / 2) + 170); 
-    // さらに下にタイムを表示
-    const coinct = String(coinc).padStart(6, '0');
-    con.fillText("COIN : " + coinct, can.width / 2, (can.height / 2) + 200); 
-    con.textAlign = 'left'; // textAlignをデフォルト（左揃え）に戻す
+    jyugem.push(new Jyugem(107, 1, 1, 11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 40, 2, 11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 80, 3, 11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 100, 4, 11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 100, 1, -11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 130, 2, -11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 160, 3, -11, 0, ITEM_JYUGEM));
+    jyugem.push(new Jyugem(107, 188, 4, -11, 0, ITEM_JYUGEM));
 }
 
 //ゴール直前サウンド切り替え
@@ -418,71 +389,122 @@ function fadeInBgm(audio, frames) {
     }, 1000 / 60);
 } 
 
-//敵の配置
-function enemyDraw() {
-    kuribo.push(new Kuribo(163, 16, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 24, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 40, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 54, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 63, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 78, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 102, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 160, 0, 12, 0, ITEM_KURIBO));
-    kuribo.push(new Kuribo(163, 162, 0, 12, 0, ITEM_KURIBO));
+function gameStart() {  //スタートボタンでゲーム開始
+    document.getElementById("mstart").style.visibility = "hidden";   //スタートボタン非表示
+    startSound1.play();
+    startSound1.addEventListener("ended", function(){
+        startSound2.play();
+    });
+    startSound2.addEventListener("ended", function(){
+        bgmSound.loop = true;
+        bgmSound.play();
+    }); 
 
-    nokonoko.push(new Nokonoko(163, 14, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 32, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 48, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 60, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 78, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 96, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 112, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 128, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 160, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 162, 0, 9, 0, ITEM_NOKONOKO));
-
-    jyugem.push(new Jyugem(107, 1, 1, 11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 40, 2, 11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 80, 3, 11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 100, 4, 11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 100, 1, -11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 130, 2, -11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 160, 3, -11, 0, ITEM_JYUGEM));
-    jyugem.push(new Jyugem(107, 188, 4, -11, 0, ITEM_JYUGEM));
-}
-
-function isBlock(tx, ty) {
-    if (tx < 0 || ty < 0 || tx >= FIELD_SIZE_W || ty >= FIELD_SIZE_H) return true;
-    const t = fieldData[ty * FIELD_SIZE_W + tx];
-    return (
-        (t >= 1 && t <= 99) ||     // 地面系
-        (t >= 140 && t <= 149) ||  // 土管
-        (t >= 160 && t <= 169)     // 固いブロック
-    );
-}
-
-function findPole() {
-    let best = null;
-    for (let i = 0; i < fieldData.length; i++) {
-        if (fieldData[i] === 500) {
-            let x = i % FIELD_SIZE_W;
-            let y = Math.floor(i / FIELD_SIZE_W);
-            if (!best || x < best.x) {   // 一番左（x が最小）の500 を採用
-                best = { x, y };
-            }
-        }
+    const imgCoin = new Image();
+    imgCoin.onload = () => {
+        coinImage = imgCoin; // 読み込み完了後に変数にセット
     }
-    return best;
+    imgCoin.src = "image/mrocoin.png";
+
+    const imgFace = new Image();
+    imgFace.onload = () => {
+        faceImage = imgFace; // 読み込み完了後に変数にセット
+    }
+    imgFace.src = "image/marioface.png";
+    loadImageAssets();
+
+    startTime = performance.now();
+    ojisan.draw();
+    enemyDraw();
+    createFlag();
+    mainLoop();
 }
 
-function createFlag() {
-    flags.length = 0;
-    const pole = findPole();
-    if (!pole) return;
-    const fx = pole.x - 1;   // ← タイル座標で左
-    const fy = pole.y;
-    flags.push(new Flag(fx, fy));
-} 
+//ループ開始
+/*window.onload = function() {
+    startTime = performance.now();
+    mainLoop();
+} */
+
+//画像の事前読み込み
+function loadImageAssets() {
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.onload = () => {
+        gameOverImage = img;
+        gameState = GAME_PLAYING;
+    }
+    img.src = "image/mrogameover.jpg";
+}
+
+//ゲームオーバー画像
+function drawGameOverImage() {
+    // 画面を一度クリアするか、黒いオーバーレイをかける
+    con.fillStyle = "#000000";
+    con.fillRect(0, 0, can.width, can.height);
+
+    // ゲームオーバー画像を描画
+    if (gameOverImage) {
+        const imgW = gameOverImage.width;
+        const imgH = gameOverImage.height;
+        const drawX = (can.width / 2) - (imgW / 2);
+        const drawY = (can.height / 2) - (imgH / 2);
+        con.drawImage(gameOverImage, drawX, drawY, imgW, imgH);
+    }
+
+    // ゲームオーバー画面のスコアとタイムの描画
+    con.font = '30px "Press Start 2P", monospace';
+    con.fillStyle = "white";
+    con.textAlign = 'center'; // 中央揃えに設定
+
+    const formattedScore = fomatScore(score);
+    // 画像の下にスコアを表示
+    con.fillText("SCORE:" + formattedScore, can.width / 2, (can.height / 2) + 170); 
+    // さらに下にタイムを表示
+    const coinct = String(coinc).padStart(6, '0');
+    con.fillText("COIN : " + coinct, can.width / 2, (can.height / 2) + 200); 
+    con.textAlign = 'left'; // textAlignをデフォルト（左揃え）に戻す
+}
+
+//ゲームオーバーのトリガー
+function triggerGameOver() {
+    if(gameState === GAME_OVER) 
+        return;
+    gameState = GAME_OVER;
+    if(bgmSound) {
+        bgmSound.pause();
+        bgmSound.currentTime = 0;   
+    }
+    if(goalSound) {
+        goalSound.pause();
+        goalSound.currentTime = 0;   
+    }
+    gameoverSound.play();
+    setTimeout(() => {
+        window.location.reload(true); // 強制的に再読み込みしてスタートに戻る
+    },5000); // 5000ミリ秒 = 5秒
+}
+
+//ゲームリロード処理
+can.addEventListener("click", checkFaceClick);   // 画面タップ／クリックで顔アイコンを押したかチェック
+can.addEventListener("touchstart", checkFaceClick);
+const FACE_OFFSET_X = -10;  // 左右にズラす（マイナスで左、プラスで右）
+const FACE_OFFSET_Y = 2;   // 上下にズラす（プラスで下、マイナスで上）
+function checkFaceClick(e) {
+    const rect = can.getBoundingClientRect();
+    const x = (e.clientX || e.touches[0].clientX) - rect.left;
+    const y = (e.clientY || e.touches[0].clientY) - rect.top;
+    const sx = x / 2; // 2倍スケール補正
+    const sy = y / 2;
+    const fx = 143 + FACE_OFFSET_X; // 描画位置 + 補正値
+    const fy = 11 + FACE_OFFSET_Y;
+    const fw = 24;
+    const fh = 24;
+    if (sx >= fx && sx <= fx + fw && sy >= fy && sy <= fy + fh) {
+        window.location.reload(true);
+    }
+}
+
 
 
 
