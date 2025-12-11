@@ -538,14 +538,28 @@ function updateFaceBtnPosition() {
     const faceBtn = document.getElementById("faceBtn");
     const rect = can.getBoundingClientRect();
 
-    // 顔アイコンは canvas 内座標で(143, 11) で描いてる
-    // canvas は 2倍拡大しているので ×2
-    const fx = rect.left + 143 * 2;
-    const fy = rect.top + 11 * 2;
+    // 内部解像度
+    const INTERNAL_W = can.width;   // 640
+    const INTERNAL_H = can.height;  // 480
+
+    // 顔アイコンの内部座標（描画位置）
+    const FACE_X = 143;
+    const FACE_Y = 11;
+
+    // 表示時のスケールに合わせて位置を計算
+    const fx = rect.left + (FACE_X / INTERNAL_W) * rect.width;
+    const fy = rect.top  + (FACE_Y / INTERNAL_H) * rect.height;
+
+    // 顔の大きさ（24×24 を 2倍で描画しているので → 表示はスケールされる）
+    const fw = (24 / INTERNAL_W) * rect.width * 2;
+    const fh = (24 / INTERNAL_H) * rect.height * 2;
 
     faceBtn.style.left = fx + "px";
-    faceBtn.style.top = fy + "px";
+    faceBtn.style.top  = fy + "px";
+    faceBtn.style.width = fw + "px";
+    faceBtn.style.height = fh + "px";
 }
+
 
 
 
