@@ -534,18 +534,7 @@ document.getElementById("faceBtn").addEventListener("pointerdown", () => {
     window.location.reload(true);
 });
 
-function updateFaceBtnPosition() {
-    const faceBtn = document.getElementById("faceBtn");
-    const rect = can.getBoundingClientRect();
 
-    // 顔アイコンは canvas 内座標で(143, 11) で描いてる
-    // canvas は 2倍拡大しているので ×2
-    const fx = rect.left + 143 * 2;
-    const fy = rect.top + 11 * 2;
-
-    faceBtn.style.left = fx + "px";
-    faceBtn.style.top = fy + "px";
-}
 
 
 
