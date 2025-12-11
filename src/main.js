@@ -104,7 +104,6 @@ function mainLoop() {
         startGoalMusicFade();
         isGoalNear = true;
     }
-    updateFaceBtnPosition();
     requestAnimationFrame(mainLoop);
 }
 
@@ -533,6 +532,7 @@ function checkFaceClick(e) {
 document.getElementById("faceBtn").addEventListener("pointerdown", () => {
     window.location.reload(true);
 });
+
 
 
 
