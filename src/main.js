@@ -490,7 +490,7 @@ can.addEventListener("click", checkFaceClick);   // 画面タップ／クリッ�
 can.addEventListener("touchstart", checkFaceClick);
 const FACE_OFFSET_X = -10;  // 左右にズラす（マイナスで左、プラスで右）
 const FACE_OFFSET_Y = 2;   // 上下にズラす（プラスで下、マイナスで上）
-function checkFaceClick(e) {
+/*function checkFaceClick(e) {
     const rect = can.getBoundingClientRect();
     const x = (e.clientX || e.touches[0].clientX) - rect.left;
     const y = (e.clientY || e.touches[0].clientY) - rect.top;
@@ -503,8 +503,26 @@ function checkFaceClick(e) {
     if (sx >= fx && sx <= fx + fw && sy >= fy && sy <= fy + fh) {
         window.location.reload(true);
     }
-}
+}*/
 
+function checkFaceClick(e) {
+    const rect = can.getBoundingClientRect();
+
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const sx = x / 2; // 2倍スケール補正
+    const sy = y / 2;
+
+    const fx = 143 + FACE_OFFSET_X;
+    const fy = 11 + FACE_OFFSET_Y;
+    const fw = 24;
+    const fh = 24;
+
+    if (sx >= fx && sx <= fx + fw && sy >= fy && sy <= fy + fh) {
+        window.location.reload(true);
+    }
+}
 
 
 
