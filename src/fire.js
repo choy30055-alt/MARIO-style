@@ -27,6 +27,71 @@ class Fireball {
          //this.lifeTime = 3000; 
     }
 
+    //更新処理
+    update() {
+        if(this.kill) return;
+        if(this.proc_firekuribo()) return;
+        if(this.proc_firetogezo()) return;
+        if(this.proc_firenokonoko()) return;
+ 
+        //重力の影響
+        this.vy += this.gravity;
+
+        //位置の更新  
+        this.x += this.vx + ojisan.vx;
+        this.y += this.vy;
+
+        //画面の外に出たら消す
+        if(this.x < 0 || this.x > ojisan.x+3000) {
+            this.kill = true;
+        }
+        
+        /*for(let i = 0; i < this.length; i++) {
+            this[i].kill = true;
+        }*/
+
+        this.checkWall();
+        this.checkFloor();
+        //this.checkCliff();
+
+        this.acou++;  //アニメ用のカウンタ
+        if(Math.abs(this.speedX) == MAX_SPEED) this.acou++; 
+        this.updateAnim();
+    }
+
+    //描画処理
+    draw() {
+        if(this.kill) return;
+        let an = this.sp;
+        let sx = (an&15)<<4;
+        let sy = (an>>4)<<4;
+        let px = (this.x>>4) - (field.scx);
+        let py = (this.y>>4) - (field.scy);
+        let s;
+        if(this.sz) s = this.sz;
+        else s = 16;
+        vcon.drawImage(chImg, sx, sy, 16, s, px, py, 16, 16);
+    }
+
+    //当たり判定
+    checkHit(obj) {
+        //物体1
+        let left1 = (this.x>>4)      + 2;
+        let right1 = left1 + this.w  - 4; 
+        let top1 = (this.y>>4)       + 5 + this.ay;
+        let bottom1 = top1 + this.h  - 7;
+        //物体2
+        let left2 = (obj.x>>4)      + 2;
+        let right2 = left2 + obj.w  - 4; 
+        let top2 = (obj.y>>4 )      + 5 + obj.ay;
+        let bottom2 = top2 + obj.h  - 7;
+
+        return(left1 <= right2 &&
+            right1 >= left2 &&
+            top1 <= bottom2 &&
+            bottom1 >= top2); //条件に当たればtrue
+    }
+
    //横の壁の判定
     checkWall() {
         let lx = ((this.x + this.vx)>>4);
@@ -60,25 +125,6 @@ class Fireball {
             this.y -= this.h;
             this.vy *= -0.7; //跳ね返り減衰あり
         }
-    }
-
-    //当たり判定
-    checkHit(obj) {
-        //物体1
-        let left1 = (this.x>>4)      + 2;
-        let right1 = left1 + this.w  - 4; 
-        let top1 = (this.y>>4)       + 5 + this.ay;
-        let bottom1 = top1 + this.h  - 7;
-        //物体2
-        let left2 = (obj.x>>4)      + 2;
-        let right2 = left2 + obj.w  - 4; 
-        let top2 = (obj.y>>4 )      + 5 + obj.ay;
-        let bottom2 = top2 + obj.h  - 7;
-
-        return(left1 <= right2 &&
-            right1 >= left2 &&
-            top1 <= bottom2 &&
-            bottom1 >= top2); //条件に当たればtrue
     }
 
     proc_firekuribo(){
@@ -162,52 +208,6 @@ class Fireball {
         } else if(this.tp == ITEM_EXPL) {
             this.sp = 203 + ((this.acou / 3) % 4);
         }
-    }
-
-    //更新処理
-    update() {
-        if(this.kill) return;
-        if(this.proc_firekuribo()) return;
-        if(this.proc_firetogezo()) return;
-        if(this.proc_firenokonoko()) return;
- 
-        //重力の影響
-        this.vy += this.gravity;
-
-        //位置の更新  
-        this.x += this.vx + ojisan.vx;
-        this.y += this.vy;
-
-        //画面の外に出たら消す
-        if(this.x < 0 || this.x > ojisan.x+3000) {
-            this.kill = true;
-        }
-        
-        /*for(let i = 0; i < this.length; i++) {
-            this[i].kill = true;
-        }*/
-
-        this.checkWall();
-        this.checkFloor();
-        //this.checkCliff();
-
-        this.acou++;  //アニメ用のカウンタ
-        if(Math.abs(this.speedX) == MAX_SPEED) this.acou++; 
-        this.updateAnim();
-    }
-
-    //描画処理
-    draw() {
-        if(this.kill) return;
-        let an = this.sp;
-        let sx = (an&15)<<4;
-        let sy = (an>>4)<<4;
-        let px = (this.x>>4) - (field.scx);
-        let py = (this.y>>4) - (field.scy);
-        let s;
-        if(this.sz) s = this.sz;
-        else s = 16;
-        vcon.drawImage(chImg, sx, sy, 16, s, px, py, 16, 16);
     }
 
     /*isAlive() {

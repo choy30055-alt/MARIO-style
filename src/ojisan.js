@@ -588,7 +588,7 @@ class Ojisan {
         }
     }
 
-    //ゴール演出
+    //ゴールシークエンス
     updateGoal() {
         this.acou++; // 安全のためアニメカウンタ進める（歩きアニメ用）
         switch (this.goalState) {
@@ -602,7 +602,6 @@ class Ojisan {
 
             case GOAL_FALL: // 1: 旗から落下（内部単位に合わせた落下）
                 if (!this.clearPlayed) {   // ← 1回だけ！
-                    //flagSound.currentTime = 0;
                     flagSound.play();
                     this.clearPlayed = true;
                 }
@@ -622,7 +621,7 @@ class Ojisan {
  
             case GOAL_WALK: // 2: 自動歩行で城へ（ここで入口判定・床判定を行う）
                 this.anim = ANIME_WALK;
-                this.vx = 15; // 速度は内部単位に合わせて調整（例: 32 = 2px/frame if units differ）
+                this.vx = 20; // 速度は内部単位に合わせて調整（例: 32 = 2px/frame if units differ）
                 this.x += this.vx;
 
                 let lx = ((this.x + this.vx)>>4);
@@ -636,13 +635,12 @@ class Ojisan {
                             this.anim = ANIME_STAND;
                             this.vx = 0;
                             this.x -= 0;
-                            this.goalTimer++;
+                            //this.goalTimer++;
                             this.goalState = GOAL_ABSORB;
                 }
                 break;
             
             case GOAL_ABSORB: // 3: 吸い込みアニメ（縮小＋透明化）
-                this.clearPlayed = false;
                 this.anim = ANIME_STAND;
                 this.goalTimer++;
                 this.x += 10;  // 吸い込みの動き（少し右上へ、縮小、透明化）
@@ -657,19 +655,14 @@ class Ojisan {
                     };
                 }
 
-
-                if (this.scale <= 0 || this.alpha <= 0) {
+                if (this.scale <= 0 || this.alpha <= 0 || this.goalTimer > 60) {
+                   this.clearPlayed = false;
                    this.goalState = GOAL_END;
-                //break;
-                }
-                if (this.goalTimer > 60) {
-                    this.goalState = GOAL_END;
-                }
                 break;
-
+                }
+            
             case GOAL_END: //4: ゴール完了フラグ
                 this.gameclear = true;
-                
                 if (!this.clearPlayed) {   // ← 1回だけ！
                     bgmSound.pause();
                     goalSound.pause();
@@ -689,7 +682,6 @@ class Ojisan {
                 } else {
                     this.proc_hanabi_A();
                 }
-                
                 this.goalTimer++;
                 break;
 

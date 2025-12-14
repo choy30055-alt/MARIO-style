@@ -65,6 +65,7 @@ const MAX_SPEED = 32;
 //スコア関係
 const SCORE_COIN = 100;
 const SCORE_ITEM = 1000;
+const SCORE_BLOCK = 50;
 const SCORE_KURIBO = 100;
 const SCORE_NOKONOKO = 100;
 const SCORE_TOGEZO = 100;
@@ -106,7 +107,7 @@ const GOAL_ABSORB = 3;   // 吸い込み開始
 const GOAL_END    = 4;   // 完全吸い込み
 const SCORE_UP    = 5;    //ゴールスコア
 const SCORE_END   = 6;    //ゴールスコアアップ終了
-const ENDING_BRANCH = 500; //エンディング切替スコア
+const ENDING_BRANCH = 100; //エンディング切替スコア
 
 //スプライトの基本クラス
 class Sprite {
@@ -122,26 +123,6 @@ class Sprite {
         this.sz = 0;
         this.kill = false;
         this.count = 0;
-    }
-
-    //当たり判定
-    checkHit(obj) {
-        //物体1
-        let left1 = (this.x>>4)      + 2;
-        let right1 = left1 + this.w  - 4; 
-        let top1 = (this.y>>4)       + 5 + this.ay;
-        let bottom1 = top1 + this.h  - 7;
-
-        //物体2
-        let left2 = (obj.x>>4)      + 2;
-        let right2 = left2 + obj.w  - 4; 
-        let top2 = (obj.y>>4 )      + 5 + obj.ay;
-        let bottom2 = top2 + obj.h  - 7;
-
-        return(left1 <= right2 &&
-            right1 >= left2 &&
-            top1 <= bottom2 &&
-            bottom1 >= top2);
     }
 
     //更新処理
@@ -164,6 +145,26 @@ class Sprite {
         else s = 16;
         vcon.drawImage(chImg, sx, sy, 16, s, px, py, 16, 16);
     }
-}
 
+     //当たり判定
+    checkHit(obj) {
+        //物体1
+        let left1 = (this.x>>4)      + 2;
+        let right1 = left1 + this.w  - 4; 
+        let top1 = (this.y>>4)       + 5 + this.ay;
+        let bottom1 = top1 + this.h  - 7;
+
+        //物体2
+        let left2 = (obj.x>>4)      + 2;
+        let right2 = left2 + obj.w  - 4; 
+        let top2 = (obj.y>>4 )      + 5 + obj.ay;
+        let bottom2 = top2 + obj.h  - 7;
+
+        return(left1 <= right2 &&
+            right1 >= left2 &&
+            top1 <= bottom2 &&
+            bottom1 >= top2);
+    }
+
+}
 

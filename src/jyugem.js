@@ -22,6 +22,34 @@ class Jyugem {
         this.hasDorpped = false;
     }
 
+    //更新処理
+    update() {
+        if(this.kill) return;
+        if(this.proc_jyugem()) return;
+  
+        this.x += this.vx;
+        if(this.x > SCREEN_SIZE_W * 200 || this.x < 0) {
+            this.vx *= -1;  //折り返しの座標を指定
+        }
+ 
+        this.acou++;  //アニメ用のカウンタ
+        if(Math.abs(this.vx) == MAX_SPEED) this.acou++; 
+        this.updateAnim();
+    }
+
+    //描画処理
+    draw() {
+        let an = this.sp;
+        let sx = (an&15)<<4;
+        let sy = (an>>4)<<4;
+        let px = (this.x>>4) - (field.scx);
+        let py = (this.y>>4) - (field.scy);
+        let s;
+        if(this.sz) s = this.sz;
+        else s = 32;
+        vcon.drawImage(chImg, sx, sy, 16, s, px, py, 16, 16);
+    }
+
     //当たり判定　Ｘ軸が重なったか
     checkDrop() {
         return(this.x >= ojisan.x && this.x <= ojisan.x + ojisan.w);
@@ -51,31 +79,5 @@ class Jyugem {
         }      
     }
 
-    //更新処理
-    update() {
-        if(this.kill) return;
-        if(this.proc_jyugem()) return;
-  
-        this.x += this.vx;
-        if(this.x > SCREEN_SIZE_W * 200 || this.x < 0) {
-            this.vx *= -1;  //折り返しの座標を指定
-        }
- 
-        this.acou++;  //アニメ用のカウンタ
-        if(Math.abs(this.vx) == MAX_SPEED) this.acou++; 
-        this.updateAnim();
-    }
-
-    //描画処理
-    draw() {
-        let an = this.sp;
-        let sx = (an&15)<<4;
-        let sy = (an>>4)<<4;
-        let px = (this.x>>4) - (field.scx);
-        let py = (this.y>>4) - (field.scy);
-        let s;
-        if(this.sz) s = this.sz;
-        else s = 32;
-        vcon.drawImage(chImg, sx, sy, 16, s, px, py, 16, 16);
-    }
+    
 }

@@ -8,6 +8,56 @@ class Item extends Sprite {
         this.tp = tp;
     }
 
+    //更新処理
+    update() {
+        //if (ojisan.isGoal) return; // ゴール演出中は停止
+        if(this.kill) return;
+        if(ojisan.kinoko) return;
+
+        switch(this.tp) {
+            case ITEM_KINO:
+                if(this.proc_kinoko()) return;
+                break;
+            case ITEM_KUSA:
+                this.proc_kusa();
+                return;
+            case ITEM_FIRE:
+                this.proc_fire();
+                return;
+            case ITEM_COIN:
+                this.proc_coin();
+                return;  
+        } 
+
+        this.checkWall();
+        this.checkFloor(); 
+        this.checkCliff();
+        super.update();
+        
+        this.acou++;  //アニメ用のカウンタ
+        if(Math.abs(this.vx) == MAX_SPEED) this.acou++; 
+        this.updateAnim();
+    }
+
+    draw() {
+        super.draw();
+        if(this.tp == ITEM_KUSA) {
+            let c = (this.count - 16)>>4;
+            for(let i = 0; i <= c; i++ ) {
+                let an = 486 + 16;
+                let sx = (an&15)<<4;
+                let sy = (an>>4)<<4;
+                let px = (this.x>>4) - (field.scx);
+                let py = (this.y>>4) - (field.scy);
+                let s;
+                if(i == c) s = (this.count%16);
+                else s = 16;
+                py += 16 + i * 16;
+                vcon.drawImage(chImg, sx, sy, 16, s, px, py, 16, s);
+            }
+        }    
+    }
+
     //横の壁の判定
     checkWall() {
         let lx = ((this.x + this.vx)>>4);
@@ -121,9 +171,6 @@ class Item extends Sprite {
         return false;
     }
 
-    //花火の処理
-    
-
     updateAnim() {
         //アニメスプライトの決定
         if(this.tp == ITEM_COIN) {
@@ -133,53 +180,5 @@ class Item extends Sprite {
             }
     } 
 
-    //更新処理
-    update() {
-        //if (ojisan.isGoal) return; // ゴール演出中は停止
-        if(this.kill) return;
-        if(ojisan.kinoko) return;
-
-        switch(this.tp) {
-            case ITEM_KINO:
-                if(this.proc_kinoko()) return;
-                break;
-            case ITEM_KUSA:
-                this.proc_kusa();
-                return;
-            case ITEM_FIRE:
-                this.proc_fire();
-                return;
-            case ITEM_COIN:
-                this.proc_coin();
-                return;  
-        } 
-
-        this.checkWall();
-        this.checkFloor(); 
-        this.checkCliff();
-        super.update();
-        
-        this.acou++;  //アニメ用のカウンタ
-        if(Math.abs(this.vx) == MAX_SPEED) this.acou++; 
-        this.updateAnim();
-    }
-
-    draw() {
-        super.draw();
-        if(this.tp == ITEM_KUSA) {
-            let c = (this.count - 16)>>4;
-            for(let i = 0; i <= c; i++ ) {
-                let an = 486 + 16;
-                let sx = (an&15)<<4;
-                let sy = (an>>4)<<4;
-                let px = (this.x>>4) - (field.scx);
-                let py = (this.y>>4) - (field.scy);
-                let s;
-                if(i == c) s = (this.count%16);
-                else s = 16;
-                py += 16 + i * 16;
-                vcon.drawImage(chImg, sx, sy, 16, s, px, py, 16, s);
-            }
-        }    
-    }
+    
 }

@@ -22,6 +22,38 @@ class Nokonoko {
         this.scoreValue = 100;
     }
 
+    //更新処理
+    update() {
+        if(this.kill) return;
+        if(this.proc_nokonoko()) return;
+  
+        this.checkWall();
+        this.checkFloor();
+        this.checkCliff();
+       
+        if(this.vy < AIR_RESIST) this.vy += GRAVITY; //重力・空気抵抗
+        this.x += this.vx;
+        this.y += this.vy;
+        if((this.y>>4) > FIELD_SIZE_H * 16) this.kill = true;
+        
+        this.acou++;  //アニメ用のカウンタ
+        if(Math.abs(this.vx) == MAX_SPEED) this.acou++; 
+        this.updateAnim();
+    }
+
+    //描画処理
+    draw() {
+        let an = this.sp;
+        let sx = (an&15)<<4;
+        let sy = (an>>4)<<4;
+        let px = (this.x>>4) - (field.scx);
+        let py = (this.y>>4) - (field.scy);
+        let s;
+        if(this.sz) s = this.sz;
+        else s = 32;
+        vcon.drawImage(chImg, sx, sy, 16, s, px, py, 16, 16);
+    }
+
     //横の壁の判定
     checkWall() {
         let lx = ((this.x + this.vx)>>4);
@@ -134,37 +166,5 @@ class Nokonoko {
                 this.sp = 162 + ((this.acou / 10) % 2); //左向きは+16を使う
             }  
         }      
-    }
-
-    //更新処理
-    update() {
-        if(this.kill) return;
-        if(this.proc_nokonoko()) return;
-  
-        this.checkWall();
-        this.checkFloor();
-        this.checkCliff();
-       
-        if(this.vy < AIR_RESIST) this.vy += GRAVITY; //重力・空気抵抗
-        this.x += this.vx;
-        this.y += this.vy;
-        if((this.y>>4) > FIELD_SIZE_H * 16) this.kill = true;
-        
-        this.acou++;  //アニメ用のカウンタ
-        if(Math.abs(this.vx) == MAX_SPEED) this.acou++; 
-        this.updateAnim();
-    }
-
-    //描画処理
-    draw() {
-        let an = this.sp;
-        let sx = (an&15)<<4;
-        let sy = (an>>4)<<4;
-        let px = (this.x>>4) - (field.scx);
-        let py = (this.y>>4) - (field.scy);
-        let s;
-        if(this.sz) s = this.sz;
-        else s = 32;
-        vcon.drawImage(chImg, sx, sy, 16, s, px, py, 16, 16);
     }
 }

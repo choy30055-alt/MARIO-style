@@ -50,8 +50,6 @@ let jyugem = [];
 let flags = [];
 let hanabi = [];
 
-let gameState = GAME_START;
-
 //スコア等表示オブジェクト
 let score = 0;
 let coinc = 0;
@@ -59,6 +57,7 @@ let scorepop = [];
 //let lifePoint = 4;
 
 //ゲームステート
+let gameState = GAME_START;
 //let gameState = GAME_PLAYING;
 let gameOverImage = null;
 let isGoalNear = false;
@@ -519,7 +518,7 @@ function setupOjisanButton() {
         overlay.appendChild(obtn);
 
         obtn.addEventListener("click", () => {
-            location.reload();
+            location.reload(true);
         });
     }
 }
@@ -562,16 +561,3 @@ function showOjisanButton(wx, wy) {
         btn.classList.add("float");
     }, 800); // jump の animation 時間と合わせる
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

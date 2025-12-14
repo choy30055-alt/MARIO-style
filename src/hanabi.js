@@ -110,6 +110,76 @@ update() {
     if (!alive) this.kill = true;
 }
 
+draw() {
+    if (this.kill) return;
+
+    // --- 上昇 ---
+    if (this.state === 0) {
+        vcon.save();
+        vcon.globalCompositeOperation = "lighter";
+        for (let t of this.trail) {
+            vcon.globalAlpha = t.a;
+            vcon.fillStyle = this.color;
+            vcon.beginPath();
+            vcon.arc((t.x >> 4) - field.scx + 8, (t.y >> 4) - field.scy + 8, 0.5, 0, Math.PI * 2);
+            vcon.fill();
+        }
+        vcon.restore();
+        return;
+    }
+
+    // --- 外円（星みたいに煌めく粒） ---
+    for (let p of this.particles) {
+        if (p.life <= 0 || p.sparkle) continue;
+        // ベースの明るさ（寿命）
+        const base = Math.min(1, p.life / 70);
+        // ランダムな瞬き（毎フレーム揺らぐ）
+        const flicker = 0.6 + Math.random() * 0.9;
+        // たまに強く光るフラッシュ
+        const flash = (Math.random() < 0.12) ? 2.5 : 1.0;
+        vcon.save();
+        vcon.globalAlpha = base * flicker * flash * 1.6;
+        vcon.fillStyle = p.color;
+        vcon.beginPath();
+        vcon.arc((p.x >> 4) - field.scx + 8, (p.y >> 4) - field.scy + 8, 1.0, 0, Math.PI * 2); //円サイズ
+        vcon.fill();
+        vcon.restore();
+    }
+        // --- 外円（星みたいに煌めく粒） ---
+    for (let p of this.particles) {
+        if (p.life <= 0 || p.sparkle) continue;
+        // ベースの明るさ（寿命）
+        const base = Math.min(1, p.life / 50);
+        // ランダムな瞬き（毎フレーム揺らぐ）
+        const flicker = 0.6 + Math.random() * 0.9;
+        // たまに強く光るフラッシュ
+        const flash = (Math.random() < 0.12) ? 2.5 : 1.0;
+        vcon.save();
+        vcon.globalAlpha = base * flicker * flash * 1.6;
+        vcon.fillStyle = p.color;
+        vcon.beginPath();
+        vcon.arc((p.x >> 4) - field.scx + 8, (p.y >> 4) - field.scy + 8, 1.5, 0, Math.PI * 2 //円サイズ
+        );
+        vcon.fill();
+        vcon.restore();
+    }
+
+    // --- 中心コア（発光） ---
+    vcon.save();
+    vcon.globalCompositeOperation = "lighter";
+    for (let p of this.particles) {
+        if (p.life <= 0 || !p.sparkle) continue;
+        vcon.save();
+        vcon.globalAlpha = (p.life / 40) * 4.0;
+        vcon.fillStyle = p.color;
+        vcon.beginPath();
+        vcon.arc((p.x >> 4) - field.scx + 8,(p.y >> 4) - field.scy + 8, 1.0, 0, Math.PI * 2); //円サイズ
+        vcon.fill();
+        vcon.restore();
+    }
+    vcon.restore();
+}
+
 // 外円：キラキラ・チカチカ
 explodeBig() {
     const NUM = 300;
@@ -164,75 +234,7 @@ explodeCore() {
     }
 }
 
-draw() {
-    if (this.kill) return;
 
-    // --- 上昇 ---
-    if (this.state === 0) {
-        vcon.save();
-        vcon.globalCompositeOperation = "lighter";
-        for (let t of this.trail) {
-            vcon.globalAlpha = t.a;
-            vcon.fillStyle = this.color;
-            vcon.beginPath();
-            vcon.arc((t.x >> 4) - field.scx + 8, (t.y >> 4) - field.scy + 8, 0.5, 0, Math.PI * 2);
-            vcon.fill();
-        }
-        vcon.restore();
-        return;
-    }
-
-    // --- 外円（星みたいに煌めく粒） ---
-for (let p of this.particles) {
-    if (p.life <= 0 || p.sparkle) continue;
-    // ベースの明るさ（寿命）
-    const base = Math.min(1, p.life / 70);
-    // ランダムな瞬き（毎フレーム揺らぐ）
-    const flicker = 0.6 + Math.random() * 0.9;
-    // たまに強く光るフラッシュ
-    const flash = (Math.random() < 0.12) ? 2.5 : 1.0;
-    vcon.save();
-    vcon.globalAlpha = base * flicker * flash * 1.6;
-    vcon.fillStyle = p.color;
-    vcon.beginPath();
-    vcon.arc((p.x >> 4) - field.scx + 8, (p.y >> 4) - field.scy + 8, 1.0, 0, Math.PI * 2); //円サイズ
-    vcon.fill();
-    vcon.restore();
-}
-    // --- 外円（星みたいに煌めく粒） ---
-for (let p of this.particles) {
-    if (p.life <= 0 || p.sparkle) continue;
-    // ベースの明るさ（寿命）
-    const base = Math.min(1, p.life / 50);
-    // ランダムな瞬き（毎フレーム揺らぐ）
-    const flicker = 0.6 + Math.random() * 0.9;
-    // たまに強く光るフラッシュ
-    const flash = (Math.random() < 0.12) ? 2.5 : 1.0;
-    vcon.save();
-    vcon.globalAlpha = base * flicker * flash * 1.6;
-    vcon.fillStyle = p.color;
-    vcon.beginPath();
-    vcon.arc((p.x >> 4) - field.scx + 8, (p.y >> 4) - field.scy + 8, 1.5, 0, Math.PI * 2 //円サイズ
-    );
-    vcon.fill();
-    vcon.restore();
-}
-
-    // --- 中心コア（発光） ---
-    vcon.save();
-    vcon.globalCompositeOperation = "lighter";
-    for (let p of this.particles) {
-        if (p.life <= 0 || !p.sparkle) continue;
-        vcon.save();
-        vcon.globalAlpha = (p.life / 40) * 4.0;
-        vcon.fillStyle = p.color;
-        vcon.beginPath();
-        vcon.arc((p.x >> 4) - field.scx + 8,(p.y >> 4) - field.scy + 8, 1.0, 0, Math.PI * 2); //円サイズ
-        vcon.fill();
-        vcon.restore();
-    }
-    vcon.restore();
-}
 }
 
 //カラーリスト
