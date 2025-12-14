@@ -419,7 +419,7 @@ function gameStart() {  //スタートボタンでゲーム開始
 
     startTime = performance.now();
     ojisan.draw();
-    //enemyDraw();
+    enemyDraw();
     createFlag();
     setupOjisanButton();
     mainLoop();
@@ -562,6 +562,7 @@ function showOjisanButton(wx, wy) {
         btn.classList.add("float");
     }, 800); // jump の animation 時間と合わせる
 }
+
 
 
 
