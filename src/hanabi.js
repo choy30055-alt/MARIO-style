@@ -138,7 +138,7 @@ explodeBig() {
 
 // 中心コア
 explodeCore() {
-    const NUM = 300;
+    const NUM = 200;
     const COLORS = [
         "red","yellow","cyan","lime","orange","pink",
         "purple","white","blue","magenta","gold",
