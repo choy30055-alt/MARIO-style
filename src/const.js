@@ -106,7 +106,7 @@ const GOAL_ABSORB = 3;   // 吸い込み開始
 const GOAL_END    = 4;   // 完全吸い込み
 const SCORE_UP    = 5;    //ゴールスコア
 const SCORE_END   = 6;    //ゴールスコアアップ終了
-const ENDING_BRANCH = 100; //エンディング切替スコア
+const ENDING_BRANCH = 500; //エンディング切替スコア
 
 //スプライトの基本クラス
 class Sprite {
@@ -165,4 +165,5 @@ class Sprite {
         vcon.drawImage(chImg, sx, sy, 16, s, px, py, 16, 16);
     }
 }
+
 
