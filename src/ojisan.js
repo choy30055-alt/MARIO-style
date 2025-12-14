@@ -57,7 +57,7 @@ class Ojisan {
 
         //キノコを採った時のエフェクト
         if(this.kinoko) {
-            if(this.type == TYPE_FIRE) {
+            if(this.type == TYPE_FIRE || this.type == TYPE_BIG ) {
                 this.kinoko = 0;
             } else {
                 pupSound.play();
