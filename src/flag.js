@@ -1,6 +1,5 @@
 //
 //ゴール旗のクラス
-//flag.js — 旗クラス（②用：当たり判定を持ち、触れたら自分がスルスル落ちる）
 // 
 class Flag {
     constructor(tx, ty) { // tx,ty はタイル座標で渡す想定
@@ -13,21 +12,22 @@ class Flag {
         this.fallLevel = 160;
     }
 
-    update() {
-        // ----- 当たり判定（アイテム側が担当） -----
-        if (!this.isFalling /*&& !this.touched*/) {
-            // ピクセル単位で判定（スクロール考慮不要）
-            const fx = this.x<<4;
+    update() { 
+        if (!this.isFalling /*&& !this.touched*/) { // ----- 当たり判定（アイテム側が担当） -----
+            const fx = this.x<<4; // ピクセル単位で判定（スクロール考慮不要）
             const fy = this.y<<4;
             const ox = ojisan.x;
             const oy = ojisan.y;
             const dx = Math.abs(ox - fx); // 中心合わせで広めに判定（必要なら閾値を調整）
             const dy = Math.abs(oy - fy); 
-            if (dx < 256 && dy < 512) { // 当たり！ 旗は自分で落ちる（今回の仕様）
+            if (dx < 256 && dy < 512) { // 当たり！ 旗は自分で落ちる（今回の仕様）256/512 32/48
                 this.isFalling = true;
-                ojisan.isGoal = true;
                 this.touched = true;    // 二重反応防止
                 this.vy = GOAL_GRAVITY;            // 落下速度（微調整可）
+                ojisan.isGoal = true;  // ★ ゴール開始！
+                ojisan.goalState = GOAL_GRAB;
+                ojisan.goalTimer = 0;
+                ojisan.goalGroundY = this.fallLevel << 4;
             }
         } 
         if (this.isFalling) { // 落下中

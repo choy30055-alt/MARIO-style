@@ -204,3 +204,58 @@ body {
   touch-action: none;
   pointer-events: auto;
 }
+
+#gameOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* ゲーム操作を邪魔しない */
+  z-index: 20;
+}
+
+#ojisanBtn {
+    width: 120px;
+    height: 120px;
+    background-image: url('../image/mariojump.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    position: absolute;
+    display: none; /* 最初は非表示 */
+    cursor: pointer;
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+    pointer-events: auto;
+}
+
+#ojisanBtn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* ジャンプアニメ */
+#ojisanBtn.jump {
+    animation: jump 0.8s ease-out forwards;
+}
+
+@keyframes jump {
+    0%   { transform: translateY(0) scale(1); }
+    40%  { transform: translateY(-30px) scale(1.05); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+/* ふわふわアニメ（常時） */
+#ojisanBtn.float {
+    animation: float 2.4s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-15px); }
+    100% { transform: translateY(0); }
+}
+

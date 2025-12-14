@@ -15,16 +15,16 @@ class Fireball {
         this.sp = sp;
         this.sz = 16;
         this.anim = 0;
-        this.snum = 
-        this.kill = false;
-        this.count = 0;
+        this.snum = 0;
+        this.kill = false;  
         this.acou = 0;
-        this.lifeTime = 3000; 
         if(tp == undefined) tp = ITEM_FIREB;
         this.tp = tp;
         this.scoreValue = 100;
-        this.creationTime = Date.now();
-        this.lifespan = 3000;
+        //this.creationTime = Date.now();
+        //this.lifespan = 3000;
+        //this.count = 0;
+         //this.lifeTime = 3000; 
     }
 
    //横の壁の判定

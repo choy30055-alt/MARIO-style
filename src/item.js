@@ -121,6 +121,9 @@ class Item extends Sprite {
         return false;
     }
 
+    //花火の処理
+    
+
     updateAnim() {
         //アニメスプライトの決定
         if(this.tp == ITEM_COIN) {

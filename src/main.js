@@ -50,6 +50,8 @@ let jyugem = [];
 let flags = [];
 let hanabi = [];
 
+let gameState = GAME_START;
+
 //スコア等表示オブジェクト
 let score = 0;
 let coinc = 0;
@@ -57,7 +59,7 @@ let scorepop = [];
 //let lifePoint = 4;
 
 //ゲームステート
-let gameState = GAME_PLAYING;
+//let gameState = GAME_PLAYING;
 let gameOverImage = null;
 let isGoalNear = false;
 
@@ -66,7 +68,7 @@ let timeLeft = 300;
 
 //メインループ
 function mainLoop() {
-    if(gameState === GAME_PLAYING) {
+    if(gameState === GAME_PLAY) {
         let nowTime = performance.now();
         let nowFrame = (nowTime - startTime) / GAME_FPS;
 
@@ -133,7 +135,7 @@ function update() {
 
 //描画処理
 function draw() {
-    vcon.fillStyle = "#66AAFF";
+    vcon.fillStyle = "#66AAFF"; //#66AAFF
     vcon.fillRect(0, 0, SCREEN_SIZE_W, SCREEN_SIZE_H);
     
     //マップを表示
@@ -392,6 +394,7 @@ function fadeInBgm(audio, frames) {
 
 function gameStart() {  //スタートボタンでゲーム開始
     document.getElementById("mstart").style.visibility = "hidden";   //スタートボタン非表示
+    if (gameState !== GAME_START) return;
     startSound1.play();
     startSound1.addEventListener("ended", function(){
         startSound2.play();
@@ -416,16 +419,11 @@ function gameStart() {  //スタートボタンでゲーム開始
 
     startTime = performance.now();
     ojisan.draw();
-    enemyDraw();
+    //enemyDraw();
     createFlag();
+    setupOjisanButton();
     mainLoop();
 }
-
-//ループ開始
-/*window.onload = function() {
-    startTime = performance.now();
-    mainLoop();
-} */
 
 //画像の事前読み込み
 function loadImageAssets() {
@@ -433,7 +431,7 @@ function loadImageAssets() {
     img.crossOrigin = "Anonymous";
     img.onload = () => {
         gameOverImage = img;
-        gameState = GAME_PLAYING;
+        gameState = GAME_PLAY;
     }
     img.src = "image/mrogameover.jpg";
 }
@@ -487,78 +485,89 @@ function triggerGameOver() {
 }
 
 //ゲームリロード処理
-
-/*can.addEventListener("click", checkFaceClick);   // 画面タップ／クリックで顔アイコンを押したかチェック
-can.addEventListener("touchstart", checkFaceClick);
-const FACE_OFFSET_X = -10;  // 左右にズラす（マイナスで左、プラスで右）
-const FACE_OFFSET_Y = 2;   // 上下にズラす（プラスで下、マイナスで上）
-function checkFaceClick(e) {
-    const rect = can.getBoundingClientRect();
-    const x = (e.clientX || e.touches[0].clientX) - rect.left;
-    const y = (e.clientY || e.touches[0].clientY) - rect.top;
-    const sx = x / 2; // 2倍スケール補正
-    const sy = y / 2;
-    const fx = 143 + FACE_OFFSET_X; // 描画位置 + 補正値
-    const fy = 11 + FACE_OFFSET_Y;
-    const fw = 24;
-    const fh = 24;
-    if (sx >= fx && sx <= fx + fw && sy >= fy && sy <= fy + fh) {
-        window.location.reload(true);
-    }
-}*/
-
-/*can.addEventListener("pointerdown", checkFaceClick);
-
-const FACE_OFFSET_X = -10;  // 左右にズラす（マイナスで左、プラスで右）
-const FACE_OFFSET_Y = 2;   // 上下にズラす（プラスで下、マイナスで上）
-function checkFaceClick(e) {
-    const rect = can.getBoundingClientRect();
-
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const sx = x / 2; // 2倍スケール補正
-    const sy = y / 2;
-
-    const fx = 143 + FACE_OFFSET_X;
-    const fy = 11 + FACE_OFFSET_Y;
-    const fw = 24;
-    const fh = 24;
-
-    if (sx >= fx && sx <= fx + fw && sy >= fy && sy <= fy + fh) {
-        window.location.reload(true);
-    }
-}*/
-
 document.getElementById("faceBtn").addEventListener("pointerdown", () => {
     window.location.reload(true);
 });
-
 function updateFaceBtnPosition() {
     const faceBtn = document.getElementById("faceBtn");
     const rect = can.getBoundingClientRect();
-
     // 内部解像度
     const INTERNAL_W = can.width;   // 640
     const INTERNAL_H = can.height;  // 480
-
     // 顔アイコンの内部座標（描画位置）
     const FACE_X = 143;
     const FACE_Y = 11;
-
     // 表示時のスケールに合わせて位置を計算
     const fx = rect.left + (FACE_X / INTERNAL_W) * rect.width;
     const fy = rect.top  + (FACE_Y / INTERNAL_H) * rect.height;
-
     // 顔の大きさ（24×24 を 2倍で描画しているので → 表示はスケールされる）
     const fw = (24 / INTERNAL_W) * rect.width * 2;
     const fh = (24 / INTERNAL_H) * rect.height * 2;
-
     faceBtn.style.left = fx + "px";
     faceBtn.style.top  = fy + "px";
     faceBtn.style.width = fw + "px";
     faceBtn.style.height = fh + "px";
 }
+
+function setupOjisanButton() {
+    const overlay = document.getElementById("gameOverlay");
+    if (!overlay) return;
+
+    if (!document.getElementById("ojisanBtn")) {
+        const obtn = document.createElement("button");
+        obtn.id = "ojisanBtn";
+        overlay.appendChild(obtn);
+
+        obtn.addEventListener("click", () => {
+            location.reload();
+        });
+    }
+}
+
+function getOjisanScreenPos() {  // ===== Ojisan UI 用：画面座標取得 =====
+    // ojisan は 16倍座標なので px に戻す
+    const sx = (ojisan.x >> 4) - field.scx;
+    const sy = (ojisan.y >> 4) - field.scy;
+    const rect = can.getBoundingClientRect();
+    const scaleX = rect.width / can.width;
+    const scaleY = rect.height / can.height;
+    return {
+        x: rect.left + sx * scaleX,
+        y: rect.top  + sy * scaleY
+    };
+}
+
+function showOjisanButton(wx, wy) {
+    const btn = document.getElementById("ojisanBtn");
+    if (!btn) return;
+
+    const rect = can.getBoundingClientRect();
+    const sx = wx - field.scx; // ワールド → 画面（内部座標）
+    const sy = wy - field.scy;
+    const scaleX = rect.width  / can.width;  // 内部 → CSS
+    const scaleY = rect.height / can.height;
+
+    btn.style.left = rect.left + sx * scaleX + "px";
+    btn.style.top  = rect.top  + sy * scaleY + "px";
+    btn.style.display = "block";
+
+    // ジャンプ演出
+    btn.classList.remove("jump");
+    void btn.offsetWidth;
+    btn.classList.add("jump");
+    hahaSound.play();
+
+    // ★ ジャンプが終わったらふわふわ開始
+    setTimeout(() => {
+        btn.classList.add("float");
+    }, 800); // jump の animation 時間と合わせる
+}
+
+
+
+
+
+
 
 
 

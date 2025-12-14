@@ -22,6 +22,10 @@ const firehitSound = new Audio("./audio/mroharetu.mp3");
 const jyugemSound = new Audio("./audio/jyugem.mp3");
 const gameoverSound = new Audio("./audio/mrogameover.mp3");
 const goalSound = new Audio("./audio/fanfare.mp3");
+const clearSound = new Audio("./audio/mrogameclear.mp3");
+const flagSound = new Audio("./audio/mroflag.mp3");
+const hanabiSound = new Audio("./audio/hanabi4.mp3");
+const scoreSound = new Audio("./audio/mroroulette.mp3");
 
 const GAME_FPS = 1000 / 60;  //FPS
 const SCREEN_SIZE_W = 256;
@@ -47,9 +51,10 @@ const TYPE_MINI = 1;
 const TYPE_BIG = 2;
 const TYPE_FIRE = 3;
 
-const GAME_PLAYING = 0;
-const GAME_OVER = 1;
-const GAME_CLEAR = 2;
+const GAME_START = 0;
+const GAME_PLAY = 1;
+const GAME_OVER = 2;
+const GAME_CLEAR = 3;
 
 //重力・移動
 const GRAVITY = 4;
@@ -59,6 +64,7 @@ const MAX_SPEED = 32;
 
 //スコア関係
 const SCORE_COIN = 100;
+const SCORE_ITEM = 1000;
 const SCORE_KURIBO = 100;
 const SCORE_NOKONOKO = 100;
 const SCORE_TOGEZO = 100;
@@ -78,6 +84,7 @@ const ITEM_NOKONOKO = 11;
 const ITEM_URNOKONOKO = 12;
 const ITEM_JYUGEM = 13;
 const ITEM_FLAG = 14;
+const ITEM_HANABI = 15;
 
 //ブロック関係
 const BL_NORMAL_A = 371;
@@ -86,19 +93,20 @@ const BL_NORMAL_C = 374;
 const BL_HATENA_A = 368;
 const BL_HATENA_B = 496;
 const BL_TRANSP_A = 499;
-//const BL_FLAG_A = 493;
 const BL_POLE = 500;
-const BL_CASTLE = 475;
-const BL_CASTLE_GATE = 491;
+//const BL_FLAG_A = 493;
+//const BL_CASTLE = 475;
+//const BL_CASTLE_GATE = 491;
+//const FLAG_SPRITE = 493;
 
-const GOAL_NONE  = 0;
-const GOAL_FLAG  = 1;
-const GOAL_WALK  = 2;
-const GOAL_ENTER = 3;
-const GOAL_CLEAR = 4;
-
-const FLAG_SPRITE = 493;
-
+const GOAL_GRAB   = 0;   // 旗を掴む
+const GOAL_FALL   = 1;   // 一緒に落下
+const GOAL_WALK   = 2;   // 城に向かって歩く
+const GOAL_ABSORB = 3;   // 吸い込み開始
+const GOAL_END    = 4;   // 完全吸い込み
+const SCORE_UP    = 5;    //ゴールスコア
+const SCORE_END   = 6;    //ゴールスコアアップ終了
+const ENDING_BRANCH = 100; //エンディング切替スコア
 
 //スプライトの基本クラス
 class Sprite {
