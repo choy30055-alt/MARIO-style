@@ -332,7 +332,7 @@ class Ojisan {
                     case 3:
                         blbSound.currentTime = 0; //連続再生
                         blbSound.play();
-                        score += SCORE_COIN / 2;
+                        score += SCORE_BLOCK;
                         block.push(new Block(bl, x, y, 1, 20, -60));
                         block.push(new Block(bl, x, y, 1, -20, -60));
                         block.push(new Block(bl, x, y, 1, 20, -20));
@@ -430,6 +430,8 @@ class Ojisan {
             }
 
             if(bl == BL_TRANSP_A) { //ブロックD(隠)の場合
+                item.push(new Item(254, x, y, 0, 0, ITEM_FIRE));
+                block.push(new Block(374, x, y));
                 return;
             }
         }     
