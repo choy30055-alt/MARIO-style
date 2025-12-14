@@ -83,4 +83,5 @@ class Field{
         let sy = (bl>>4)<<4;
         vcon.drawImage(chImg, sx, sy, 16, 16, px, py, 16, 16);
     }
+
 }
