@@ -33,7 +33,7 @@ class Ojisan {
         this.nokonokoAttack = 0;
         this.fire = 0;
         this.isGoal = false;
-        this.lifePoint = 7;
+        this.lifePoint = 10;
         this.isDead = false;
         this.goalState = 0;
         this.goalTimer = 0;
@@ -751,4 +751,5 @@ class Ojisan {
         }
     }
 }
+
 
