@@ -184,8 +184,10 @@ draw() {
 explodeBig() {
     const NUM = 300;
     const COLORS = [
-        "gold", "goldenrod", "yellow", "lightyellow", "khaki",
-        "moccasin", "orange", "darkorange", "lemonchiffon", // 金色系
+        "red","yellow","cyan","lime","orange","pink",
+        "purple","white","blue","magenta","gold",
+        "deeppink","aqua","chartreuse","hotpink","dodgerblue","springgreen",
+        "fuchsia","greenyellow","turquoise","violet"
     ];
 
     for (let i = 0; i < NUM; i++) {
