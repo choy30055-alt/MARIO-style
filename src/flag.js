@@ -20,7 +20,7 @@ class Flag {
             const oy = ojisan.y;
             const dx = Math.abs(ox - fx); // 中心合わせで広めに判定（必要なら閾値を調整）
             const dy = Math.abs(oy - fy); 
-            if (dx < 256 && dy < 512) { // 当たり！ 旗は自分で落ちる（今回の仕様）256/512 32/48
+            if (dx < 256 && dy < 720) { // 当たり！ 旗は自分で落ちる（今回の仕様）256/512 32/48
                 this.isFalling = true;
                 this.touched = true;    // 二重反応防止
                 this.vy = GOAL_GRAVITY;            // 落下速度（微調整可）
@@ -44,3 +44,4 @@ class Flag {
         drawSprite(this.sp, px, py);
     }
 }
+
