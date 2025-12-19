@@ -49,6 +49,8 @@ let nokonoko = [];
 let jyugem = [];
 let flags = [];
 let hanabi = [];
+let hammerBros = [];
+let hammer = [];
 
 //スコア等表示オブジェクト
 let score = 0;
@@ -82,17 +84,18 @@ function mainLoop() {
             //描画処理
             draw();
         }
-
-        const elapsed = nowTime - startTime; //タイマーカウント
-        const newTime = 300 - Math.floor(elapsed / 1000); 
-        if (newTime >= 0) {
-            timeLeft = newTime;
-        } else { //タイムオーバーでゲームオーバー
-            timeLeft = 0;
-            triggerGameOver();
-        }
-        if(ojisan.lifePoint <= 0 || ojisan.isDead) {
-            triggerGameOver();
+        if (!ojisan.isGoal) {
+            const elapsed = nowTime - startTime; //タイマーカウント
+            const newTime = 300 - Math.floor(elapsed / 1000); 
+            if (newTime >= 0) {
+                timeLeft = newTime;
+            } else { //タイムオーバーでゲームオーバー
+                timeLeft = 0;
+                triggerGameOver();
+            }
+            if(ojisan.lifePoint <= 0 || ojisan.isDead) {
+                triggerGameOver();
+            }
         }
 
     } else if (gameState === GAME_OVER) {
@@ -127,6 +130,9 @@ function update() {
     updateObj(scorepop);
     updateObj(flags);
     updateObj(hanabi);
+    updateObj(hammerBros);
+    updateObj(hammer);
+
 
     //おじさんの更新
     ojisan.update();
@@ -152,6 +158,8 @@ function draw() {
     drawObj(scorepop);
     drawObj(flags);
     drawObj(hanabi);
+    drawObj(hammerBros);
+    drawObj(hammer);
 
     //おじさんを表示
     ojisan.draw();
@@ -417,6 +425,7 @@ function gameStart() {  //スタートボタンでゲーム開始
     loadImageAssets();
 
     startTime = performance.now();
+    //hammerBros.push(new HammerBros(134, 380>>4, 100>>4, 7, 0, ITEM_HAMMERBROS)); //380
     ojisan.draw();
     enemyDraw();
     createFlag();

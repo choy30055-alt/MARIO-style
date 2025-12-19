@@ -62,6 +62,9 @@ const GOAL_GRAVITY = 1; //ゴール時
 const AIR_RESIST = 64;
 const MAX_SPEED = 32;
 
+//地面
+const GROUND_LEVEL = 2820;  //2820 2720
+
 //スコア関係
 const SCORE_COIN = 100;
 const SCORE_ITEM = 1000;
@@ -86,11 +89,14 @@ const ITEM_URNOKONOKO = 12;
 const ITEM_JYUGEM = 13;
 const ITEM_FLAG = 14;
 const ITEM_HANABI = 15;
+const ITEM_HAMMERBROS = 16;
+const ITEM_HAMMER = 17;
 
 //ブロック関係
 const BL_NORMAL_A = 371;
 const BL_NORMAL_B = 373;
 const BL_NORMAL_C = 374;
+const BL_NORMAL_D = 372;
 const BL_HATENA_A = 368;
 const BL_HATENA_B = 496;
 const BL_TRANSP_A = 499;
@@ -108,6 +114,7 @@ const GOAL_END    = 4;   // 完全吸い込み
 const SCORE_UP    = 5;    //ゴールスコア
 const SCORE_END   = 6;    //ゴールスコアアップ終了
 const ENDING_BRANCH = 15000; //エンディング切替スコア
+const ENDING_BRANCH_S = 25000; //エンディング切替スコア
 
 //スプライトの基本クラス
 class Sprite {

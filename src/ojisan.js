@@ -33,7 +33,7 @@ class Ojisan {
         this.nokonokoAttack = 0;
         this.fire = 0;
         this.isGoal = false;
-        this.lifePoint = 10;
+        this.lifePoint = 5;
         this.isDead = false;
         this.goalState = 0;
         this.goalTimer = 0;
@@ -261,6 +261,7 @@ class Ojisan {
 
     //毎フレーム毎の描画処理
     draw() {
+        console.log(this.x);
         let px = (this.x >> 4) - field.scx;
         let py = (this.y >> 4) - field.scy;
         let sx = (this.snum & 15) << 4;
@@ -434,6 +435,19 @@ class Ojisan {
                 block.push(new Block(374, x, y));
                 return;
             }
+
+            if(bl == BL_NORMAL_D) { //ブロックCの場合
+                blbSound.currentTime = 0; //連続再生
+                blbSound.play();
+                score += SCORE_BLOCK;
+                block.push(new Block(bl, x, y, 1, 20, -60));
+                block.push(new Block(bl, x, y, 1, -20, -60));
+                block.push(new Block(bl, x, y, 1, 20, -20));
+                block.push(new Block(bl, x, y, 1, -20, -20));
+                return;
+            }
+
+
         }     
     }
 
@@ -670,8 +684,8 @@ class Ojisan {
                     this.clearPlayed = true;
                 }
                 // 花火10回終わったらスコアUPへ移行
-                if (this.fireworkCount >= 10) {
-                    hanabi.forEach(h => h.kill = true);
+                if (this.fireworkCount >= 7 && this.goalTimer > 60) {
+                    //hanabi.forEach(h => h.kill = true);
                     this.goalState = SCORE_UP;  // ★ここで遷移！
                     this.scoreCount = 0;        // カウンタ初期化
                     break;
@@ -684,26 +698,24 @@ class Ojisan {
                 }
                 this.goalTimer++;
                 break;
-
             case SCORE_UP:  // 1フレームごとに10点加算
                 score += 40;
                 this.scoreCount++;
-
+                if (this.scoreCount % 5 === 0) { // 音が鳴りすぎないように間引き
+                    scoreSound.play();
+                }   
+                if (this.scoreCount >= 100) {  // 合計点到達したら終了
+                    scoreSound.pause();
+                    this.goalState = SCORE_END;  // ★次の終了ステートへ
+                }
+                break;
+            case SCORE_END:
                 if (!this.ojisanButtonShown && this.goalAnchor && SCORE_END) {
                     showOjisanButton(
                         this.goalAnchor.x + 220, // 右方向（花火3発目相当）
                         this.goalAnchor.y - 100  // 上方向
                     );
                     this.ojisanButtonShown = true;
-                }
-
-                if (this.scoreCount % 5 === 0) { // 音が鳴りすぎないように間引き
-                    scoreSound.play();
-                }
-                
-                if (this.scoreCount >= 100) {  // 合計点到達したら終了
-                    scoreSound.pause();
-                    this.goalState = SCORE_END;  // ★次の終了ステートへ
                 }
                 break;
         }
@@ -712,24 +724,37 @@ class Ojisan {
 
     //花火演出
     proc_hanabi_S(){
-        let t = this.goalTimer % 70; // 70fで1セット繰り返し
-        if (t === 0) {
-            hanabi.push(new Hanabi_S(ITEM_HANABI,(this.x>>4) - 40, (this.y>>4) - 100, 0, 0));
+        let t = this.goalTimer % 60; // 70fで1セット繰り返し 70
+        if (this.fireworkCount < 6) {
+        if (t === 10) {
+            hanabi.push(new Hanabi_S((this.x>>4) - 40, (this.y>>4) - 100, 0, 0,ITEM_HANABI ));
             hanabiSound.play();
         }
-        if (t === 10) {
-            hanabi.push(new Hanabi_S(ITEM_HANABI,(this.x>>4), (this.y>>4) - 120, 0, 0));
+        if (t === 20) {
+            hanabi.push(new Hanabi_S((this.x>>4), (this.y>>4) - 120, 0, 0, ITEM_HANABI));
             hanabiSound.play();           
         }
-        if (t === 20) {
-            hanabi.push(new Hanabi_S(ITEM_HANABI,(this.x>>4) + 40, (this.y>>4) - 110, 0, 0));
+        if (t === 30) {
+            hanabi.push(new Hanabi_S((this.x>>4) + 40, (this.y>>4) - 110, 0, 0, ITEM_HANABI));
             hanabiSound.play();
         }
         if (t === 59) {
             hanabiSound.pause();
             this.fireworkCount++;
         }
-    }
+        }
+        //Sを3セット出したあと // S終了判定・SS条件・タイミング調整
+        if (this.fireworkCount === 6 &&  score >= ENDING_BRANCH_S  && t === 40) {
+                hanabi.push(new Hanabi_SS((this.x>>4) - 60, (this.y>>4) - 100, 0, 0, ITEM_HANABI));
+                hanabi.push(new Hanabi_SS((this.x>>4) - 30, (this.y>>4) - 120, 0, 0, ITEM_HANABI));
+                hanabi.push(new Hanabi_SS((this.x>>4) + 30, (this.y>>4) - 120, 0, 0, ITEM_HANABI));
+                hanabi.push(new Hanabi_SS((this.x>>4) + 60, (this.y>>4) - 100, 0, 0, ITEM_HANABI));
+                hanabiSound.play();
+                this.fireworkCount++; // ← 二度と出さないために進める
+                this.goalTimer = 0; 
+        }
+    } 
+
 
     proc_hanabi_A(){
         let t = this.goalTimer % 60; // 60fで1セット繰り返し
@@ -751,5 +776,3 @@ class Ojisan {
         }
     }
 }
-
-
