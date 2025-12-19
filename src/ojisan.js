@@ -33,7 +33,7 @@ class Ojisan {
         this.nokonokoAttack = 0;
         this.fire = 0;
         this.isGoal = false;
-        this.lifePoint = 10;
+        this.lifePoint = 5;
         this.isDead = false;
         this.goalState = 0;
         this.goalTimer = 0;
@@ -691,7 +691,9 @@ class Ojisan {
                     break;
                 }
                 //スコアで花火切り替え
-                if(score >= ENDING_BRANCH) {
+                if(score >= ENDING_BRANCH_S) {
+                    this.proc_hanabi_SS();
+                } else if(score < ENDING_BRANCH_S && score >= ENDING_BRANCH) {
                     this.proc_hanabi_S();
                 } else {
                     this.proc_hanabi_A();
@@ -723,7 +725,7 @@ class Ojisan {
     }
 
     //花火演出
-    proc_hanabi_S(){
+    proc_hanabi_SS(){
         let t = this.goalTimer % 60; // 70fで1セット繰り返し 70
         if (this.fireworkCount < 6) {
         if (t === 10) {
@@ -744,37 +746,49 @@ class Ojisan {
         }
         }
         //Sを3セット出したあと // S終了判定・SS条件・タイミング調整
-        if (this.fireworkCount === 6 &&  score >= ENDING_BRANCH_S  && t === 40) {
+        if (this.fireworkCount === 6 && t === 40) {
                 hanabi.push(new Hanabi_SS((this.x>>4) - 60, (this.y>>4) - 100, 0, 0, ITEM_HANABI));
                 hanabi.push(new Hanabi_SS((this.x>>4) - 30, (this.y>>4) - 120, 0, 0, ITEM_HANABI));
+                hanabi.push(new Hanabi_SS((this.x>>4), (this.y>>4) - 140, 0, 0, ITEM_HANABI));
                 hanabi.push(new Hanabi_SS((this.x>>4) + 30, (this.y>>4) - 120, 0, 0, ITEM_HANABI));
                 hanabi.push(new Hanabi_SS((this.x>>4) + 60, (this.y>>4) - 100, 0, 0, ITEM_HANABI));
                 hanabiSound.play();
                 this.fireworkCount++; // ← 二度と出さないために進める
-                this.goalTimer = 0; 
+                this.goalTimer = 0;
         }
     } 
 
+    proc_hanabi_S(){
+        let t = this.goalTimer % 60; // 60fで1セット繰り返し
+        if (this.fireworkCount < 6) {
+        if (t === 10) {
+            hanabi.push(new Hanabi_S((this.x>>4) - 40, (this.y>>4) - 100, 0, 0,ITEM_HANABI ));
+            hanabiSound.play();
+        }
+        if (t === 20) {
+            hanabi.push(new Hanabi_S((this.x>>4), (this.y>>4) - 120, 0, 0, ITEM_HANABI));
+            hanabiSound.play();           
+        }
+        if (t === 30) {
+            hanabi.push(new Hanabi_S((this.x>>4) + 40, (this.y>>4) - 110, 0, 0, ITEM_HANABI));
+            hanabiSound.play();
+        }
+        if (t === 59) {
+            hanabiSound.pause();
+            this.fireworkCount++;
+        }
+        }
+    } 
 
     proc_hanabi_A(){
         let t = this.goalTimer % 60; // 60fで1セット繰り返し
-        /*if (t === 0) {
-            hanabi.push(new Hanabi_A(204, (this.x>>4) - 40, (this.y>>4) - 100, 0, 0, ITEM_HANABI));
-            hanabiSound.play();
-        }*/
         if (t === 10) {
             hanabi.push(new Hanabi_A(206, (this.x>>4), (this.y>>4) - 120, 0, 0, ITEM_HANABI));
             hanabiSound.play();           
         }
-        /*if (t === 20) {
-            hanabi.push(new Hanabi_A(204, (this.x>>4) + 40, (this.y>>4) - 110, 0, 0, ITEM_HANABI));
-            hanabiSound.play();
-        }*/
         if (t === 59) {
             hanabiSound.pause();
             this.fireworkCount++;
         }
     }
 }
-
-

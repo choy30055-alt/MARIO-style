@@ -272,7 +272,7 @@ class Hanabi_SS {
 
             // ★キラキラ派生（初期だけ・上限あり）
             if (!p.sparkle && p.life > 40 && this.particles.length < 1400) {
-                if (Math.random() < 0.3) {
+                if (Math.random() < 0.22) {
                     this.particles.push({
                         x: p.x,
                         y: p.y,
@@ -285,7 +285,7 @@ class Hanabi_SS {
                         growG: 0,
                         life: 12 + (Math.random() * 12 | 0),
                         sparkle: true,
-                        size: 0.2 + Math.random() * 0.2,
+                        size: 0.2 + Math.random() * 0.7,
                         palette: p.sparkPalette,
                         color: p.sparkPalette[(Math.random() * p.sparkPalette.length) | 0]
                     });
@@ -361,7 +361,7 @@ class Hanabi_SS {
     }
     // --- ナイアガラ生成（3発同時・一度きり想定） ---
     explodeNiagara() {
-        const NUM = 350; // ★3発同時の安全上限
+        const NUM = 300; // ★3発同時の安全上限
         const COLORS = [
             "gold", "goldenrod", "khaki",
             "moccasin", "orange", "darkorange", "lemonchiffon"
