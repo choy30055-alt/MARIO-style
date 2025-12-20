@@ -1,4 +1,3 @@
-//
 //クリボクラス
 //
 class Kuribo {
@@ -25,8 +24,7 @@ class Kuribo {
     //更新処理
     update() {
         if(this.kill) return;
-        if(ojisan.kuribo) return;
-
+        //if(ojisan.kuribo) return;
         if(this.proc_kuribo()) return;
   
         this.checkWall();
@@ -71,7 +69,7 @@ class Kuribo {
 
     //崖の判定
     checkCliff() {
-        if(this.y<=2820) return;
+        if(this.y<=GROUND_LEVEL) return;
         let nextStepX = this.x>>4 + this.vx>>4;
         let checkY = this.y>>4 + this.h>>4 +10
         if(!field.isBlock(nextStepX, checkY)) {
@@ -128,7 +126,7 @@ class Kuribo {
         if(this.checkHit(ojisan)) {
             const collisionType = this.checkEnemyCollision(ojisan);
             if(collisionType === "stomp") {
-                ojisan.kuriboAttack = 1;
+                ojisan.dealDmgKuri = 1;
                 this.tp = ITEM_STOMPKURI;
                 this.sp = 98;
                 this.vx = 0;
@@ -144,14 +142,12 @@ class Kuribo {
                 return true;
             }
             if(collisionType === "hit") {
-                ojisan.kuriboHit = true;
+                ojisan.tookDmgKuri = 1;
                 this.kill = false;
                 return true;
             } 
         }
         if(++this.count <= 32) {
-            //itemSound.currentTime = 0; //連続再生
-            //itemSound.play();
             this.sz = (1 + this.count)>>1;
             this.y -= 1<<3;
             if(this.count == 32) this.vx = 12;

@@ -10,31 +10,42 @@ class Ojisan {
         this.h = 16;
         this.vx = 0;
         this.vy = 0;
+        this.type = TYPE_MINI;
+        this.dirc = 0;
+        this.jump = 0;
         this.anim = 0;
         this.snum = 0;
         this.acou = 0;
-        this.dirc = 0;
-        this.coinCount = 0;
-        this.coinGet = false;
-        this.MAX_COUNT = 5;
-        this.jump = 0;
-        this.kinoko = 0;
-        this.coin = 0;
-        this.type = TYPE_MINI;
-        this.reload = 0;
+        this.lifePoint = 10; //生命ポイント
+        this.kill = false;
+        this.isDead = false;
+
         this.scoreValue = 100;
         this.loseValue = -100;
-        this.kill = false;
-        this.kuriboHit = 0;
-        this.kuriboAttack = 0;
-        this.togezoHit = 0;
-        this.togezoAttack = 0;
-        this.nokonokoHit = 0;
-        this.nokonokoAttack = 0;
+        this.scoreCount = 1;
+        this.reload = 0;
+    
+        this.kinoko = 0;
+        this.coinGet = false;
         this.fire = 0;
+        //this.coin = 0;
+        //this.coinCount = 0;
+        //this.MAX_COUNT = 5;
+
+        this.tookDmgKuri = 0; //負
+        this.dealDmgKuri = 0; //勝
+        this.tookDmgNoko = 0; //負
+        this.dealDmgNoko = 0; //勝
+        this.tookDmgToge = 0; //負
+        this.dealDmgToge = 0; //勝
+        //this.kuriboHit = 0;
+        //this.kuriboAttack = 0;
+        //this.togezoHit = 0;
+        //this.togezoAttack = 0;
+        //this.nokonokoHit = 0;
+        //this.nokonokoAttack = 0;
+
         this.isGoal = false;
-        this.lifePoint = 5;
-        this.isDead = false;
         this.goalState = 0;
         this.goalTimer = 0;
         this.scale = 1;
@@ -42,10 +53,8 @@ class Ojisan {
         this.gameclear = false;
         this.clearPlayed = false; // ゴール音を再生したか
         this.fireworkCount = 0; // 花火セット数
-        this.scoreCount = 1;
         this.ojisanButtonShown = false;
         this.goalAnchor = null;
-
     }
 
     //毎フレーム毎の更新処理
@@ -55,7 +64,7 @@ class Ojisan {
             return;
         }
 
-        //キノコを採った時のエフェクト
+        //キノコ：ゲット
         if(this.kinoko) {
             if(this.type == TYPE_FIRE || this.type == TYPE_BIG ) {
                 this.kinoko = 0;
@@ -78,7 +87,7 @@ class Ojisan {
             return;
         }
         
-        //コインを取った時のエフェクト
+        //コイン：ゲット
         if(this.coinGet) {
             this.coinGet = false;
             score += SCORE_COIN;
@@ -90,129 +99,8 @@ class Ojisan {
                 this.coinCount = 0;
             } */
         } 
-        
-        //クリボとの戦いの時のエフェクト
-        //LOSE_ぶつかった時
-        if(this.kuriboHit) {
-            lvdSound.play();
-            this.y -= 8;
-            this.snum = 94;
-            this.h = this.snum == 94?16:32;
-            this.lifePoint += this.loseValue / 100;
-            this.loseValue = 0;
-            if(++this.kuriboHit == 40) {
-               this.kuriboHit = 0; 
-               miyaSound.play();
-               this.snum = 32;
-               this.h = this.snum == 32?16:32;
-               this.type = TYPE_MINI;
-               this.ay = 16;
-               this.loseValue = -100;
-            }
-            return;
-        } 
-        //WIN_踏んだ時
-        if(this.kuriboAttack) {
-            fumuSound.play();
-            if(this.type == TYPE_BIG) {
-                this.snum =6;
-            } else if(this.type == TYPE_FIRE){
-                this.snum = 262;
-            } else{
-                this.snum = 38; 
-            } 
-            if(this.dirc) this.snum += 48; //左向きは+48を使う
-            this.y -= 12;
-            if(this.dirc) {this.x -= 20;
-            } else {this.x += 20;} 
-            if(++this.kuriboAttack == 20) {
-               this.kuriboAttack = 0; 
-               yaSound.play();
-            }
-            return;
-        }
 
-        //トゲゾーとの戦いの時のエフェクト
-        //LOSE_ぶつかった時
-        if(this.togezoHit) {
-            lvdSound.play();
-            this.y -= 8;
-            this.snum = 94;
-            this.h = this.snum == 94?16:32;
-            this.lifePoint += this.loseValue / 100;
-            this.loseValue = 0;
-            if(++this.togezoHit == 40) {
-               this.togezoHit = 0; 
-               miyaSound.play();
-               this.snum = 32; 
-               this.h = this.snum == 32?16:32;
-               this.type = TYPE_MINI;
-               this.ay = 16;
-               this.loseValue = -100;
-            }
-            return;
-        } 
-        //LOSE_踏んだ時
-        if(this.togezoAttack) {
-            fumuSound.play();
-            if(this.type == TYPE_BIG) {
-                this.snum =6;
-            } else if(this.type == TYPE_FIRE){
-                this.snum = 262;
-            } else{
-                this.snum = 38; 
-            }  
-            if(this.dirc) this.snum += 48; //左向きは+48を使う
-            this.y -= 8;
-            if(++this.togezoAttack == 40) {
-               this.togezoAttack = 0; 
-               yaSound.play();
-            }
-            return;
-        }
-
-        //ノコノコとの戦いの時のエフェクト
-        //LOSE_ぶつかった時
-        if(this.nokonokoHit) {
-            lvdSound.play();
-            this.y -= 8;
-            this.snum = 94;
-            this.h = this.snum == 94?16:32;
-            this.lifePoint += this.loseValue / 100;
-            this.loseValue = 0;
-            if(++this.nokonokoHit == 40) {
-               this.nokonokoHit = 0; 
-               miyaSound.play();
-               this.snum = 32; 
-               this.h = this.snum == 32?16:32;
-               this.type = TYPE_MINI;
-               this.ay = 16;
-               this.loseValue = -100;
-            }
-            return;
-        } 
-        //WIN_踏んだ時
-        if(this.nokonokoAttack) {
-            fumuSound.play();
-            if(this.type == TYPE_BIG) {
-                this.snum =6;
-            } else if(this.type == TYPE_FIRE){
-                this.snum = 262;
-            } else{
-                this.snum = 38; 
-            } 
-            if(this.dirc) this.snum += 48; //左向きは+48を使う
-            this.y -= 12;
-            if(this.dirc) {this.x -= 20;
-            } else {this.x += 20;} 
-            if(++this.nokonokoAttack == 20) {
-               this.nokonokoAttack = 0; 
-               yaSound.play();
-            }
-            return;
-        }
-
-        //ファイアフラワーを採った時のエフェクト
+        //ファイアフラワー：ゲット
         if(this.fire) {
             if(this.type == TYPE_FIRE) {
                 this.fire = 0;
@@ -234,7 +122,119 @@ class Ojisan {
             } 
             return;
         }
+        
+        //クリボ：WIN_踏んだ時
+        if(this.dealDmgKuri) {
+            if (this.dealDmgKuri === 1) {
+                fumuSound.play();
+            }
+            if(this.type == TYPE_BIG) {
+                this.snum =6;
+            } else if(this.type == TYPE_FIRE){
+                this.snum = 262;
+            } else{
+                this.snum = 38; 
+            } 
+            if(this.dirc) this.snum += 48; //左向きは+48を使う
+            this.y -= 12;
+            if(this.dirc) {this.x -= 20;
+            } else {this.x += 20;} 
+            if(++this.dealDmgKuri == 20) {
+               this.dealDmgKuri = 0; 
+               yaSound.play();
+            }
+            return;
+        }
 
+        //ノコノコ：WIN_踏んだ時
+        if(this.dealDmgNoko) {
+            if (this.dealDmgNoko === 1) {
+                fumuSound.play();
+            }
+            if(this.type == TYPE_BIG) {
+                this.snum =6;
+            } else if(this.type == TYPE_FIRE){
+                this.snum = 262;
+            } else{
+                this.snum = 38; 
+            } 
+            if(this.dirc) this.snum += 48; //左向きは+48を使う
+            this.y -= 12;
+            if(this.dirc) {this.x -= 20;
+            } else {this.x += 20;} 
+            if(++this.dealDmgNoko == 20) {
+               this.dealDmgNoko = 0; 
+               yaSound.play();
+            }
+            return;
+        }
+
+        //クリボ：LOSE_ぶつかった時
+        if(this.tookDmgKuri) {
+            if (this.tookDmgKuri === 1) {
+                lvdSound.play();
+            }
+            this.y -= 8;
+            this.snum = 94;
+            this.h = this.snum == 94?16:32;
+            this.lifePoint += this.loseValue / 100;
+            this.loseValue = 0;
+            if(++this.tookDmgKuri == 40) {
+               this.tookDmgKuri = 0; 
+               miyaSound.play();
+               this.snum = 32;
+               this.h = this.snum == 32?16:32;
+               this.type = TYPE_MINI;
+               this.ay = 16;
+               this.loseValue = -100;
+            }
+            return;
+        } 
+
+        //ノコノコ：LOSE_ぶつかった時
+        if(this.tookDmgNoko) {
+            if (this.tookDmgNoko === 1) {
+                lvdSound.play();
+            }
+            this.y -= 8;
+            this.snum = 94;
+            this.h = this.snum == 94?16:32;
+            this.lifePoint += this.loseValue / 100;
+            this.loseValue = 0;
+            if(++this.tookDmgNoko == 40) {
+               this.tookDmgNoko = 0; 
+               miyaSound.play();
+               this.snum = 32; 
+               this.h = this.snum == 32?16:32;
+               this.type = TYPE_MINI;
+               this.ay = 16;
+               this.loseValue = -100;
+            }
+            return;
+        } 
+
+        //トゲゾー：LOSE_ぶつかった時
+        if(this.tookDmgToge) {
+            if (this.tookDmgToge === 1) {
+                lvdSound.play();
+            }
+            this.y -= 8;
+            this.snum = 94;
+            this.h = this.snum == 94?16:32;
+            this.lifePoint += this.loseValue / 100;
+            this.loseValue = 0;
+            if(++this.tookDmgToge == 40) {
+               this.tookDmgToge = 0; 
+               miyaSound.play();
+               this.snum = 32; 
+               this.h = this.snum == 32?16:32;
+               this.type = TYPE_MINI;
+               this.ay = 16;
+               this.loseValue = -100;
+            }
+            return;
+        } 
+    
         //アニメのカウンタ
         this.acou++;
         if(Math.abs(this.vx) == MAX_SPEED) this.acou++;
@@ -446,8 +446,6 @@ class Ojisan {
                 block.push(new Block(bl, x, y, 1, -20, -20));
                 return;
             }
-
-
         }     
     }
 

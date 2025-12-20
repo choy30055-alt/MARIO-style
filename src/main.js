@@ -339,16 +339,16 @@ function enemyDraw() {
     kuribo.push(new Kuribo(163, 160, 0, 12, 0, ITEM_KURIBO));
     kuribo.push(new Kuribo(163, 162, 0, 12, 0, ITEM_KURIBO));
 
-    nokonoko.push(new Nokonoko(163, 14, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 32, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 48, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 60, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 78, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 96, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 112, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 128, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 160, 0, 9, 0, ITEM_NOKONOKO));
-    nokonoko.push(new Nokonoko(163, 162, 0, 9, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 14, 0, 8, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 32, 0, 8, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 48, 0, 8, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 60, 0, 8, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 78, 0, 8, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 96, 0, 8, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 112, 0, 8, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 128, 0, 8, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 160, 0, 8, 0, ITEM_NOKONOKO));
+    nokonoko.push(new Nokonoko(163, 162, 0, 8, 0, ITEM_NOKONOKO));
 
     jyugem.push(new Jyugem(107, 1, 1, 11, 0, ITEM_JYUGEM));
     jyugem.push(new Jyugem(107, 40, 2, 11, 0, ITEM_JYUGEM));

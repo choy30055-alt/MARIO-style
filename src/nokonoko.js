@@ -1,4 +1,3 @@
-//
 //ノコノコのクラス
 //
 class Nokonoko {
@@ -20,11 +19,13 @@ class Nokonoko {
         if(tp == undefined) tp = ITEM_NOKONOKO;
         this.tp = tp;
         this.scoreValue = 100;
+        this.kickCool = 0;
     }
 
     //更新処理
     update() {
         if(this.kill) return;
+        if (this.kickCool > 0) this.kickCool--;
         if(this.proc_nokonoko()) return;
   
         this.checkWall();
@@ -69,7 +70,7 @@ class Nokonoko {
 
     //崖の判定
     checkCliff() {
-        if(this.y<=2820) return;
+        if(this.y <= GROUND_LEVEL) return;
         let nextStepX = this.x>>4 + this.vx>>4;
         let checkY = this.y>>4 + this.h>>4 +10
         if(!field.isBlock(nextStepX, checkY)) {
@@ -122,11 +123,11 @@ class Nokonoko {
     }
     
     //ノコノコの処理、当たり判定の判定と出現後の
-    proc_nokonoko() {
+   /* proc_nokonoko() {
         if(this.checkHit(ojisan)) {
             const collisionType = this.checkEnemyCollision(ojisan);
             if(collisionType === "stomp") {
-                ojisan.nokonokoAttack = 1;
+                ojisan.dealDmgNoko = 1;
                 this.tp = ITEM_URNOKONOKO;
                 this.sp = 132;
                 this.vx = 0;
@@ -142,7 +143,7 @@ class Nokonoko {
                 return true;
             }
             if(collisionType === "hit") {
-                ojisan.nokonokoHit = 1;
+                ojisan.tookDmgNoko = 1;
                 this.kill = false;
                 return true ;
             } 
@@ -156,7 +157,41 @@ class Nokonoko {
             return true;
         }
         return false;*/
-    } 
+   // } 
+
+   proc_nokonoko() {
+        if (!this.checkHit(ojisan)) return false;
+        const collisionType = this.checkEnemyCollision(ojisan);
+        if (this.tp === ITEM_URNOKONOKO) {  //甲羅状態（ひっくり返り）
+            if (collisionType === "hit") {  // 横から体当たり
+                this.vx = ojisan.dirc ? -40 : 40; // ノコノコを弾として飛ばす
+                this.vy = -20;
+                ojisan.vx = ojisan.dirc ? 10 : -10; // 少しだけおじさんも反動
+                fumuSound.play();
+                return true;
+            }
+            return true;
+        }
+        if (collisionType === "stomp") {  //通常状態
+            ojisan.dealDmgNoko = 1; // 踏んだ
+            this.tp = ITEM_URNOKONOKO;  // 甲羅状態へ移行
+            this.sp = 132;
+            this.vx = 0;
+            score += this.scoreValue; // スコア（1回だけ）
+            this.scoreValue = 0;
+            setTimeout(() => {  // 一定時間後に復活
+                this.vx = 10;
+                this.tp = ITEM_NOKONOKO;
+                this.scoreValue = 100;
+            }, 9000);
+            return true;
+        } 
+        if (collisionType === "hit") {  //通常ヒット（ダメージ）
+            ojisan.tookDmgNoko = 1;
+            return true;
+        }
+        return false;
+}
 
     updateAnim() {
         //アニメスプライトの決定

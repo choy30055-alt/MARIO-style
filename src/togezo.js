@@ -24,8 +24,7 @@ class Togezo {
     //更新処理
     update() {
         if(this.kill) return;
-        if(ojisan.togezo) return;
-
+        //if(ojisan.togezo) return;
         if(this.proc_togezo()) return;
   
         this.checkWall();
@@ -70,7 +69,7 @@ class Togezo {
 
     //崖の判定
     checkCliff() {
-        if(this.y<=2820) return;
+        if(this.y <= GROUND_LEVEL) return;
         let nextStepX = this.x>>4 + this.vx>>4;
         let checkY = this.y>>4 + this.h>>4 +10
         if(!field.isBlock(nextStepX, checkY)) {
@@ -128,18 +127,18 @@ class Togezo {
             const collisionType = this.checkEnemyCollision(ojisan);
             if(collisionType === "stomp") {
                 if(ojisan.type == TYPE_MINI){
-                    ojisan.togezoHit = 1;
+                    ojisan.tookDmgToge = 1;
                     this.kill = false;
                     return true ;
                 } else {
-                    ojisan.togezoHit = 1;
+                    ojisan.tookDmgToge = 1;
                     this.sp = 98;
                     this.kill = false;
                     return true ;
                 }
             }
             if(collisionType === "hit") {
-                ojisan.togezoHit = 1;
+                ojisan.tookDmgToge = 1;
                 this.kill = false;
                 return true ;
             } 
